@@ -1,0 +1,82 @@
+{
+  "profile": {
+    "name": "Vinícius Albuquerque",
+    "handle": "vinicius",
+    "bio": "Engenheiro full-stack sênior. Co-fundador técnico da Path Trader e, nas horas vagas, jogos de navegador. Vila Velha, Brasil.",
+    "avatar": "/avatar.svg",
+    "siteUrl": "https://links.vinicius-albuquerque.com.br",
+    "repoUrl": "https://github.com/allbdev/my-links"
+  },
+  "socials": [
+    { "type": "github", "url": "https://github.com/allbdev" },
+    { "type": "linkedin", "url": "https://www.linkedin.com/in/albuquerque-vinicius" },
+    { "type": "email", "url": "mailto:vini.alb13@gmail.com" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "title": "Portfólio",
+      "url": "https://www.vinicius-albuquerque.com.br/pt",
+      "icon": "globe",
+      "highlight": true
+    },
+    {
+      "type": "link",
+      "title": "Currículo (PDF)",
+      "url": "https://www.vinicius-albuquerque.com.br/cv.pdf",
+      "icon": "file-text"
+    },
+    {
+      "type": "link",
+      "title": "GitHub · código aberto",
+      "url": "https://github.com/allbdev",
+      "icon": "github"
+    },
+    {
+      "type": "link",
+      "title": "LinkedIn",
+      "url": "https://www.linkedin.com/in/albuquerque-vinicius",
+      "icon": "linkedin"
+    },
+    { "type": "header", "title": "Projetos" },
+    {
+      "type": "featured",
+      "title": "Path Trader",
+      "subtitle": "SaaS para traders · co-fundador técnico, cerca de 70 clientes",
+      "url": "https://www.path-trader.com.br/",
+      "image": "/thumbs/path-trader.svg",
+      "badge": "No ar"
+    },
+    {
+      "type": "link",
+      "title": "The Single Hole · todo mundo cava o mesmo buraco",
+      "url": "https://the-single-hole.vinicius-albuquerque.com.br",
+      "icon": "gamepad"
+    },
+    {
+      "type": "link",
+      "title": "Cartório Simulator · jogo diário",
+      "url": "https://allbdev.github.io/notary-office-simulator/",
+      "icon": "gamepad"
+    },
+    {
+      "type": "link",
+      "title": "Tavi · assistente pessoal com IA",
+      "url": "https://www.oitavi.com.br",
+      "icon": "sparkles"
+    },
+    {
+      "type": "link",
+      "title": "Vestra · finanças pessoais",
+      "url": "https://www.vestra-financas.com.br/",
+      "icon": "wallet"
+    },
+    { "type": "header", "title": "Contato" },
+    {
+      "type": "link",
+      "title": "Mandar um e-mail",
+      "url": "mailto:vini.alb13@gmail.com",
+      "icon": "mail"
+    }
+  ]
+}

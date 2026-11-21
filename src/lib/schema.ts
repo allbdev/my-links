@@ -169,7 +169,6 @@ export const blockSchema = z.discriminatedUnion("type", [
 
 export const contentSchema = z
   .strictObject({
-    $schema: z.string().optional(),
     profile: profileSchema,
     socials: z.array(socialSchema).max(8, "must have at most 8 entries"),
     blocks: z.array(blockSchema).min(1, "must have at least one block"),

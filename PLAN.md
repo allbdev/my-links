@@ -46,7 +46,7 @@ Placeholder order in the mockup: Portfólio · GitHub · LinkedIn · Currículo 
 Canvas board "Modal de compartilhar aberto" (`design/Share.dc.html`).
 
 - Opens from the top-right button (the page) or from any ⋮ (that link).
-- Heading, close button, a preview card (avatar, title, URL), then a grid: **Copiar link**, **WhatsApp**, **LinkedIn**, **X**, **E-mail**, **Mais opções**.
+- Heading ("Compartilhar página" or "Compartilhar link"), close button, a dark preview card (avatar, title, URL), then a 3-column grid of round actions: **Copiar link**, **WhatsApp**, **LinkedIn**, **X**, **E-mail**, **Mais opções**.
 - **Copiar link** uses `navigator.clipboard`; the label turns into "Copiado!" for 2 s. If the clipboard is blocked, the URL is shown selected in a read-only field so it can be copied by hand.
 - **Mais opções** calls `navigator.share` (the phone's share sheet). It is only rendered when the browser has `navigator.share`.
 - Share URLs are built from the link, never hard-coded:
@@ -129,22 +129,28 @@ Canvas boards above. Light only for the first version.
 
 | Token | Value | Use |
 |---|---|---|
-| `--bg` | `#ECEEF2` | Page background |
+| `--bg` | `#ECEEF2` | Page background; grey action circles in the share modal |
 | `--card` | `#FFFFFF` | Link cards, modal |
-| `--ink` | `#12151A` | Text, highlighted card background, avatar fallback |
-| `--muted` | `#5B6270` | Bio, handle, subtitles, URLs |
-| `--line` | `#DDE1E7` | Card and button borders |
+| `--ink` | `#12151A` | Text, icon tiles, highlighted card, share preview card |
+| `--muted` | `#5B6270` | Bio, handle, subtitles, ⋮ buttons |
+| `--line` | `#DDE1E7` | Round button borders, avatar ring |
+| `--line-card` | `#E1E4EA` | Link card borders |
 | `--hover` | `#F1F3F6` | Icon-button hover |
-| `--accent` | `#2546E8` | Link hover, focus ring, primary action |
+| `--accent` | `#2546E8` | Link hover, focus ring, highlighted icon tile, preview avatar |
 | `--accent-soft` | `#E8ECFF` | Accent backgrounds |
-| `--ok` | `#1A7A43` | "Copiado!" state (darkened from the mockup's `#1F8F4E`, which is 4.1:1 on white) |
-| `--badge` | `#FFD43B` | Featured badge |
+| `--ok` | `#1A7A43` | "Copiado!" text and check icon (darker than the mockup's green so text passes 4.5:1) |
+| `--badge` / `--badge-ink` | `#FFD43B` / `#A4161A` | Featured badge |
+| `--on-ink-muted` | `#C9CED6` | URL on the share preview card |
+| `--overlay` | `rgb(18 21 26 / 55%)` | Modal backdrop |
+| `--brand-whatsapp` / `--brand-linkedin` | `#1F8F4E` / `#0A66C2` | Share action circles (white icon) |
 
 | Radius | Use |
 |---|---|
 | 16 px | Link cards |
 | 22 px | 44 px round buttons |
 | 24 px | Modal |
+| 18 px | Share preview card |
+| 10 px | Icon tiles, thumbnails, featured image |
 | 50% | Avatar |
 
 | Font | Use |
@@ -155,7 +161,7 @@ Canvas boards above. Light only for the first version.
 
 All three are OFL and self-hosted through `next/font` (no runtime calls to Google Fonts).
 
-**Icons:** Lucide for interface icons (share, ⋮, copy, close, mail, briefcase…). Lucide has no brand logos, so GitHub, LinkedIn, X and WhatsApp are small local SVG components from Simple Icons (CC0) in `src/components/icons/`.
+**Icons:** Lucide for interface icons (share, ⋮, copy, close, mail, globe…). Lucide has no brand logos, so GitHub, LinkedIn, X, WhatsApp, Instagram and YouTube are local stroke icons in the same style (`src/components/icons/brand.tsx`: Lucide's former brand icons, ISC, and Tabler Icons, MIT; notices in `NOTICE.md`).
 
 ## 8. Architecture
 

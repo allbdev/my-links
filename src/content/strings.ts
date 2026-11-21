@@ -5,7 +5,7 @@
 export const STRINGS = {
   "share.page": "Compartilhar esta página",
   "share.link": "Compartilhar link: {title}",
-  "share.dialogPage": "Compartilhar esta página",
+  "share.dialogPage": "Compartilhar página",
   "share.dialogLink": "Compartilhar link",
   "share.close": "Fechar",
   "share.copy": "Copiar link",

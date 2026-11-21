@@ -40,10 +40,15 @@ export const LIMITS = { title: 80, subtitle: 120, badge: 20, bio: 160, name: 60 
 const text = (max: number) =>
   z.string().trim().min(1, "must not be empty").max(max, `must be at most ${max} characters`);
 
-/** True for a path such as "/cv.pdf": starts with one slash, no "..", no backslash. */
+/**
+ * True for a path such as "/cv.pdf": starts with one slash, no "..", no
+ * backslash, no whitespace or control characters (browsers strip tabs and
+ * newlines, which could turn "/\t/host" into a protocol-relative URL).
+ */
 function isRootRelative(value: string): boolean {
   return (
     value.startsWith("/") &&
+    !/[\s\u0000-\u001f\u007f]/.test(value) &&
     !value.startsWith("//") &&
     !value.includes("\\") &&
     !value.split("/").includes("..")

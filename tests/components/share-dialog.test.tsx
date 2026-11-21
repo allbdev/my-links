@@ -8,7 +8,7 @@ import type { OpenShare } from "@/components/share/types";
 const LINK: OpenShare = { kind: "link", title: "GitHub", url: "https://github.com/ana" };
 const PAGE: OpenShare = { kind: "page", title: "Ana", url: "https://links.example.com" };
 
-function setClipboard(writeText: (text: string) => Promise<void> | undefined) {
+function setClipboard(writeText: ((text: string) => Promise<void>) | undefined) {
   Object.defineProperty(navigator, "clipboard", {
     value: writeText ? { writeText } : undefined,
     configurable: true,
@@ -111,7 +111,7 @@ describe("ShareDialog", () => {
     ["the clipboard rejects", () => Promise.reject(new Error("denied"))],
     ["there is no clipboard", undefined],
   ])("shows the URL selected when %s", async (_label, writeText) => {
-    setClipboard(writeText as never);
+    setClipboard(writeText);
     renderDialog(LINK);
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: "Copiar link" }));

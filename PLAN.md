@@ -45,7 +45,7 @@ Placeholder order in the mockup: Portfólio · GitHub · LinkedIn · Currículo 
 
 Canvas board "Modal de compartilhar aberto" (`design/Share.dc.html`).
 
-- Opens from the top-right button (the page) or from any ⋮ (that link).
+- Opens from the top-right button (the page) or from any ⋮ (that link). E-mail links have no ⋮: a `mailto:` URL means nothing to the person it's shared with.
 - Heading ("Compartilhar página" or "Compartilhar link"), close button, a dark preview card (avatar, title, URL), then a 3-column grid of round actions: **Copiar link**, **WhatsApp**, **LinkedIn**, **X**, **E-mail**, **Mais opções**.
 - **Copiar link** uses `navigator.clipboard`; the label turns into "Copiado!" for 2 s. If the clipboard is blocked, the URL is shown selected in a read-only field so it can be copied by hand.
 - **Mais opções** calls `navigator.share` (the phone's share sheet). It is only rendered when the browser has `navigator.share`.

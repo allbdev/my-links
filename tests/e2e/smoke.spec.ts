@@ -52,10 +52,12 @@ test("touch targets are at least 44 px", async ({ page }) => {
 
 test("keyboard focus is visible and follows the page order", async ({ page }) => {
   await page.keyboard.press("Tab");
-  const first = page.locator(":focus");
-  await expect(first).toHaveAttribute("aria-label", /GitHub/);
-  const outline = await first.evaluate((el) => getComputedStyle(el).outlineStyle);
+  const focused = page.locator(":focus");
+  await expect(focused).toHaveAttribute("aria-label", "Compartilhar esta página");
+  const outline = await focused.evaluate((el) => getComputedStyle(el).outlineStyle);
   expect(outline).not.toBe("none");
+  await page.keyboard.press("Tab");
+  await expect(focused).toHaveAttribute("aria-label", /^GitHub/);
 });
 
 test("axe finds no accessibility violations", async ({ page }) => {

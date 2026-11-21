@@ -66,15 +66,15 @@
 
 > Re-read the board "Modal de compartilhar aberto" before starting.
 
-22. [ ] `ShareProvider` + `ShareButton` (client island); top bar shares the page, each ⋮ shares its link
-23. [ ] `ShareDialog`: native `<dialog>`, heading, close, preview card (avatar, title, URL), action grid
-24. [ ] Copy link: clipboard, "Copiado!" for 2 s, selected read-only field as fallback
-25. [ ] WhatsApp, LinkedIn, X, e-mail links from `src/lib/share.ts`
-26. [ ] "Mais opções": `navigator.share`, rendered only when supported; cancelling isn't an error
-27. [ ] Focus: first action on open, back to the opener on close; Esc and backdrop close; component tests for all of it
-28. [ ] E2E: open from the top bar and from a ⋮, copy (with clipboard permission), Esc, focus return, axe on the open modal
+22. [x] `ShareProvider` + `ShareButton` (client island); top bar shares the page, each ⋮ shares its link
+23. [x] `ShareDialog`: native `<dialog>`, heading, close, preview card (avatar, title, URL), action grid
+24. [x] Copy link: clipboard, "Copiado!" for 2 s, selected read-only field as fallback
+25. [x] WhatsApp, LinkedIn, X, e-mail links from `src/lib/share.ts`
+26. [x] "Mais opções": `navigator.share`, rendered only when supported; cancelling isn't an error
+27. [x] Focus: first action on open, back to the opener on close; Esc and backdrop close; component tests for all of it
+28. [x] E2E: open from the top bar and from a ⋮, copy (with clipboard permission), Esc, focus return, axe on the open modal
 
-**Exit:** the first version from `PLAN.md` §5 works end to end on desktop and phone.
+**Exit:** the first version from `PLAN.md` §5 works end to end on desktop and phone. ✅
 
 ---
 

@@ -2,9 +2,11 @@
 import { createReadStream, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize, resolve, sep } from "node:path";
+import { headersFor, loadHeaderRules } from "./vercel-headers";
 
 const ROOT = resolve("out");
 const PORT = Number(process.env.PORT ?? 4180);
+const RULES = loadHeaderRules();
 const TYPES: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -49,7 +51,11 @@ createServer((req, res) => {
   const file = resolveFile(req.url ?? "/");
   const status = file ? 200 : 404;
   const body = file ?? join(ROOT, "404.html");
-  res.writeHead(status, { "content-type": TYPES[extname(body)] ?? "application/octet-stream" });
+  const path = (req.url ?? "/").split("?")[0] ?? "/";
+  res.writeHead(status, {
+    "content-type": TYPES[extname(body)] ?? "application/octet-stream",
+    ...headersFor(path, RULES),
+  });
   createReadStream(body)
     .on("error", () => res.end())
     .pipe(res);

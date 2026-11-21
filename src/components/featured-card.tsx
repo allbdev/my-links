@@ -11,7 +11,14 @@ export function FeaturedCard({ block, share }: { block: FeaturedBlock; share?: R
     <div className={styles.card}>
       <a className={styles.link} href={block.url} {...linkProps(block.url)}>
         <span className={styles.media}>
-          <StaticImage className={styles.image} src={block.image} alt="" width={800} height={400} />
+          <StaticImage
+            className={styles.image}
+            src={block.image}
+            alt=""
+            width={800}
+            height={400}
+            priority
+          />
         </span>
         <span className={styles.text}>
           <span className={styles.title}>{block.title}</span>

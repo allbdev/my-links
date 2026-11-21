@@ -29,6 +29,7 @@ describe("FeaturedCard", () => {
     expect(img).toHaveAttribute("src", "/thumbs/path-trader.svg");
     expect(img).toHaveAttribute("width", "800");
     expect(img).toHaveAttribute("height", "400");
+    expect(img).toHaveAttribute("loading", "eager");
   });
 
   it("shows the badge and subtitle only when present", () => {

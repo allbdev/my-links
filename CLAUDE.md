@@ -50,7 +50,7 @@ The site, the docs and the canvas must always agree:
   ```sh
   npm run check && git commit ...
   ```
-  (`npm run check` = lint + typecheck + unit tests + build + size budget.)
+  (`npm run check` = lint (warnings fail) + typecheck + unit tests + build + size budget.) Check the exit code, not the last lines of output.
 
 ## Git workflow
 

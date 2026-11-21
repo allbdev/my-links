@@ -51,7 +51,6 @@ export default function OpengraphImage() {
     >
       <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, gap: 14 }}>
         {photo ? (
-          // eslint-disable-next-line @next/next/no-img-element -- Satori renders plain img
           <img
             src={photo}
             alt=""

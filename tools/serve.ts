@@ -1,6 +1,7 @@
 // Tiny static server for out/ (npm run preview). Dev and test only.
 import { createReadStream, statSync } from "node:fs";
 import { createServer } from "node:http";
+import { createGzip } from "node:zlib";
 import { extname, join, normalize, resolve, sep } from "node:path";
 import { headersFor, loadHeaderRules } from "./vercel-headers";
 
@@ -52,13 +53,19 @@ createServer((req, res) => {
   const status = file ? 200 : 404;
   const body = file ?? join(ROOT, "404.html");
   const path = (req.url ?? "/").split("?")[0] ?? "/";
+  const type = TYPES[extname(body)] ?? "application/octet-stream";
+  // Compress text like Vercel does, so local measurements are comparable.
+  const gzip =
+    /^(text\/|application\/(json|xml)|image\/svg)/.test(type) &&
+    /\bgzip\b/.test(String(req.headers["accept-encoding"] ?? ""));
   res.writeHead(status, {
-    "content-type": TYPES[extname(body)] ?? "application/octet-stream",
+    "content-type": type,
+    ...(gzip ? { "content-encoding": "gzip", vary: "Accept-Encoding" } : {}),
     ...headersFor(path, RULES),
   });
-  createReadStream(body)
-    .on("error", () => res.end())
-    .pipe(res);
+  const stream = createReadStream(body).on("error", () => res.end());
+  if (gzip) stream.pipe(createGzip()).pipe(res);
+  else stream.pipe(res);
 }).listen(PORT, "127.0.0.1", () => {
   console.log(`Serving out/ on http://localhost:${PORT}`);
 });

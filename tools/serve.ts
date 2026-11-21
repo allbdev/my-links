@@ -50,7 +50,9 @@ createServer((req, res) => {
   const status = file ? 200 : 404;
   const body = file ?? join(ROOT, "404.html");
   res.writeHead(status, { "content-type": TYPES[extname(body)] ?? "application/octet-stream" });
-  createReadStream(body).pipe(res);
+  createReadStream(body)
+    .on("error", () => res.end())
+    .pipe(res);
 }).listen(PORT, "127.0.0.1", () => {
   console.log(`Serving out/ on http://localhost:${PORT}`);
 });

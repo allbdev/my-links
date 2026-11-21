@@ -39,10 +39,10 @@
 10. [x] A valid fixture in `tests/fixtures/` and one mutation per rule in `tests/lib/schema.test.ts`; each fails with a readable message (field path + expectation)
 11. [x] Loader (`src/lib/content.ts`): reads `content/links.json`, parses, checks that every `image` exists in `public/`, filters `hidden`, throws a formatted error
 12. [x] First `content/links.json` with real content from the portfolio site (placeholder avatar and featured image); test that the real file parses
-13. [ ] Share URL builders (`src/lib/share.ts`): WhatsApp, LinkedIn, X, e-mail; property tests with fast-check (any title and URL round-trip through encoding)
-14. [ ] URL helpers (`src/lib/url.ts`): resolve root-relative paths against `siteUrl`; is-external check (decides `target="_blank"`)
+13. [x] Share URL builders (`src/lib/share.ts`): WhatsApp, LinkedIn, X, e-mail; property tests with fast-check (any title and URL round-trip through encoding)
+14. [x] URL helpers (`src/lib/url.ts`): resolve root-relative paths against `siteUrl`; is-external check (decides `target="_blank"`)
 
-**Exit:** a broken `links.json` fails `npm run build` with a message that points at the bad field; all helpers covered.
+**Exit:** a broken `links.json` fails `npm run build` with a message that points at the bad field; all helpers covered. ✅
 
 ---
 

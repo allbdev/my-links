@@ -18,9 +18,7 @@ describe("FeaturedCard", () => {
   it("is one link named by its title, badge and subtitle", () => {
     render(<FeaturedCard block={BLOCK} />);
     const link = screen.getByRole("link");
-    expect(link).toHaveAccessibleName(/Path Trader/);
-    expect(link).toHaveAccessibleName(/SaaS para traders/);
-    expect(link).toHaveAccessibleName(/abre em nova aba/);
+    expect(link).toHaveAccessibleName("Path Trader SaaS para traders No ar (abre em nova aba)");
     expect(link).toHaveAttribute("target", "_blank");
   });
 

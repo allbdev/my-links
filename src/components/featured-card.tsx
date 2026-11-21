@@ -20,12 +20,23 @@ export function FeaturedCard({ block, share }: { block: FeaturedBlock; share?: R
             sizes="(min-width: 480px) 446px, calc(100vw - 50px)"
             unoptimized
           />
-          {block.badge && <span className={styles.badge}>{block.badge}</span>}
         </span>
         <span className={styles.text}>
           <span className={styles.title}>{block.title}</span>
-          {block.subtitle && <span className={styles.subtitle}>{block.subtitle}</span>}
+          {block.subtitle && (
+            <>
+              {" "}
+              <span className={styles.subtitle}>{block.subtitle}</span>
+            </>
+          )}
         </span>
+        {block.badge && (
+          <>
+            {" "}
+            {/* After the text in reading order; drawn over the image. */}
+            <span className={styles.badge}>{block.badge}</span>
+          </>
+        )}
         {opensInNewTab(block.url) && <NewTabHint />}
       </a>
       {share && <div className={styles.action}>{share}</div>}

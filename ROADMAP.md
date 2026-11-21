@@ -96,12 +96,12 @@
 
 ## Phase 6 · Launch
 
-35. [ ] Real content: photo, bio, URLs, CV PDF, featured image (all in `TODO_FOR_YOU.md`)
-36. [ ] Images pre-sized to WebP; size budget and Lighthouse (mobile) checked; numbers in the README
-37. [ ] README: screenshot, the JSON format, how the build validates it, the share modal's accessibility, Lighthouse numbers
-38. [ ] Production deploy on Vercel at `links.vinicius-albuquerque.com.br` (`docs/DEPLOY.md`); `siteUrl` set
+35. [~] Real content: bio, URLs and CV link from the portfolio site are in; the photo and the featured image are placeholders (`TODO_FOR_YOU.md`)
+36. [x] Size budget and Lighthouse (mobile) checked; numbers in the README (97–98 / 100 / 100 / 100). Real images go in as WebP when they arrive
+37. [x] README: screenshot, the JSON format, how the build validates it, the share modal's accessibility, Lighthouse numbers
+38. [~] Production deploy on Vercel at `links.vinicius-albuquerque.com.br` (`docs/DEPLOY.md`); `siteUrl` set
 39. [x] Security headers in `vercel.json` (CSP, `Referrer-Policy`, `X-Content-Type-Options`, `Permissions-Policy`)
-40. [ ] Put the link in every bio (GitHub, LinkedIn, CV)
+40. [ ] Put the link in every bio (GitHub, LinkedIn, CV) (`TODO_FOR_YOU.md`)
 
 ---
 

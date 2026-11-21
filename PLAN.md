@@ -3,7 +3,7 @@
 > *One link in every bio.* A personal Linktree I own, host for free and change by editing one file.
 > Free, open-source, no accounts. A portfolio piece: the code is part of the product.
 
-**Author:** Vinícius Albuquerque Barros · **Written:** 20 Nov 2026 · **Updated:** 20 Nov 2026 · **Status:** plan and mockups done; nothing built
+**Author:** Vinícius Albuquerque Barros · **Written:** 20 Nov 2026 · **Updated:** 20 Nov 2026 · **Status:** first version built and tested; waiting on the Vercel project, DNS and the real photo
 
 The original pitch is `LINKS.md`. Mockups live on the design canvas "Links — Vinícius (clone do Linktree)" (https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3); its source files are in `design/`. The canvas and this file are kept in sync both ways (see `CLAUDE.md`). Copy and link lists are placeholders until `content/links.json` holds the real ones. Effort figures are estimates, not measurements.
 

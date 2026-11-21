@@ -1,0 +1,29 @@
+# Dependencies and builds
+node_modules/
+.next/
+out/
+coverage/
+next-env.d.ts
+*.tsbuildinfo
+
+# Playwright
+playwright-report/
+test-results/
+blob-report/
+
+# Env and secrets
+.env
+.env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Design board captures (tools/designs/capture.ts)
+design-captures/

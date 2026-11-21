@@ -89,8 +89,8 @@
 
 ## Phase 5 · Design sync tooling
 
-33. [ ] `tools/designs/capture.ts` (`npm run designs`): Playwright screenshots of the built page and the open modal at board size (390 × 1380)
-34. [ ] Replace the drawn boards on the canvas with captures from the real site (keep the drawn ones on a separate page); add JPG exports to `design/` and list them in `design/README.md`
+33. [x] `tools/designs/capture.ts` (`npm run designs`): Playwright screenshots of the built page and the open modal at board size (390 × 1380)
+34. [x] Replace the drawn boards on the canvas with captures from the real site (keep the drawn ones on a separate page); add JPG exports to `design/` and list them in `design/README.md`
 
 ---
 

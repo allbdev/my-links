@@ -12,7 +12,7 @@ Repo: https://github.com/allbdev/my-links (remote `origin`, branch `main`). Host
 
 ## Design canvas (two-way sync, strict)
 
-The mockups live on the claude.ai design canvas **"Links — Vinícius (clone do Linktree)"**: https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3 (boards: "Perfil · mobile (interativo)", "Modal de compartilhar aberto"). Its source files are in `design/` (`canvas.json`, `Main.dc.html`, `Share.dc.html`); `design/README.md` maps each board.
+The mockups live on the claude.ai design canvas **"Links — Vinícius (clone do Linktree)"**: https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3 (page "Site real": captures of the built site; page "Mockups desenhados": the original drawn boards "Perfil · mobile (interativo)" and "Modal de compartilhar aberto"). Its source files are in `design/` (the canvas serves them under `project/`); `design/README.md` maps each board.
 
 The site, the docs and the canvas must always agree:
 
@@ -20,7 +20,8 @@ The site, the docs and the canvas must always agree:
 - **Canvas → site.** The developer edits boards by hand. Before starting any UI task, re-read the boards it touches (Artifact `read`) and bring every difference into the code, the tokens and `PLAN.md`. If a canvas change conflicts with the plan, ask.
 - **Docs too.** `PLAN.md` §3, §4 and §7 (page, share modal, look and tokens) describe the same things as the boards; keep them in step.
 - **New looks are tried on the canvas first**, on a new board, then built.
-- Placeholder content (photo, URLs, link titles) on the canvas doesn't need to follow `links.json`; structure and look do.
+- Placeholder content (photo, URLs, link titles) on the drawn boards doesn't need to follow `links.json`; structure and look do.
+- **The "Site real" boards are captures.** After any visible change: `npm run build && npm run preview`, then `npm run designs -- --out=design`, upload the JPGs as canvas assets and point the two boards at the new `/_blob/` ids (steps in `design/README.md`).
 - If Claude can't update a board itself, list what's stale in `TODO_FOR_YOU.md`.
 
 ## Language rules (strict)

@@ -82,8 +82,8 @@
 
 29. [x] `generateMetadata` from `links.json`: title, description, canonical, Open Graph, Twitter card
 30. [x] `opengraph-image.tsx` (static): avatar, name, bio, handle in the site's look
-31. [ ] Favicon and apple-touch icon; `robots.txt` and `sitemap.xml` (static)
-32. [ ] Tests: metadata values come from the JSON; e2e checks the OG tags in the built HTML
+31. [x] Favicon and apple-touch icon; `robots.txt` and `sitemap.xml` (static)
+32. [x] Tests: metadata values come from the JSON; e2e checks the OG tags in the built HTML
 
 ---
 

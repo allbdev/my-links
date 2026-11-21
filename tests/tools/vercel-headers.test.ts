@@ -22,7 +22,9 @@ describe("vercel.json headers", () => {
     expect(() => headersFor("/", [{ source: "/:path*", headers: [] }])).toThrow(/Unsupported/);
   });
 
-  it("serves the Open Graph image as a PNG", () => {
-    expect(headersFor("/opengraph-image", loadHeaderRules())["content-type"]).toBe("image/png");
+  it("serves the extensionless image routes as PNG", () => {
+    const rules = loadHeaderRules();
+    expect(headersFor("/opengraph-image", rules)["content-type"]).toBe("image/png");
+    expect(headersFor("/apple-icon", rules)["content-type"]).toBe("image/png");
   });
 });

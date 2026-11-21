@@ -26,3 +26,22 @@ test("the Open Graph image is served as a 1200×630 PNG", async ({ request }) =>
   expect(body.readUInt32BE(16)).toBe(1200);
   expect(body.readUInt32BE(20)).toBe(630);
 });
+
+test("the favicon and apple-touch icon are linked and served", async ({ page, request }) => {
+  await page.goto("/");
+  const icon = await page.locator('link[rel="icon"]').getAttribute("href");
+  const apple = await page.locator('link[rel="apple-touch-icon"]').getAttribute("href");
+  const svg = await request.get(icon!);
+  expect(svg.headers()["content-type"]).toBe("image/svg+xml");
+  const png = await request.get(apple!);
+  expect(png.headers()["content-type"]).toBe("image/png");
+  expect((await png.body()).readUInt32BE(16)).toBe(180);
+});
+
+test("robots.txt and sitemap.xml point at the production URL", async ({ request }) => {
+  const robots = await (await request.get("/robots.txt")).text();
+  expect(robots).toContain("Allow: /");
+  expect(robots).toContain(`Sitemap: ${SITE}/sitemap.xml`);
+  const sitemap = await (await request.get("/sitemap.xml")).text();
+  expect(sitemap).toContain(`<loc>${SITE}/</loc>`);
+});

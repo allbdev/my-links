@@ -35,8 +35,8 @@
 
 > Pure logic in `src/lib`, tested without a DOM.
 
-9. [ ] Zod schema (`src/lib/schema.ts`) with every rule in `PLAN.md` §6: block types, URL protocols, image xor icon, one featured at most, strict objects, length limits
-10. [ ] Fixtures in `tests/fixtures/`: one valid file, and one invalid file per rule; tests that each fails with a readable message (field path + expectation)
+9. [x] Zod schema (`src/lib/schema.ts`) with every rule in `PLAN.md` §6: block types, URL protocols, image xor icon, one featured at most, strict objects, length limits
+10. [x] A valid fixture in `tests/fixtures/` and one mutation per rule in `tests/lib/schema.test.ts`; each fails with a readable message (field path + expectation)
 11. [ ] Loader (`src/lib/content.ts`): reads `content/links.json`, parses, checks that every `image` exists in `public/`, filters `hidden`, throws a formatted error
 12. [ ] First `content/links.json` with the placeholder content from the canvas; test that the real file parses
 13. [ ] Share URL builders (`src/lib/share.ts`): WhatsApp, LinkedIn, X, e-mail; property tests with fast-check (any title and URL round-trip through encoding)

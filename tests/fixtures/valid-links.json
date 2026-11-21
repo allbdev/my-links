@@ -1,0 +1,29 @@
+{
+  "profile": {
+    "name": "Ana Teste",
+    "handle": "ana",
+    "bio": "Engenheira de software. Faz coisas na web.",
+    "avatar": "/avatar.svg",
+    "siteUrl": "https://links.example.com",
+    "repoUrl": "https://github.com/example/links"
+  },
+  "socials": [
+    { "type": "github", "url": "https://github.com/example" },
+    { "type": "email", "url": "mailto:ana@example.com" }
+  ],
+  "blocks": [
+    { "type": "link", "title": "Portfólio", "url": "https://example.com", "icon": "globe" },
+    { "type": "link", "title": "Currículo", "url": "/cv.pdf", "highlight": true },
+    { "type": "header", "title": "Projetos" },
+    {
+      "type": "featured",
+      "title": "Projeto",
+      "subtitle": "Um projeto",
+      "url": "https://example.com/projeto",
+      "image": "/thumbs/projeto.svg",
+      "badge": "Novo"
+    },
+    { "type": "link", "title": "Escondido", "url": "https://example.com/x", "hidden": true },
+    { "type": "link", "title": "E-mail", "url": "mailto:ana@example.com", "icon": "mail" }
+  ]
+}

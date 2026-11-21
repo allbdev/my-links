@@ -53,7 +53,7 @@
 15. [x] Layout: centred column (max 480 px), background, top bar (handle + share button slot), footer ("Feito com Next.js · ver o código")
 16. [x] Profile: avatar through `next/image` with initials fallback, name, bio, social icon buttons (Lucide + local brand SVGs)
 17. [x] Link card: icon or thumbnail, title, ⋮ button slot, `highlight` variant, external vs `mailto:` vs relative behaviour
-18. [ ] Section heading and featured card (image, title, subtitle, badge)
+18. [x] Section heading and featured card (image, title, subtitle, badge)
 19. [ ] Block renderer: maps `blocks` to components in order; component tests for every block type and option
 20. [ ] Hover lift and focus ring; `prefers-reduced-motion` respected
 21. [ ] Keyboard and screen-reader pass: tab order, aria labels, heading levels (one `h1`, `h2` per section); axe in the e2e smoke test

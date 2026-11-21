@@ -77,7 +77,7 @@ The site, the docs and the canvas must always agree:
 - **Share.** `ShareProvider` (client) holds `{ open, title, url }`; `ShareButton` calls it; `ShareDialog` is a native `<dialog>` opened with `showModal()`. URLs come from `src/lib/share.ts`. Clipboard and `navigator.share` are feature-detected; both have a fallback.
 - **Accessibility.** Keyboard and screen-reader usable; real `<a>` and `<button>`; every icon-only button has an aria label from `strings.ts`; visible focus ring (`--accent`); text contrast 4.5:1; 44 px targets; `prefers-reduced-motion` turns off hover lifts and the modal transition.
 - **Privacy.** No cookies, no analytics, no `localStorage`, no third-party requests at runtime (fonts are self-hosted).
-- **Performance budget.** First load under 100 KB gzipped JS (React and Next runtime included; measured by `npm run size` on `out/`), no layout shift, Lighthouse 100 in all four categories on mobile as the target. First guesses; adjust after the first build.
+- **Performance budget.** First load under 150 KB gzipped JS and 20 KB CSS (the Next 16 + React 19 runtime alone is about 135 KB; `noModule` polyfills excluded; measured by `npm run size` on `out/`), no layout shift, Lighthouse 100 in all four categories on mobile as the target. First guesses; adjust after the first build.
 
 ## Workflow
 

@@ -18,16 +18,16 @@
 
 ## Phase 0 · Setup
 
-1. [ ] `git init`, public GitHub repo (`allbdev/my-links`), MIT `LICENSE`, Git LFS (`.gitattributes` already lists the binary types)
-2. [ ] Next.js App Router + TypeScript strict scaffold, `output: "export"`, `images.unoptimized`, `trailingSlash`; folders `content/`, `src/app`, `src/components`, `src/lib`, `src/content`, `tests/`, `tools/`, `public/`
-3. [ ] ESLint + Prettier; `npm run check` (lint + typecheck + unit tests + build + size)
-4. [ ] Vitest (+ jsdom, Testing Library) + fast-check, first test; Playwright with a "page loads" smoke test on desktop and phone
-5. [ ] GitHub Actions: `check` + e2e on every push/PR; `vercel.json` for the Vercel deploy (connecting the project and DNS are in `TODO_FOR_YOU.md`, guide in `docs/DEPLOY.md`)
-6. [ ] Fonts via `next/font` (Space Grotesk, Inter, JetBrains Mono; self-hosted) and the tokens from `PLAN.md` §7 in `src/app/tokens.css`
-7. [ ] `src/content/strings.ts` with the interface text; `<html lang="pt-BR">`
-8. [ ] `tools/size-check.ts` (`npm run size`): gzipped JS on first load of `out/index.html` against the budget in `CLAUDE.md`
+1. [x] `git init`, public GitHub repo (`allbdev/my-links`), MIT `LICENSE`, Git LFS (`.gitattributes` already lists the binary types)
+2. [x] Next.js App Router + TypeScript strict scaffold, `output: "export"`, `images.unoptimized`, `trailingSlash`; folders `content/`, `src/app`, `src/components`, `src/lib`, `src/content`, `tests/`, `tools/`, `public/`
+3. [x] ESLint + Prettier; `npm run check` (lint + typecheck + unit tests + build + size)
+4. [x] Vitest (+ jsdom, Testing Library) + fast-check, first test; Playwright with a "page loads" smoke test on desktop and phone
+5. [x] GitHub Actions: `check` + e2e on every push/PR; `vercel.json` for the Vercel deploy (connecting the project and DNS are in `TODO_FOR_YOU.md`, guide in `docs/DEPLOY.md`)
+6. [x] Fonts via `next/font` (Space Grotesk, Inter, JetBrains Mono; self-hosted) and the tokens from `PLAN.md` §7 in `src/app/tokens.css`
+7. [x] `src/content/strings.ts` with the interface text; `<html lang="pt-BR">`
+8. [x] `tools/size-check.ts` (`npm run size`): gzipped JS on first load of `out/index.html` against the budget in `CLAUDE.md`
 
-**Exit:** the empty page builds to `out/` and CI is green.
+**Exit:** the empty page builds to `out/` and CI is green. ✅ (first-load JS 133.5 KB gzipped, mostly the Next + React runtime)
 
 ---
 

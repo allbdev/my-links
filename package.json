@@ -19,7 +19,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "size": "tsx tools/size-check.ts"
+    "size": "tsx tools/size-check.ts",
+    "designs": "tsx tools/designs/capture.ts"
   },
   "dependencies": {
     "lucide-react": "^1.77.0",

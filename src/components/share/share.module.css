@@ -1,0 +1,244 @@
+/* Buttons that open the dialog */
+.pageButton,
+.linkButton {
+  width: var(--target);
+  height: var(--target);
+  border-radius: var(--radius-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.pageButton {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.pageButton:hover {
+  background: var(--hover);
+}
+
+.linkButton {
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.linkButton:hover {
+  background: var(--hover);
+  color: var(--ink);
+}
+
+/* The dialog */
+.dialog {
+  width: min(calc(100% - 32px), 448px);
+  max-width: none;
+  max-height: calc(100dvh - 88px);
+  margin: 72px auto auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-modal);
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--shadow-modal);
+  overflow: auto;
+}
+
+.dialog::backdrop {
+  background: var(--overlay);
+}
+
+.dialog[open] {
+  animation: rise 0.18s ease-out;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+:global(html:has(dialog[open])) {
+  overflow: hidden;
+}
+
+.panel {
+  padding: 16px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spacer {
+  width: var(--target);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.close {
+  width: var(--target);
+  height: var(--target);
+  border-radius: var(--radius-button);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close:hover {
+  background: var(--hover);
+}
+
+.preview {
+  background: var(--ink);
+  color: var(--card);
+  border-radius: var(--radius-preview);
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.previewAvatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.previewTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.previewUrl {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--on-ink-muted);
+  word-break: break-all;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.action {
+  width: 100%;
+  min-height: var(--target);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: var(--ink);
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.action:hover .circle {
+  transform: scale(1.06);
+}
+
+.circle[data-copied] {
+  color: var(--ok);
+}
+
+.copied {
+  color: var(--ok);
+  font-weight: 600;
+}
+
+.whatsapp {
+  background: var(--brand-whatsapp);
+  color: var(--card);
+}
+
+.linkedin {
+  background: var(--brand-linkedin);
+  color: var(--card);
+}
+
+.dark {
+  background: var(--ink);
+  color: var(--card);
+}
+
+.fallback {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.copyField {
+  width: 100%;
+  min-height: var(--target);
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open] {
+    animation: none;
+  }
+
+  .action:hover .circle {
+    transform: none;
+  }
+}

@@ -1,7 +1,7 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
 import type { FeaturedBlock } from "@/lib/schema";
 import { opensInNewTab } from "@/lib/url";
+import { StaticImage } from "./static-image";
 import styles from "./featured-card.module.css";
 import { linkProps } from "./link-card";
 import { NewTabHint } from "./new-tab-hint";
@@ -11,15 +11,7 @@ export function FeaturedCard({ block, share }: { block: FeaturedBlock; share?: R
     <div className={styles.card}>
       <a className={styles.link} href={block.url} {...linkProps(block.url)}>
         <span className={styles.media}>
-          <Image
-            className={styles.image}
-            src={block.image}
-            alt=""
-            width={800}
-            height={400}
-            sizes="(min-width: 480px) 446px, calc(100vw - 50px)"
-            unoptimized
-          />
+          <StaticImage className={styles.image} src={block.image} alt="" width={800} height={400} />
         </span>
         <span className={styles.text}>
           <span className={styles.title}>{block.title}</span>

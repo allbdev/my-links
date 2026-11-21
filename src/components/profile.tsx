@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { t } from "@/content/strings";
 import type { Profile as ProfileData, Social } from "@/lib/schema";
 import { initials } from "@/lib/text";
 import { opensInNewTab } from "@/lib/url";
 import { SOCIAL_ICONS } from "./icons/icon";
+import { StaticImage } from "./static-image";
 import styles from "./profile.module.css";
 
 export function Profile({ profile, socials }: { profile: ProfileData; socials: Social[] }) {
@@ -11,14 +11,13 @@ export function Profile({ profile, socials }: { profile: ProfileData; socials: S
   return (
     <section className={styles.profile} aria-labelledby="profile-name">
       {profile.avatar ? (
-        <Image
+        <StaticImage
           className={styles.avatar}
           src={profile.avatar}
           alt={photoLabel}
           width={96}
           height={96}
           priority
-          unoptimized
         />
       ) : (
         <div className={styles.initials} role="img" aria-label={photoLabel}>

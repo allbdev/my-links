@@ -1,8 +1,8 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
 import type { LinkBlock } from "@/lib/schema";
 import { opensInNewTab } from "@/lib/url";
 import { Icon } from "./icons/icon";
+import { StaticImage } from "./static-image";
 import styles from "./link-card.module.css";
 import { NewTabHint } from "./new-tab-hint";
 
@@ -24,15 +24,7 @@ export function LinkCard({ block, share }: { block: LinkBlock; share?: ReactNode
           </span>
         )}
         {block.image && (
-          <Image
-            className={styles.thumb}
-            src={block.image}
-            alt=""
-            width={48}
-            height={48}
-            loading="lazy"
-            unoptimized
-          />
+          <StaticImage className={styles.thumb} src={block.image} alt="" width={48} height={48} />
         )}
         <span className={styles.title}>{block.title}</span>
         {opensInNewTab(block.url) && <NewTabHint />}

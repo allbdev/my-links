@@ -51,7 +51,7 @@
 > Re-read the board "Perfil · mobile (interativo)" before starting (see `CLAUDE.md`). Everything here is a Server Component.
 
 15. [x] Layout: centred column (max 480 px), background, top bar (handle + share button slot), footer ("Feito com Next.js · ver o código")
-16. [x] Profile: avatar through `next/image` with initials fallback, name, bio, social icon buttons (Lucide + local brand SVGs)
+16. [x] Profile: avatar (fixed-size `<img>`) with initials fallback, name, bio, social icon buttons (Lucide + local brand SVGs)
 17. [x] Link card: icon or thumbnail, title, ⋮ button slot, `highlight` variant, external vs `mailto:` vs relative behaviour
 18. [x] Section heading and featured card (image, title, subtitle, badge)
 19. [x] Block renderer: maps `blocks` to components in order; component tests for every block type and option

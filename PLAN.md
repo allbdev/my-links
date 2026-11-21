@@ -170,7 +170,7 @@ All three are OFL and self-hosted through `next/font` (no runtime calls to Googl
 - **Server Components by default.** The page, profile, cards and footer render on the server at build time and ship no JS.
 - **One client island.** `ShareProvider` + `ShareDialog` (`"use client"`) own the modal state; the share buttons are tiny client components that call `open({ title, url })`.
 - **Pure helpers.** `src/lib/share.ts` builds the share URLs; `src/lib/url.ts` resolves relative links against `siteUrl`. No DOM, tested on their own.
-- **Images.** `next/image` with `unoptimized: true` (required by static export), fixed `width`/`height` so nothing shifts, files pre-sized as WebP.
+- **Images.** A plain `<img>` (`StaticImage`) with required `width`/`height` so nothing shifts, lazy below the fold, files pre-sized as WebP. Not `next/image`: a static export can't optimise images, so it would only add about 14 KB of client JS.
 - **Metadata.** `generateMetadata` and `opengraph-image.tsx` (`dynamic = "force-static"`) read the same JSON: title, description, canonical URL, Open Graph and Twitter cards.
 - **Links** open with `target="_blank" rel="noopener noreferrer"`; `mailto:` links don't.
 

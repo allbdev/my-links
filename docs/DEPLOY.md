@@ -90,7 +90,7 @@ Then:
 ## 5. Afterwards
 
 - **`siteUrl`** in `content/links.json` must be `https://links.vinicius-albuquerque.com.br`. It's used for canonical URLs, share links and the Open Graph image, so preview deployments still share the production URL (on purpose).
-- **Headers** (CSP, `Referrer-Policy`, `X-Content-Type-Options`, `Permissions-Policy`, `X-Frame-Options`) are in `vercel.json`. Next's `headers()` doesn't apply to a static export.
+- **Headers** (CSP, HSTS, `Referrer-Policy`, `X-Content-Type-Options`, `Permissions-Policy`, `X-Frame-Options`, `Cross-Origin-Opener-Policy`) are in `vercel.json`. Next's `headers()` doesn't apply to a static export. `npm run preview` applies the same file, and the e2e tests load the page under that CSP, so a header change that breaks the page fails CI. `script-src` allows `'unsafe-inline'` because the static export inlines Next's bootstrap scripts; nothing on the page comes from visitors.
 - **Production branch** is `main` (Settings → Git). Leave **Vercel Authentication** on for previews if you don't want preview URLs public (Settings → Deployment Protection); production stays public.
 
 ## Troubleshooting
@@ -103,3 +103,4 @@ Then:
 | 404 on every path but `/` | Output directory overridden | Remove any Output Directory override in Vercel; redeploy |
 | Build fails on Vercel only | Node version | Set Node.js 22.x in Build and Deployment settings |
 | Build fails with a `links.json` error | Invalid content (that's the point) | Read the message: it names the field; fix the JSON and push |
+| Vercel's comment toolbar doesn't load on previews | The CSP in `vercel.json` only allows this site's own scripts | Expected; turn the toolbar off (Settings → General → Vercel Toolbar) or ignore it |

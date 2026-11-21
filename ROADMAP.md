@@ -100,7 +100,7 @@
 36. [ ] Images pre-sized to WebP; size budget and Lighthouse (mobile) checked; numbers in the README
 37. [ ] README: screenshot, the JSON format, how the build validates it, the share modal's accessibility, Lighthouse numbers
 38. [ ] Production deploy on Vercel at `links.vinicius-albuquerque.com.br` (`docs/DEPLOY.md`); `siteUrl` set
-39. [ ] Security headers in `vercel.json` (CSP, `Referrer-Policy`, `X-Content-Type-Options`, `Permissions-Policy`)
+39. [x] Security headers in `vercel.json` (CSP, `Referrer-Policy`, `X-Content-Type-Options`, `Permissions-Policy`)
 40. [ ] Put the link in every bio (GitHub, LinkedIn, CV)
 
 ---

@@ -137,7 +137,7 @@ Canvas boards above. Light only for the first version.
 | `--hover` | `#F1F3F6` | Icon-button hover |
 | `--accent` | `#2546E8` | Link hover, focus ring, primary action |
 | `--accent-soft` | `#E8ECFF` | Accent backgrounds |
-| `--ok` | `#1F8F4E` | "Copiado!" state |
+| `--ok` | `#1A7A43` | "Copiado!" state (darkened from the mockup's `#1F8F4E`, which is 4.1:1 on white) |
 | `--badge` | `#FFD43B` | Featured badge |
 
 | Radius | Use |

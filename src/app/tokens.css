@@ -1,0 +1,28 @@
+/* Design tokens (PLAN.md §7). Components use these, never raw values. */
+:root {
+  --bg: #eceef2;
+  --card: #ffffff;
+  --ink: #12151a;
+  --muted: #5b6270;
+  --line: #dde1e7;
+  --hover: #f1f3f6;
+  --accent: #2546e8;
+  --accent-soft: #e8ecff;
+  --ok: #1a7a43;
+  --badge: #ffd43b;
+
+  --radius-card: 16px;
+  --radius-button: 22px;
+  --radius-modal: 24px;
+  --radius-small: 10px;
+
+  --shadow-lift: 0 6px 18px rgb(18 21 26 / 10%);
+  --shadow-modal: 0 24px 48px rgb(18 21 26 / 24%);
+
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-text: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --column: 480px;
+  --target: 44px;
+}

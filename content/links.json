@@ -8,9 +8,18 @@
     "repoUrl": "https://github.com/allbdev/my-links"
   },
   "socials": [
-    { "type": "github", "url": "https://github.com/allbdev" },
-    { "type": "linkedin", "url": "https://www.linkedin.com/in/albuquerque-vinicius" },
-    { "type": "email", "url": "mailto:vini.alb13@gmail.com" }
+    {
+      "type": "github",
+      "url": "https://github.com/allbdev"
+    },
+    {
+      "type": "linkedin",
+      "url": "https://www.linkedin.com/in/albuquerque-vinicius"
+    },
+    {
+      "type": "email",
+      "url": "mailto:vini.alb13@gmail.com"
+    }
   ],
   "blocks": [
     {
@@ -38,13 +47,16 @@
       "url": "https://www.linkedin.com/in/albuquerque-vinicius",
       "icon": "linkedin"
     },
-    { "type": "header", "title": "Projetos" },
+    {
+      "type": "header",
+      "title": "Projetos"
+    },
     {
       "type": "featured",
       "title": "Path Trader",
       "subtitle": "SaaS para traders · co-fundador técnico, cerca de 70 clientes",
       "url": "https://www.path-trader.com.br/",
-      "image": "/thumbs/path-trader.svg",
+      "image": "/thumbs/path-trader.webp",
       "badge": "No ar"
     },
     {
@@ -71,7 +83,10 @@
       "url": "https://www.vestra-financas.com.br/",
       "icon": "wallet"
     },
-    { "type": "header", "title": "Contato" },
+    {
+      "type": "header",
+      "title": "Contato"
+    },
     {
       "type": "link",
       "title": "Mandar um e-mail",

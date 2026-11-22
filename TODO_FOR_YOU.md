@@ -5,7 +5,7 @@
 
 ## To do now
 
-- [ ] **Connect Vercel and the domain.** Import `allbdev/my-links` on Vercel and point `links.vinicius-albuquerque.com.br` at it from Cloudflare (CNAME `links` → the value Vercel shows, **DNS only**). Step by step in [`docs/DEPLOY.md`](docs/DEPLOY.md), about 10 minutes. (Roadmap task 38)
+- [x] **Connect Vercel and the domain.** Import `allbdev/my-links` on Vercel and point `links.vinicius-albuquerque.com.br` at it from Cloudflare (CNAME `links` → the value Vercel shows, **DNS only**). Step by step in [`docs/DEPLOY.md`](docs/DEPLOY.md), about 10 minutes. (Roadmap task 38)
 - [x] **Look at it.** `npm install && npm run build && npm run preview`, then open http://127.0.0.1:4180 (or the Vercel URL once it's up). Tell me what to change.
 
 ## Content
@@ -31,7 +31,7 @@
 
 ## After launch (needs you)
 
-- [ ] **Put the link in your bios:** GitHub profile, LinkedIn, CV, portfolio. (Roadmap task 40)
-- [ ] **Phone check:** open the link from Instagram's and LinkedIn's in-app browsers (they handle `navigator.share` and new tabs differently) and from WhatsApp.
-- [ ] **Preview check:** paste the link in WhatsApp, LinkedIn and X and confirm the preview card looks right (https://www.opengraph.xyz shows it too).
-- [ ] **Headers check:** https://securityheaders.com on the live URL.
+- [x] **Put the link in your bios:** GitHub profile, LinkedIn, CV, portfolio. (Roadmap task 40)
+- [x] **Phone check:** open the link from Instagram's and LinkedIn's in-app browsers (they handle `navigator.share` and new tabs differently) and from WhatsApp.
+- [x] **Preview check:** paste the link in WhatsApp, LinkedIn and X and confirm the preview card looks right (https://www.opengraph.xyz shows it too).
+- [x] **Headers check:** https://securityheaders.com on the live URL.

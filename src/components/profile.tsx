@@ -4,6 +4,7 @@ import type { Profile as ProfileData, Social } from "@/lib/schema";
 import { initials } from "@/lib/text";
 import { opensInNewTab } from "@/lib/url";
 import { SOCIAL_ICONS } from "./icons/icon";
+import { cx, enter } from "./enter";
 import { StaticImage } from "./static-image";
 import styles from "./profile.module.css";
 
@@ -21,7 +22,8 @@ export function Profile({
     <section className={styles.profile} aria-labelledby="profile-name">
       {profile.avatar ? (
         <StaticImage
-          className={styles.avatar}
+          {...enter(0)}
+          className={cx("enter", styles.avatar)}
           src={profile.avatar}
           alt={photoLabel}
           width={96}
@@ -29,16 +31,27 @@ export function Profile({
           priority
         />
       ) : (
-        <div className={styles.initials} role="img" aria-label={photoLabel}>
+        <div
+          {...enter(0)}
+          className={cx("enter", styles.initials)}
+          role="img"
+          aria-label={photoLabel}
+        >
           {initials(profile.name)}
         </div>
       )}
-      <h1 id="profile-name" className={styles.name}>
+      <h1 id="profile-name" {...enter(1)} className={cx("enter", styles.name)}>
         {profile.name}
       </h1>
-      <p className={styles.bio}>{profile.bio}</p>
+      <p {...enter(2)} className={cx("enter", styles.bio)}>
+        {profile.bio}
+      </p>
       {socials.length > 0 && (
-        <ul className={styles.socials} aria-label={t(locale, "profile.socials")}>
+        <ul
+          {...enter(3)}
+          className={cx("enter", styles.socials)}
+          aria-label={t(locale, "profile.socials")}
+        >
           {socials.map((social) => {
             const SocialIcon = SOCIAL_ICONS[social.type];
             const newTab = opensInNewTab(social.url);

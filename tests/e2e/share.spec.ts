@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { settle } from "./settle";
 
 const SITE = "https://links.vinicius-albuquerque.com.br";
 
@@ -55,6 +56,7 @@ test("copies the link to the clipboard", async ({ page, context, browserName }) 
 test("the open dialog passes axe and keeps focus inside", async ({ page }) => {
   await page.getByRole("button", { name: "Share this page" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
+  await settle(page);
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
   for (let i = 0; i < 10; i++) {
@@ -79,6 +81,7 @@ test("the Portuguese page shares itself, in Portuguese", async ({ page }) => {
     `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE}/pt/`)}`,
   );
   await expect(dialog.getByRole("button", { name: "Copiar link" })).toBeFocused();
+  await settle(page);
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });

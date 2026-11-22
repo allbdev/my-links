@@ -151,6 +151,27 @@ describe("ShareDialog", () => {
     expect(onClose).toHaveBeenCalledOnce();
   });
 
+  it("keeps showing what it shared while it fades out, then shows the next target", () => {
+    const { rerender } = renderDialog(LINK);
+    rerender(
+      <>
+        <button type="button">opener</button>
+        <ShareDialog locale="pt" target={null} onClose={vi.fn()} initials="AT" />
+      </>,
+    );
+    expect(dialog()).not.toHaveAttribute("open");
+    expect(within(dialog()).getByText("github.com/ana")).toBeInTheDocument();
+    rerender(
+      <>
+        <button type="button">opener</button>
+        <ShareDialog locale="pt" target={PAGE} onClose={vi.fn()} initials="AT" />
+      </>,
+    );
+    expect(dialog()).toHaveAttribute("open");
+    expect(within(dialog()).getByText("links.example.com")).toBeInTheDocument();
+    expect(within(dialog()).queryByText("github.com/ana")).toBeNull();
+  });
+
   it("closes when the browser closes it (Esc)", () => {
     const { onClose } = renderDialog(LINK);
     act(() => dialog().close());

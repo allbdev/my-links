@@ -32,4 +32,17 @@
 
   --column: 480px;
   --target: 44px;
+
+  /* Motion: strong ease-out for entering and feedback, ease-in-out for things
+     moving across the screen. Durations: press, hover, entrance, modal. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --duration-press: 120ms;
+  --duration-hover: 150ms;
+  --duration-enter: 800ms;
+  --duration-modal-in: 340ms;
+  --duration-modal-out: 220ms;
+  --duration-page-switch: 450ms;
+  --enter-stagger: 90ms;
+  --enter-distance: 24px;
 }

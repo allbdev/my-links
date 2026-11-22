@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { settle } from "./settle";
 
 const PAGES = [
   { path: "/", lang: "en", photo: "Photo of Vinícius Albuquerque", section: "Projects" },
@@ -55,6 +56,7 @@ for (const { path, lang, photo, section } of PAGES) {
     });
 
     test("axe finds no accessibility violations", async ({ page }) => {
+      await settle(page);
       const results = await new AxeBuilder({ page }).analyze();
       expect(results.violations).toEqual([]);
     });
@@ -129,6 +131,7 @@ test("unknown paths get the 404 page in both languages", async ({ page }) => {
     "href",
     "/pt/",
   );
+  await settle(page);
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
@@ -143,4 +146,59 @@ test("nothing loads from other origins", async ({ page }) => {
   await page.goto("/pt/");
   await page.waitForLoadState("networkidle");
   expect(external).toEqual([]);
+});
+
+test("on load, what's on screen rises in and rests fully visible", async ({ page }) => {
+  await page.goto("/");
+  const heading = page.getByRole("heading", { level: 1 });
+  expect(await heading.evaluate((el) => getComputedStyle(el).animationName)).toBe("enter");
+  await settle(page);
+  const onScreen = await page
+    .locator(".enter:not([data-reveal])")
+    .evaluateAll((els) => els.map((el) => getComputedStyle(el).opacity));
+  expect(onScreen.length).toBeGreaterThan(3);
+  expect(new Set(onScreen)).toEqual(new Set(["1"]));
+});
+
+test("cards below the fold wait, then rise in as they scroll into view", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 640 });
+  await page.goto("/");
+  await settle(page);
+  const contact = page.locator(".enter", { hasText: "Send an email" });
+  await expect(contact).toHaveAttribute("data-reveal", "waiting");
+  expect(await contact.evaluate((el) => getComputedStyle(el).opacity)).toBe("0");
+
+  await contact.scrollIntoViewIfNeeded();
+  await expect(contact).toHaveAttribute("data-reveal", "shown");
+  await settle(page);
+  expect(await contact.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+});
+
+test("without JavaScript everything still appears", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("/");
+  // settle() needs page scripts, so poll from here until the entrance is over.
+  const enter = page.locator(".enter");
+  expect(await enter.count()).toBeGreaterThan(8);
+  await expect
+    .poll(
+      async () =>
+        new Set(await enter.evaluateAll((els) => els.map((el) => getComputedStyle(el).opacity))),
+    )
+    .toEqual(new Set(["1"]));
+  await context.close();
+});
+
+test("with reduced motion the page only fades in, and cards don't move", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const heading = page.getByRole("heading", { level: 1 });
+  expect(await heading.evaluate((el) => getComputedStyle(el).animationName)).toBe("fade-in");
+  await settle(page);
+  expect(await page.locator("[data-reveal]").count()).toBe(0);
+  const card = page.getByRole("link", { name: /^Portfolio/ });
+  await card.hover();
+  const transform = await card.evaluate((el) => getComputedStyle(el.closest("div")!).transform);
+  expect(transform).toBe("none");
 });

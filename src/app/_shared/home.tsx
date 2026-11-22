@@ -2,6 +2,7 @@ import { Blocks } from "@/components/blocks";
 import { Footer } from "@/components/footer";
 import { LanguageSwitch } from "@/components/language-switch";
 import { Profile } from "@/components/profile";
+import { Reveal } from "@/components/reveal";
 import { ShareButton } from "@/components/share/share-button";
 import { ShareProvider } from "@/components/share/share-context";
 import { TopBar } from "@/components/top-bar";
@@ -34,6 +35,7 @@ export function Home({ locale }: { locale: Locale }) {
         <Blocks locale={locale} blocks={blocks} share={shareFor} />
         <Footer locale={locale} repoUrl={profile.repoUrl} />
       </main>
+      <Reveal />
     </ShareProvider>
   );
 }

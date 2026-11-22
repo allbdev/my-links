@@ -4,13 +4,22 @@
   border: 1px solid var(--line-card);
   border-radius: var(--radius-card);
   transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+    transform var(--duration-hover) var(--ease-out),
+    box-shadow var(--duration-hover) ease;
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lift);
+/* Lift on hover with a mouse only: touch screens fire a hover on tap. */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* Pressing the card (not its ⋮ button) sinks it a little. */
+.card:has(.link:active) {
+  transform: scale(0.98);
+  transition-duration: var(--duration-press);
 }
 
 .card:focus-within {
@@ -93,7 +102,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card:hover {
+  .card:hover,
+  .card:has(.link:active) {
     transform: none;
   }
 }

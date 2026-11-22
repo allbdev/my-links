@@ -46,6 +46,12 @@ export function ShareDialog({
   const [copy, setCopy] = useState<CopyState>("idle");
   const canNativeShare = useCanNativeShare();
 
+  // What the dialog shows: the last target, kept after closing so the content
+  // stays visible while the dialog fades out. Updated during render (React's
+  // "adjust state when a prop changes" pattern), not in an effect.
+  const [shown, setShown] = useState<OpenShare | null>(target);
+  if (target && target !== shown) setShown(target);
+
   // Open and close the native dialog with the target; return focus to the opener.
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -103,9 +109,9 @@ export function ShareDialog({
     }
   }
 
-  const links = target ? shareLinks(target) : null;
+  const links = shown ? shareLinks(shown) : null;
   const heading =
-    target?.kind === "page" ? t(locale, "share.dialogPage") : t(locale, "share.dialogLink");
+    shown?.kind === "page" ? t(locale, "share.dialogPage") : t(locale, "share.dialogLink");
 
   return (
     <dialog
@@ -115,7 +121,7 @@ export function ShareDialog({
       onClose={handleClose}
       onClick={handleBackdrop}
     >
-      {target && links && (
+      {shown && links && (
         <div className={styles.panel}>
           <div className={styles.header}>
             <span className={styles.spacer} aria-hidden="true" />
@@ -146,8 +152,8 @@ export function ShareDialog({
                 {initials}
               </span>
             )}
-            <span className={styles.previewTitle}>{target.title}</span>
-            <span className={styles.previewUrl}>{displayUrl(target.url)}</span>
+            <span className={styles.previewTitle}>{shown.title}</span>
+            <span className={styles.previewUrl}>{displayUrl(shown.url)}</span>
           </div>
 
           <ul className={styles.actions} aria-label={t(locale, "share.actions")} role="list">
@@ -238,7 +244,7 @@ export function ShareDialog({
                   className={styles.copyField}
                   type="text"
                   readOnly
-                  value={target.url}
+                  value={shown.url}
                   onFocus={(event) => event.currentTarget.select()}
                 />
               </>

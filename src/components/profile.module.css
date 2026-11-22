@@ -62,10 +62,23 @@
   align-items: center;
   justify-content: center;
   color: var(--ink);
-  transition: background-color 0.15s ease;
+  transition:
+    background-color var(--duration-hover) ease,
+    color var(--duration-hover) ease,
+    transform var(--duration-press) var(--ease-out);
 }
 
 .social:hover {
   background: var(--hover);
   color: var(--accent);
+}
+
+.social:active {
+  transform: scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social:active {
+    transform: none;
+  }
 }

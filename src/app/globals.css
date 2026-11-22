@@ -49,11 +49,65 @@ button {
   border: 0;
 }
 
+/* Page entrance: the profile and the cards rise in once, one after another.
+   --enter-index is set per element (src/components/enter.ts); capped so the
+   last items don't wait. Runs on the compositor, so it stays smooth while the
+   page is still loading, and needs no JS: without JS everything plays here.
+
+   With JS, <Reveal> (src/components/reveal.tsx) holds back the elements that
+   start below the fold (data-reveal="waiting", off screen, so nothing visible
+   changes) and plays the same rise as each one scrolls into view
+   (data-reveal="shown", staggered by --reveal-order within a batch). */
+.enter {
+  animation: enter var(--duration-enter) var(--ease-out) both;
+  animation-delay: calc(min(var(--enter-index, 0), 8) * var(--enter-stagger));
+}
+
+.enter[data-reveal="waiting"] {
+  animation: none;
+  opacity: 0;
+}
+
+.enter[data-reveal="shown"] {
+  animation-delay: calc(min(var(--reveal-order, 0), 4) * var(--enter-stagger));
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--enter-distance));
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Switching language crossfades the page and slides the switch's pill from
+   one language to the other (view-transition-name in language-switch). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--duration-page-switch);
+}
+
+::view-transition-group(language-current) {
+  animation-duration: var(--duration-page-switch);
+  animation-timing-function: var(--ease-in-out);
+}
+
+/* Reduced motion: no movement, only short fades. Each component drops its own
+   transforms in its own reduced-motion block. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
+  .enter {
+    animation-name: fade-in;
+    animation-delay: 0s;
   }
 }

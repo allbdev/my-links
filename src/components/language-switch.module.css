@@ -18,8 +18,13 @@
   color: var(--muted);
   text-decoration: none;
   transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
+    background-color var(--duration-hover) ease,
+    color var(--duration-hover) ease,
+    transform var(--duration-press) var(--ease-out);
+}
+
+.option:active {
+  transform: scale(0.94);
 }
 
 .option:hover {
@@ -31,10 +36,12 @@
 .current:hover {
   background: var(--ink);
   color: var(--card);
+  /* Morphs into the other page's pill when switching (globals.css). */
+  view-transition-name: language-current;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .option {
-    transition: none;
+  .option:active {
+    transform: none;
   }
 }

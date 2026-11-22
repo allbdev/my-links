@@ -8,6 +8,7 @@ import {
   publicFileExists,
   visibleBlocks,
 } from "@/lib/content";
+import { avatarDataUri } from "@/lib/og";
 import type { Block } from "@/lib/schema";
 
 const RAW = readFileSync("tests/fixtures/valid-links.json", "utf8");
@@ -133,6 +134,12 @@ describe("content/links.json", () => {
       const texts = [profile.bio, ...blocks.flatMap((b) => Object.values(b))];
       for (const value of texts) expect(typeof value, locale).not.toBe("object");
     }
+  });
+
+  it("has a photo the Open Graph image can embed", () => {
+    expect(avatarDataUri(getContent("en").profile.avatar)).toMatch(
+      /^data:image\/(jpeg|png);base64,/,
+    );
   });
 
   it("differs between languages", () => {

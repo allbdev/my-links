@@ -31,11 +31,12 @@ The site, the docs and the canvas must always agree:
 | Code: identifiers, file/folder names, CSS classes, JSON keys, test names | **English** |
 | Code comments, commit messages, PR descriptions | **English** |
 | Docs (`*.md`, including this file) | **English** |
-| **Visitor-facing text** (page, share modal, aria labels, `<title>`/meta, OG image) | **Brazilian Portuguese (PT-BR)** (decision D5 in `PLAN.md`) |
+| **Visitor-facing text** (page, share modal, aria labels, `<title>`/meta, OG image) | **English** at `/` (default) and **Brazilian Portuguese (PT-BR)** at `/pt/`, always both (decision D5 in `PLAN.md`) |
 
-- Content text (name, bio, link titles, section headings) lives in `content/links.json`.
-- Interface text (share modal labels, aria labels, footer, "Copiado!") lives in **one file**, `src/content/strings.ts`, never inline in components. That keeps an English toggle cheap if D5 changes. Don't add an i18n library without asking.
-- `<html lang="pt-BR">`.
+- Content text (name, bio, link titles, section headings) lives in `content/links.json`. Any text or URL there is either one string (same in both languages) or `{ "en": "…", "pt": "…" }`; the schema requires both keys.
+- Interface text (share modal labels, aria labels, footer, "Copied!") lives in **one file**, `src/content/strings.ts`, with an `EN` and a `PT` dictionary; the types make every key exist in both. Never inline in components. Don't add an i18n library without asking.
+- Every new visitor-facing string gets both languages in the same change. Components take a `locale` prop (the share island reads it from its context).
+- `<html lang>` is `en` on `/` and `pt-BR` on `/pt/` (one root layout per language: `src/app/(en)` and `src/app/(pt)/pt`).
 
 ## Testing rules
 
@@ -64,19 +65,20 @@ The site, the docs and the canvas must always agree:
 - TypeScript `strict: true`, no `any` (use `unknown` and narrow). ESLint (Next config + `typescript-eslint` strict) + Prettier, enforced in CI.
 - `camelCase` for variables and functions, `PascalCase` for components and types, `CONSTANT_CASE` for module constants, `kebab-case` for file names (`share-dialog.tsx`).
 - **Content is data.** Links, sections, socials and profile live in `content/links.json`. Adding a link never touches code.
-- **Server Components by default.** Add `"use client"` only for the share island. Don't add client state, effects or context anywhere else without asking.
+- **Server Components by default.** `"use client"` only for the share island and `Reveal` (the scroll-triggered entrance, added at the developer's request). Don't add client state, effects or context anywhere else without asking.
 - Styling: CSS Modules per component + tokens from `src/app/tokens.css`. No hard-coded colours, radii or font names in components; use the tokens.
 - No runtime dependencies beyond `next`, `react`, `react-dom`, `zod` and `lucide-react` without asking. Dev dependencies are fine when they serve the stack above.
 - `src/lib` is pure: no DOM, no `window`, no React. Components call it; tests call it directly.
 
 ## Architecture notes
 
-- **Layout.** `content/` is the data. `src/lib/` is pure logic (schema, content loader, share URLs, URL helpers). `src/components/` draws. `src/app/` is the Next.js routes, layout, metadata and OG image. `src/content/strings.ts` is the interface text.
+- **Layout.** `content/` is the data. `src/lib/` is pure logic (schema, content loader, share URLs, URL helpers). `src/components/` draws. `src/app/` is the Next.js routes: one route group per language (`(en)` at `/`, `(pt)/pt` at `/pt/`), each a thin wrapper over `src/app/_shared/` (layout, page, OG image), plus `global-not-found.tsx` (the 404, in both languages). `src/lib/i18n.ts` lists the locales; `src/content/strings.ts` is the interface text.
 - **Static export.** `output: "export"`, `images.unoptimized: true`, `trailingSlash: true`. No route handlers that need a server, no `headers()`/`cookies()`, no ISR. Served from the domain root on Vercel, so no `basePath`. Security headers live in `vercel.json` (Next's `headers()` doesn't apply to a static export).
-- **Validation at build.** `src/lib/content.ts` is the only place that reads `links.json`; it parses with the schema and throws a formatted error on failure. Image paths are checked against `public/`.
+- **Validation at build.** `src/lib/content.ts` is the only place that reads `links.json`; it parses with the schema and throws a formatted error on failure. Image paths are checked against `public/`. `getContent(locale)` returns the content with every per-language value resolved, so components only see plain strings.
+- **Languages.** Plain links between `/` and `/pt/` (the switch in the top bar), `hreflang` alternates in the head and the sitemap, a preview image per language. No language detection, no redirects, no cookies: English unless the visitor picks PT.
 - **Safe links.** The schema rejects anything but `https:`, `mailto:` and root-relative URLs. External links get `target="_blank" rel="noopener noreferrer"`. Never use `dangerouslySetInnerHTML` for content.
 - **Share.** `ShareProvider` (client) holds `{ open, title, url }`; `ShareButton` calls it; `ShareDialog` is a native `<dialog>` opened with `showModal()`. URLs come from `src/lib/share.ts`. Clipboard and `navigator.share` are feature-detected; both have a fallback.
-- **Accessibility.** Keyboard and screen-reader usable; real `<a>` and `<button>`; every icon-only button has an aria label from `strings.ts`; visible focus ring (`--accent`); text contrast 4.5:1; 44 px targets; `prefers-reduced-motion` turns off hover lifts and the modal transition.
+- **Accessibility.** Keyboard and screen-reader usable; real `<a>` and `<button>`; every icon-only button has an aria label from `strings.ts`; visible focus ring (`--accent`); text contrast 4.5:1; 44 px targets; motion (entrance, press, dialog, view transition; `PLAN.md` §7) uses the tokens in `tokens.css`, and `prefers-reduced-motion` removes all movement, leaving short fades. `tests/app/motion.test.ts` checks the CSS for this.
 - **Privacy.** No cookies, no analytics, no `localStorage`, no third-party requests at runtime (fonts are self-hosted).
 - **Performance budget.** First load under 150 KB gzipped JS and 20 KB CSS (the Next 16 + React 19 runtime alone is about 135 KB; `noModule` polyfills excluded; measured by `npm run size` on `out/`), no layout shift, Lighthouse 100 in all four categories on mobile as the target. First guesses; adjust after the first build.
 

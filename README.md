@@ -6,7 +6,7 @@
 
 <img src="design/01-Page.jpg" alt="The page on a phone: profile, links, a featured project card and a contact section" width="300" align="right">
 
-The page is in Brazilian Portuguese. Code, comments and docs are in English.
+The page is in English at `/` and Brazilian Portuguese at `/pt/`, with a switch in the top bar. Code, comments and docs are in English.
 
 | Doc | What's in it |
 |---|---|
@@ -23,6 +23,7 @@ The page is in Brazilian Portuguese. Code, comments and docs are in English.
 
 - Profile (photo, name, bio, social icons), links as cards, section headings and one featured card with an image.
 - A share dialog for the whole page and for each link: copy, WhatsApp, LinkedIn, X, e-mail and the phone's own share sheet.
+- Two languages: English at `/` and Portuguese at `/pt/`, each a static page with its own `<html lang>`, metadata, `hreflang` links and preview image.
 - Link previews: an Open Graph image and tags generated from the same file.
 - No cookies, no analytics, no server, no requests to other origins.
 
@@ -42,13 +43,13 @@ blocks[5].image: file not found: public/thumbs/missing.webp
 
 So a typo made while editing the file on GitHub fails CI and never reaches the live page. Links accept only `https:`, `mailto:` and paths on this site; `javascript:`, `data:`, `http:`, protocol-relative URLs and paths with whitespace or `..` are rejected (and tested).
 
-### Static, with one small island
+### Static, with two small islands
 
-Next.js App Router with `output: "export"`: the profile, cards and footer are Server Components rendered to HTML at build time. The share dialog is the only client component. Images are plain `<img>` elements with fixed sizes: a static export can't optimise images, so `next/image` would only have added client JS.
+Next.js App Router with `output: "export"`: the profile, cards and footer are Server Components rendered to HTML at build time. The share dialog and `Reveal` (which plays the entrance of cards below the fold as they scroll into view) are the only client components; without JS the page still renders and animates fully. Images are plain `<img>` elements with fixed sizes: a static export can't optimise images, so `next/image` would only have added client JS.
 
 ### Accessible by default
 
-Real links and buttons; a native `<dialog>` that moves focus to its first action and back to the button that opened it; Esc and backdrop clicks close it; every icon-only button has a label; links that open a new tab say so to screen readers; 44 px touch targets; text contrast checked by a unit test for every colour pairing; `prefers-reduced-motion` respected. axe runs in CI on the page and on the open dialog, on desktop and phone.
+Real links and buttons; motion that drops all movement under `prefers-reduced-motion`; a native `<dialog>` that moves focus to its first action and back to the button that opened it; Esc and backdrop clicks close it; every icon-only button has a label; links that open a new tab say so to screen readers; 44 px touch targets; text contrast checked by a unit test for every colour pairing; `prefers-reduced-motion` respected. axe runs in CI on the page and on the open dialog, on desktop and phone.
 
 ### The numbers
 
@@ -56,9 +57,9 @@ Lighthouse (mobile, local production build served with gzip):
 
 | Performance | Accessibility | Best practices | SEO |
 |---|---|---|---|
-| 97–98 | 100 | 100 | 100 |
+| 95 | 100 | 100 | 100 |
 
-First contentful paint 0.9 s, largest contentful paint 2.5 s, total blocking time 10 ms, layout shift 0. First-load JS is 144 KB gzipped, almost all of it the Next.js and React runtime; `npm run size` fails CI above 150 KB.
+First contentful paint 0.9 s, largest contentful paint 2.9 s, total blocking time 0–10 ms, layout shift 0. The page entrance costs nothing measurable here (95 with or without it); the featured card's animated WebP (63 KB) is what moved the score from 97–98. First-load JS is 145 KB gzipped, almost all of it the Next.js and React runtime; `npm run size` fails CI above 150 KB.
 
 ### Security headers
 
@@ -73,14 +74,20 @@ Edit `content/links.json` (on GitHub is fine) and push. CI validates it; Vercel 
   "profile": {
     "name": "Vinícius Albuquerque",
     "handle": "vinicius",
-    "bio": "Engenheiro full-stack sênior. …",
+    "bio": { "en": "Senior full-stack engineer. …", "pt": "Engenheiro full-stack sênior. …" },
     "avatar": "/avatar.jpg",
     "siteUrl": "https://links.vinicius-albuquerque.com.br",
     "repoUrl": "https://github.com/allbdev/my-links"
   },
   "socials": [{ "type": "github", "url": "https://github.com/allbdev" }],
   "blocks": [
-    { "type": "link", "title": "Portfólio", "url": "https://…", "icon": "globe", "highlight": true },
+    {
+      "type": "link",
+      "title": { "en": "Portfolio", "pt": "Portfólio" },
+      "url": { "en": "https://…/en", "pt": "https://…/pt" },
+      "icon": "globe",
+      "highlight": true
+    },
     { "type": "header", "title": "Projetos" },
     { "type": "featured", "title": "Path Trader", "subtitle": "…", "url": "https://…", "image": "/thumbs/path-trader.webp", "badge": "No ar" },
     { "type": "link", "title": "Mandar um e-mail", "url": "mailto:…", "icon": "mail" }
@@ -90,6 +97,7 @@ Edit `content/links.json` (on GitHub is fine) and push. CI validates it; Vercel 
 
 - `blocks` keeps the page order. A `header` starts a new section.
 - A `link` can have an `icon` (one of the names in `ICON_NAMES` in `src/lib/schema.ts`) or an `image` (a file in `public/`), not both. `highlight: true` makes it a dark card.
+- Any `bio`, `title`, `subtitle`, `badge` or `url` can be one string (both languages) or `{ "en": "…", "pt": "…" }` (both required).
 - `hidden: true` keeps a block in the file but off the page (a heading whose section ends up empty is hidden too).
 - One `featured` block at most; it needs an `image` (about 800 × 400).
 - The full rules are in `PLAN.md` §6.
@@ -133,9 +141,9 @@ content/
   links.json     The page's content. The only file to edit day to day.
 src/
   app/           Layout, page, metadata, Open Graph image, icons, robots, sitemap, tokens.css.
-  components/    Profile, link card, featured card, sections, footer, icons, share/ (the client island).
+  components/    Profile, link card, featured card, sections, footer, icons, share/ and reveal.tsx (the client islands).
   lib/           Pure logic: schema, content loader, sections, share URLs, URL and text helpers.
-  content/       strings.ts: interface text (PT-BR).
+  content/       strings.ts: interface text (English and PT-BR).
 public/          Avatar, thumbnails.
 tests/           Vitest tests mirroring src/, fixtures/, and e2e/ (Playwright).
 tools/           Preview server, vercel.json header emulation, size check, design-board capture.

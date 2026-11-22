@@ -6,26 +6,28 @@
 ## To do now
 
 - [ ] **Connect Vercel and the domain.** Import `allbdev/my-links` on Vercel and point `links.vinicius-albuquerque.com.br` at it from Cloudflare (CNAME `links` → the value Vercel shows, **DNS only**). Step by step in [`docs/DEPLOY.md`](docs/DEPLOY.md), about 10 minutes. (Roadmap task 38)
-- [ ] **Look at it.** `npm install && npm run build && npm run preview`, then open http://127.0.0.1:4180 (or the Vercel URL once it's up). Tell me what to change.
+- [x] **Look at it.** `npm install && npm run build && npm run preview`, then open http://127.0.0.1:4180 (or the Vercel URL once it's up). Tell me what to change.
 
 ## Content
 
-- [ ] **Photo.** Replace the placeholder `public/avatar.svg` with a square photo, at least 400 × 400 px, saved as `public/avatar.jpg` (or `.webp`), and set `"avatar": "/avatar.jpg"` in `content/links.json`. A JPEG or PNG also shows up in the link-preview image (an SVG or WebP shows your initials there instead). (Roadmap task 35)
-- [ ] **Featured image.** Path Trader's card uses a drawn placeholder (`public/thumbs/path-trader.svg`). A real screenshot, about 800 × 400, as WebP, would look better: save it in `public/thumbs/` and change `image` in `content/links.json`.
+- [x] **Check my English.** I translated the bio, link titles, Path Trader's subtitle and badge ("Live"), and the section headings myself. Read `/` and change anything in `content/links.json` (each is `{ "en": …, "pt": … }`).
+- [x] **CV in English?** Both languages link the same `cv.pdf`. If you have an English CV, give its URL and I'll make the link per language (like Portfolio, which goes to `/en` or `/pt`).
+- [x] ~~**Photo.**~~ Your profile picture, cropped square around your face and resized to 480 × 480 (`public/avatar.jpg`, 24 KB). It also shows in the link-preview images (22 Nov 2026).
+- [x] ~~**Featured image.**~~ Path Trader's card now shows your GIF, converted to an animated WebP (`public/thumbs/path-trader.webp`, 63 KB instead of 657 KB, same frames) (22 Nov 2026).
 - [ ] **Link list.** Filled from your site's `llms.txt`: Portfólio (highlighted) · Currículo · GitHub · LinkedIn · Projetos (Path Trader featured, The Single Hole, Cartório Simulator, Tavi, Vestra) · Contato (e-mail). Change titles, order or sections in `content/links.json`; the build tells you if anything is wrong.
-- [ ] **Bio.** Written from your site: "Engenheiro full-stack sênior. Co-fundador técnico da Path Trader e, nas horas vagas, jogos de navegador. Vila Velha, Brasil." Change it in `content/links.json` (at most 160 characters).
+- [x] **Bio.** Written from your site: "Engenheiro full-stack sênior. Co-fundador técnico da Path Trader e, nas horas vagas, jogos de navegador. Vila Velha, Brasil." Change it in `content/links.json` (at most 160 characters).
 
 ## Decisions (quick)
 
-- [ ] **Page language.** Built in PT-BR only, as in the mockups. Alternative: English by default with a PT-BR toggle, like Cartório Simulator (recruiters abroad). All interface text is in `src/content/strings.ts`, so switching is a small task. (`PLAN.md` D5)
-- [ ] **Styling.** Built with CSS Modules + tokens as CSS custom properties. Tell me if you'd rather have Tailwind. (`PLAN.md` §9)
+- [x] ~~**Page language.**~~ English by default at `/`, PT-BR at `/pt/`, with an EN | PT switch (22 Nov 2026). (`PLAN.md` D5)
+- [x] **Styling.** Built with CSS Modules + tokens as CSS custom properties. Tell me if you'd rather have Tailwind. (`PLAN.md` §9)
 - [x] ~~**E-mail on the page.**~~ Yes, the address from your site (20 Nov 2026). E-mail links have no share button (a `mailto:` means nothing to whoever you'd share it with).
 - [x] ~~**Hosting and domain.**~~ Vercel at `links.vinicius-albuquerque.com.br`, DNS on Cloudflare (20 Nov 2026).
 - [x] ~~**Repo name and owner.**~~ `allbdev/my-links` (20 Nov 2026).
 
 ## Design canvas
 
-- [ ] **Look at the canvas** (https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3). It now opens on a "Site real" page with captures of the built site; your drawn mockups are on "Mockups desenhados". Small differences from the drawings: after copying, "Copiado!" and its icon turn green (`#1A7A43`); the highlighted card (Portfólio) is dark with a blue icon tile; e-mail links have no ⋮ button.
+- [x] **Look at the canvas** (https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3). It now opens on a "Site real" page with captures of the built site; your drawn mockups are on "Mockups desenhados". Small differences from the drawings: after copying, "Copiado!" and its icon turn green (`#1A7A43`); the highlighted card (Portfólio) is dark with a blue icon tile; e-mail links have no ⋮ button.
 
 ## After launch (needs you)
 

@@ -4,7 +4,7 @@
 > **The data comes first:** the schema and the content loader are what make "edit one file" safe, so they're built and tested before any UI. Then the page, then the share modal, then metadata and launch.
 > Design details live in `PLAN.md`. Mockups on the design canvas and in `design/`. Project rules in `CLAUDE.md`. Things only the developer can do in `TODO_FOR_YOU.md`.
 
-**Language rule:** visitor-facing text in **PT-BR**, content in `content/links.json`, interface text in `src/content/strings.ts`. Code, comments and docs in English.
+**Language rule:** visitor-facing text in **English** (`/`, default) and **PT-BR** (`/pt/`), content in `content/links.json`, interface text in `src/content/strings.ts`. Code, comments and docs in English.
 
 **Design rule:** any task that changes what a board shows also updates the board (see `CLAUDE.md`).
 
@@ -96,7 +96,7 @@
 
 ## Phase 6 · Launch
 
-35. [~] Real content: bio, URLs and CV link from the portfolio site are in; the photo and the featured image are placeholders (`TODO_FOR_YOU.md`)
+35. [x] Real content: bio, URLs and CV link from the portfolio site, the real Path Trader animation and the real photo
 36. [x] Size budget and Lighthouse (mobile) checked; numbers in the README (97–98 / 100 / 100 / 100). Real images go in as WebP when they arrive
 37. [x] README: screenshot, the JSON format, how the build validates it, the share modal's accessibility, Lighthouse numbers
 38. [~] Production deploy on Vercel at `links.vinicius-albuquerque.com.br` (`docs/DEPLOY.md`); `siteUrl` set
@@ -105,10 +105,29 @@
 
 ---
 
+## Phase 7 · Languages
+
+41. [x] English by default at `/`, PT-BR at `/pt/`: per-language values in `links.json` (schema, `localize`, `getContent(locale)`), EN and PT dictionaries in `strings.ts`, one root layout per language, `hreflang` alternates, a preview image per language, sitemap with both URLs
+42. [x] "EN | PT" switch in the top bar (plain links, each named in its own language); added to the drawn mockup and the captures
+43. [x] 404 page in both languages (`global-not-found.tsx`)
+44. [x] Tests: schema rules for per-language values, `localize`, string parity, the switch, metadata per language; e2e on both pages (axe, switch, share, hreflang, preview images, 404)
+
+---
+
+## Phase 8 · Motion
+
+45. [x] Motion tokens (`--ease-out`, `--ease-in-out`, `--duration-*`); page entrance (staggered rise and fade, CSS only)
+46. [x] Press feedback on cards and round buttons; hover lifts only with a mouse
+47. [x] Share dialog opens and closes with a transition (content kept while it fades out); copy icon pops in
+48. [x] Language switch: cross-page view transition (pill slides, page crossfades)
+49. [x] Slower entrance (800 ms, 90 ms stagger, 24 px) and dialog; cards below the fold rise in as they scroll into view (`Reveal`, IntersectionObserver; nothing hidden without JS)
+50. [x] Reduced motion: fades only, no view transition. Tests: stagger order, dialog exit content, CSS guards (`tests/app/motion.test.ts`), e2e for both motion settings; axe waits for animations to settle
+
+---
+
 ## Later (not in the first version)
 
 - Click counts without cookies (Plausible or Umami)
 - Dark theme that follows the system
 - QR code in the share modal
-- English toggle
 - Markdown as an alternative to JSON

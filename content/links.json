@@ -94,7 +94,7 @@
         "pt": "The Single Hole · todo mundo cava o mesmo buraco"
       },
       "url": "https://the-single-hole.vinicius-albuquerque.com.br",
-      "icon": "gamepad"
+      "image": "/thumbs/single-hole.png"
     },
     {
       "type": "link",
@@ -103,7 +103,7 @@
         "pt": "Cartório Simulator · jogo diário"
       },
       "url": "https://allbdev.github.io/notary-office-simulator/",
-      "icon": "gamepad"
+      "image": "/thumbs/cartorio.png"
     },
     {
       "type": "link",
@@ -112,7 +112,7 @@
         "pt": "Tavi · assistente pessoal com IA"
       },
       "url": "https://www.oitavi.com.br",
-      "icon": "sparkles"
+      "image": "/thumbs/tavi.png"
     },
     {
       "type": "link",
@@ -121,7 +121,7 @@
         "pt": "Vestra · finanças pessoais"
       },
       "url": "https://www.vestra-financas.com.br/",
-      "icon": "wallet"
+      "image": "/thumbs/vestra.png"
     },
     {
       "type": "header",

@@ -217,3 +217,21 @@ test("the social row links to GitHub, LinkedIn, X and e-mail, in that order", as
     await expect(x).toHaveAttribute("target", "_blank");
   }
 });
+
+test("project links show their own favicons, served from this site", async ({ page, request }) => {
+  await page.goto("/");
+  const expected = {
+    "The Single Hole": "/thumbs/single-hole.png",
+    "Cartório Simulator": "/thumbs/cartorio.png",
+    Tavi: "/thumbs/tavi.png",
+    Vestra: "/thumbs/vestra.png",
+  };
+  for (const [name, src] of Object.entries(expected)) {
+    const link = page.getByRole("link", { name: new RegExp(`^${name}`) });
+    const img = link.locator("img");
+    await expect(img).toHaveAttribute("src", src);
+    await expect(img).toHaveAttribute("alt", "");
+    const response = await request.get(src);
+    expect(response.headers()["content-type"]).toBe("image/png");
+  }
+});

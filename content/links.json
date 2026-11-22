@@ -90,6 +90,15 @@
     {
       "type": "link",
       "title": {
+        "en": "Park the Cart · 3D browser game",
+        "pt": "Estacione o Carrinho · jogo 3D no navegador"
+      },
+      "url": "https://park-the-cart.vinicius-albuquerque.com.br/",
+      "image": "/thumbs/park-the-cart.png"
+    },
+    {
+      "type": "link",
+      "title": {
         "en": "The Single Hole · everyone digs the same hole",
         "pt": "The Single Hole · todo mundo cava o mesmo buraco"
       },

@@ -1,8 +1,13 @@
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  checkPublicFile,
   ContentError,
   getContent,
+  isLfsPointer,
   localize,
   parseContent,
   publicFileExists,
@@ -53,6 +58,59 @@ describe("parseContent", () => {
 
   it("names the source file in errors", () => {
     expect(() => parseContent("[", allFilesExist, "other.json")).toThrow(/^other\.json /);
+  });
+});
+
+describe("checkPublicFile", () => {
+  const dir = mkdtempSync(join(tmpdir(), "links-public-"));
+  mkdirSync(join(dir, "thumbs"));
+  writeFileSync(
+    join(dir, "real.png"),
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+  );
+  writeFileSync(
+    join(dir, "thumbs", "pointer.png"),
+    "version https://git-lfs.github.com/spec/v1\noid sha256:abc\nsize 123\n",
+  );
+
+  it("accepts a real file", () => {
+    expect(isLfsPointer("/real.png", dir)).toBe(false);
+    expect(checkPublicFile("/real.png", dir)).toBe(true);
+  });
+
+  it("reports a missing file as missing", () => {
+    expect(checkPublicFile("/nope.png", dir)).toBe(false);
+  });
+
+  it("explains a Git LFS pointer instead of failing later with a broken image", () => {
+    expect(isLfsPointer("/thumbs/pointer.png", dir)).toBe(true);
+    expect(checkPublicFile("/thumbs/pointer.png", dir)).toMatch(
+      /^public\/thumbs\/pointer\.png is a Git LFS pointer, not the file/,
+    );
+  });
+
+  it("puts that explanation in the content error", () => {
+    expect(() =>
+      parseContent(RAW, (path) => (path === "/avatar.svg" ? "is a pointer" : true)),
+    ).toThrow(/profile\.avatar: is a pointer/);
+  });
+});
+
+describe("public/", () => {
+  // Vercel clones without Git LFS, so anything the site serves or the build
+  // reads must be a plain file in the repo.
+  function files(dir: string): string[] {
+    return readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
+      entry.isDirectory() ? files(join(dir, entry.name)) : [join(dir, entry.name)],
+    );
+  }
+
+  it("has no file tracked by Git LFS", () => {
+    const paths = files("public");
+    const attrs = execFileSync("git", ["check-attr", "filter", "--", ...paths], {
+      encoding: "utf8",
+    });
+    expect(attrs.split("\n").filter((line) => line.endsWith(": lfs"))).toEqual([]);
   });
 });
 

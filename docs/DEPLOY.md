@@ -103,4 +103,5 @@ Then:
 | 404 on every path but `/` | Output directory overridden | Remove any Output Directory override in Vercel; redeploy |
 | Build fails on Vercel only | Node version | Set Node.js 22.x in Build and Deployment settings |
 | Build fails with a `links.json` error | Invalid content (that's the point) | Read the message: it names the field; fix the JSON and push |
+| Build fails with "Invalid JPEG", or images are broken on the live site | An image in `public/` was committed through Git LFS; Vercel clones without LFS and gets a text pointer | Keep `public/` out of LFS (`.gitattributes` already does; `git add --renormalize public`). The build names the file: "… is a Git LFS pointer, not the file" |
 | Vercel's comment toolbar doesn't load on previews | The CSP in `vercel.json` only allows this site's own scripts | Expected; turn the toolbar off (Settings → General → Vercel Toolbar) or ignore it |

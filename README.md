@@ -105,7 +105,7 @@ Edit `content/links.json` (on GitHub is fine) and push. CI validates it; Vercel 
 ## Requirements
 
 - **Node.js 22 LTS** and npm
-- **Git LFS** (the design captures are stored in LFS)
+- **Git LFS** (only the design captures in `design/` are stored in LFS; `public/` holds plain files because Vercel clones without LFS)
 
 ```sh
 brew install node git-lfs && git lfs install

@@ -58,7 +58,7 @@ The site, the docs and the canvas must always agree:
 - **Before every push, run the `security-audit` skill** (see the section at the top).
 - Commit or push only when asked. Never push with failing checks.
 - Small, logical commits (one feature or chore each).
-- Large binary assets (`.png`, `.jpg`, `.webp`, `.pdf`, `.woff2`) go through Git LFS (see `.gitattributes`); CI checks out with `lfs: true`.
+- Large binary assets (`.png`, `.jpg`, `.webp`, `.pdf`, `.woff2`) go through Git LFS (see `.gitattributes`), **except everything in `public/`**: Vercel clones without LFS, so files the site serves or the build reads must be plain files (keep them small). A test fails if anything in `public/` is LFS-tracked, and the build fails with a clear message if an image in `links.json` is an LFS pointer. CI checks out with `lfs: true` (for the design captures).
 
 ## Code conventions
 

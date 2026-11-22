@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { closeSync, existsSync, openSync, readFileSync, readSync, statSync } from "node:fs";
 import { join, resolve, sep } from "node:path";
 import { LOCALES, type Locale } from "./i18n";
 import {
@@ -26,6 +26,35 @@ export function publicFileExists(sitePath: string, publicDir = PUBLIC_DIR): bool
   return existsSync(file) && statSync(file).isFile();
 }
 
+const LFS_POINTER = "version https://git-lfs.github.com/spec/";
+
+/**
+ * True when the file in public/ is a Git LFS pointer instead of the real file:
+ * what a checkout without LFS (such as Vercel's) gets for LFS-tracked files.
+ */
+export function isLfsPointer(sitePath: string, publicDir = PUBLIC_DIR): boolean {
+  const fd = openSync(join(publicDir, sitePath), "r");
+  try {
+    const head = Buffer.alloc(LFS_POINTER.length);
+    readSync(fd, head, 0, head.length, 0);
+    return head.toString("latin1") === LFS_POINTER;
+  } finally {
+    closeSync(fd);
+  }
+}
+
+/** The real check for an image path: present, and the file itself rather than an LFS pointer. */
+export function checkPublicFile(sitePath: string, publicDir = PUBLIC_DIR): FileCheck {
+  if (!publicFileExists(sitePath, publicDir)) return false;
+  if (isLfsPointer(sitePath, publicDir)) {
+    return `public${sitePath} is a Git LFS pointer, not the file (this checkout has no LFS; keep public/ out of LFS, see .gitattributes)`;
+  }
+  return true;
+}
+
+/** true: fine. false: missing. A string: what else is wrong with the file. */
+export type FileCheck = boolean | string;
+
 /** Every image path the content refers to, with where it's referenced. */
 function imageRefs(content: RawContent): { path: string; where: string }[] {
   const refs: { path: string; where: string }[] = [];
@@ -44,7 +73,7 @@ function imageRefs(content: RawContent): { path: string; where: string }[] {
  */
 export function parseContent(
   raw: string,
-  fileExists: (sitePath: string) => boolean,
+  fileExists: (sitePath: string) => FileCheck,
   source = CONTENT_FILE,
 ): RawContent {
   let json: unknown;
@@ -60,9 +89,11 @@ export function parseContent(
     throw new ContentError(`${source} has problems:\n${formatIssues(result.error)}`);
   }
 
-  const missing = imageRefs(result.data)
-    .filter(({ path }) => !fileExists(path))
-    .map(({ path, where }) => `${where}: file not found: public${path}`);
+  const missing = imageRefs(result.data).flatMap(({ path, where }) => {
+    const check = fileExists(path);
+    if (check === true) return [];
+    return [`${where}: ${check === false ? `file not found: public${path}` : check}`];
+  });
   if (missing.length > 0) {
     throw new ContentError(`${source} has problems:\n${missing.join("\n")}`);
   }
@@ -107,7 +138,7 @@ let cache: RawContent | undefined;
 
 /** Reads and validates links.json once. Throws ContentError. */
 export function getRawContent(): RawContent {
-  cache ??= parseContent(readFileSync(CONTENT_FILE, "utf8"), (path) => publicFileExists(path));
+  cache ??= parseContent(readFileSync(CONTENT_FILE, "utf8"), (path) => checkPublicFile(path));
   return cache;
 }
 

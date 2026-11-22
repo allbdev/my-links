@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
   poweredByHeader: false,
   reactStrictMode: true,
+  // Each language has its own root layout, so the 404 page needs its own
+  // document (src/app/global-not-found.tsx).
+  experimental: { globalNotFound: true },
 };
 
 export default nextConfig;

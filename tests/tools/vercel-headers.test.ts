@@ -24,7 +24,12 @@ describe("vercel.json headers", () => {
 
   it("serves the extensionless image routes as PNG", () => {
     const rules = loadHeaderRules();
-    expect(headersFor("/opengraph-image", rules)["content-type"]).toBe("image/png");
-    expect(headersFor("/apple-icon", rules)["content-type"]).toBe("image/png");
+    // Route groups make Next add a hash to the Open Graph image's name.
+    for (const path of ["/opengraph-image-35z9bs", "/pt/opengraph-image-1upmk7", "/apple-icon"]) {
+      expect(headersFor(path, rules)["content-type"], path).toBe("image/png");
+    }
+    for (const path of ["/", "/pt/", "/sitemap.xml"]) {
+      expect(headersFor(path, rules)["content-type"], path).toBeUndefined();
+    }
   });
 });

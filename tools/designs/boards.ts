@@ -16,7 +16,7 @@ export const BOARDS: Board[] = [
   {
     file: "02-Share.jpg",
     title: "Modal de compartilhar (site real)",
-    openShare: "Compartilhar link: Path Trader",
+    openShare: "Share link: Path Trader",
     fullPage: false,
   },
 ];

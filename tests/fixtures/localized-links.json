@@ -1,0 +1,27 @@
+{
+  "profile": {
+    "name": "Ana Teste",
+    "handle": "ana",
+    "bio": { "en": "Builds things for the web.", "pt": "Faz coisas na web." },
+    "siteUrl": "https://links.example.com"
+  },
+  "socials": [{ "type": "github", "url": "https://github.com/example" }],
+  "blocks": [
+    {
+      "type": "link",
+      "title": { "en": "Portfolio", "pt": "Portfólio" },
+      "url": { "en": "https://example.com/en", "pt": "https://example.com/pt" },
+      "icon": "globe"
+    },
+    { "type": "link", "title": "GitHub", "url": "https://github.com/example" },
+    { "type": "header", "title": { "en": "Projects", "pt": "Projetos" } },
+    {
+      "type": "featured",
+      "title": "Projeto",
+      "subtitle": { "en": "A project", "pt": "Um projeto" },
+      "url": "https://example.com/projeto",
+      "image": "/thumbs/projeto.svg",
+      "badge": { "en": "New", "pt": "Novo" }
+    }
+  ]
+}

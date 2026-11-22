@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Locale } from "@/lib/i18n";
 import type { FeaturedBlock } from "@/lib/schema";
 import { opensInNewTab } from "@/lib/url";
 import { StaticImage } from "./static-image";
@@ -6,7 +7,15 @@ import styles from "./featured-card.module.css";
 import { linkProps } from "./link-card";
 import { NewTabHint } from "./new-tab-hint";
 
-export function FeaturedCard({ block, share }: { block: FeaturedBlock; share?: ReactNode }) {
+export function FeaturedCard({
+  locale,
+  block,
+  share,
+}: {
+  locale: Locale;
+  block: FeaturedBlock;
+  share?: ReactNode;
+}) {
   return (
     <div className={styles.card}>
       <a className={styles.link} href={block.url} {...linkProps(block.url)}>
@@ -36,7 +45,7 @@ export function FeaturedCard({ block, share }: { block: FeaturedBlock; share?: R
             <span className={styles.badge}>{block.badge}</span>
           </>
         )}
-        {opensInNewTab(block.url) && <NewTabHint />}
+        {opensInNewTab(block.url) && <NewTabHint locale={locale} />}
       </a>
       {share && <div className={styles.action}>{share}</div>}
     </div>

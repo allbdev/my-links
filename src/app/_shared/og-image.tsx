@@ -1,14 +1,19 @@
 import { ImageResponse } from "next/og";
 import { getContent } from "@/lib/content";
+import type { Locale } from "@/lib/i18n";
 import { pageTitle } from "@/lib/metadata";
 import { avatarDataUri, fontsourceFile } from "@/lib/og";
 import { initials } from "@/lib/text";
 import { displayUrl } from "@/lib/url";
 
-export const dynamic = "force-static";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
-export const alt = pageTitle(getContent());
+// The Open Graph image for one language. Each language's route has an
+// opengraph-image.tsx that calls this (Next reads `size`, `alt`, … per route).
+
+export const OG_SIZE = { width: 1200, height: 630 };
+
+export function ogAlt(locale: Locale): string {
+  return pageTitle(getContent(locale));
+}
 
 // Colours from src/app/tokens.css (CSS variables don't reach Satori).
 const BG = "#eceef2";
@@ -19,8 +24,8 @@ const LINE = "#e1e4ea";
 const ACCENT = "#2546e8";
 const AVATAR = 120;
 
-export default function OpengraphImage() {
-  const { profile, blocks } = getContent();
+export function ogImage(locale: Locale): ImageResponse {
+  const { profile, blocks } = getContent(locale);
   const photo = avatarDataUri(profile.avatar);
   const preview = blocks
     .filter((block) => block.type === "link")
@@ -51,6 +56,8 @@ export default function OpengraphImage() {
     >
       <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, gap: 14 }}>
         {photo ? (
+          // Satori renders this to a PNG at build time; next/image doesn't apply.
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={photo}
             alt=""
@@ -117,7 +124,7 @@ export default function OpengraphImage() {
       </div>
     </div>,
     {
-      ...size,
+      ...OG_SIZE,
       fonts: [
         {
           name: "Inter",

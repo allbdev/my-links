@@ -23,14 +23,14 @@ function renderDialog(target: OpenShare | null, onClose = vi.fn()) {
   const utils = render(
     <>
       <button type="button">opener</button>
-      <ShareDialog target={null} onClose={onClose} initials="AT" />
+      <ShareDialog locale="pt" target={null} onClose={onClose} initials="AT" />
     </>,
   );
   screen.getByRole("button", { name: "opener" }).focus();
   utils.rerender(
     <>
       <button type="button">opener</button>
-      <ShareDialog target={target} onClose={onClose} initials="AT" />
+      <ShareDialog locale="pt" target={target} onClose={onClose} initials="AT" />
     </>,
   );
   return { ...utils, onClose };
@@ -49,7 +49,7 @@ afterEach(() => {
 
 describe("ShareDialog", () => {
   it("stays closed and empty without a target", () => {
-    render(<ShareDialog target={null} onClose={vi.fn()} initials="AT" />);
+    render(<ShareDialog locale="pt" target={null} onClose={vi.fn()} initials="AT" />);
     expect(dialog()).not.toHaveAttribute("open");
     expect(dialog()).toBeEmptyDOMElement();
   });

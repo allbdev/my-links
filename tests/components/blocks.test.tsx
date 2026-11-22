@@ -3,14 +3,17 @@ import { render, screen, within } from "@testing-library/react";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { Blocks } from "@/components/blocks";
-import { parseContent, visibleBlocks } from "@/lib/content";
+import { localize, parseContent, visibleBlocks } from "@/lib/content";
 
-const content = parseContent(readFileSync("tests/fixtures/valid-links.json", "utf8"), () => true);
+const content = localize(
+  parseContent(readFileSync("tests/fixtures/valid-links.json", "utf8"), () => true),
+  "pt",
+);
 const blocks = visibleBlocks(content.blocks);
 
 describe("Blocks", () => {
   it("renders every visible card in order and skips hidden ones", () => {
-    render(<Blocks blocks={blocks} />);
+    render(<Blocks locale="pt" blocks={blocks} />);
     const names = screen.getAllByRole("link").map((a) => a.textContent);
     expect(names).toEqual([
       "Portfólio (abre em nova aba)",
@@ -22,13 +25,13 @@ describe("Blocks", () => {
   });
 
   it("labels each headed section with its heading", () => {
-    render(<Blocks blocks={blocks} />);
+    render(<Blocks locale="pt" blocks={blocks} />);
     const section = screen.getByRole("region", { name: "Projetos" });
     expect(within(section).getAllByRole("listitem")).toHaveLength(2);
   });
 
   it("puts cards in lists", () => {
-    render(<Blocks blocks={blocks} />);
+    render(<Blocks locale="pt" blocks={blocks} />);
     expect(screen.getAllByRole("list")).toHaveLength(2);
     expect(screen.getAllByRole("listitem")).toHaveLength(4);
   });
@@ -36,6 +39,7 @@ describe("Blocks", () => {
   it("asks for a share control per card", () => {
     render(
       <Blocks
+        locale="pt"
         blocks={blocks}
         share={(block) => <button type="button">{`share ${block.title}`}</button>}
       />,

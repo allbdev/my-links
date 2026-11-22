@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Locale } from "@/lib/i18n";
 import type { LinkBlock } from "@/lib/schema";
 import { opensInNewTab } from "@/lib/url";
 import { Icon } from "./icons/icon";
@@ -11,7 +12,15 @@ export function linkProps(url: string) {
   return opensInNewTab(url) ? { target: "_blank", rel: "noopener noreferrer" } : {};
 }
 
-export function LinkCard({ block, share }: { block: LinkBlock; share?: ReactNode }) {
+export function LinkCard({
+  locale,
+  block,
+  share,
+}: {
+  locale: Locale;
+  block: LinkBlock;
+  share?: ReactNode;
+}) {
   const hasMedia = Boolean(block.icon || block.image);
   const cardClass = [styles.card, block.highlight && styles.highlight].filter(Boolean).join(" ");
   const linkClass = [styles.link, !hasMedia && styles.plain].filter(Boolean).join(" ");
@@ -27,7 +36,7 @@ export function LinkCard({ block, share }: { block: LinkBlock; share?: ReactNode
           <StaticImage className={styles.thumb} src={block.image} alt="" width={48} height={48} />
         )}
         <span className={styles.title}>{block.title}</span>
-        {opensInNewTab(block.url) && <NewTabHint />}
+        {opensInNewTab(block.url) && <NewTabHint locale={locale} />}
       </a>
       {share && <div className={styles.action}>{share}</div>}
     </div>

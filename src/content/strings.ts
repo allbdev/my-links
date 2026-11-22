@@ -1,8 +1,47 @@
+import type { Locale } from "@/lib/i18n";
+
 /**
- * Interface text (PT-BR). Content text (name, bio, links) lives in
- * content/links.json. Slots look like {name} and are filled by `t`.
+ * Interface text, one dictionary per language. Content text (name, bio, links)
+ * lives in content/links.json. Slots look like {name} and are filled by `t`.
  */
-export const STRINGS = {
+const EN = {
+  "share.page": "Share this page",
+  "share.link": "Share link: {title}",
+  "share.dialogPage": "Share page",
+  "share.dialogLink": "Share link",
+  "share.close": "Close",
+  "share.copy": "Copy link",
+  "share.copied": "Copied!",
+  "share.copyFailed": "Couldn't copy. Select the link and copy it.",
+  "share.copyField": "Link to copy",
+  "share.whatsapp": "WhatsApp",
+  "share.linkedin": "LinkedIn",
+  "share.x": "X",
+  "share.email": "Email",
+  "share.more": "More options",
+  "share.actions": "Share options",
+  "link.newTab": "(opens in a new tab)",
+  "profile.photo": "Photo of {name}",
+  "profile.socials": "Social links",
+  "social.github": "GitHub",
+  "social.linkedin": "LinkedIn",
+  "social.email": "Email",
+  "social.x": "X",
+  "social.instagram": "Instagram",
+  "social.youtube": "YouTube",
+  "social.whatsapp": "WhatsApp",
+  "footer.builtWith": "Built with Next.js",
+  "footer.code": "see the code",
+  "locale.nav": "Language",
+  "locale.en": "English",
+  "locale.pt": "Português",
+  "notFound.title": "Page not found",
+  "notFound.back": "Back to the links",
+} as const;
+
+export type StringKey = keyof typeof EN;
+
+const PT: Record<StringKey, string> = {
   "share.page": "Compartilhar esta página",
   "share.link": "Compartilhar link: {title}",
   "share.dialogPage": "Compartilhar página",
@@ -30,13 +69,18 @@ export const STRINGS = {
   "social.whatsapp": "WhatsApp",
   "footer.builtWith": "Feito com Next.js",
   "footer.code": "ver o código",
-} as const;
+  "locale.nav": "Idioma",
+  "locale.en": "English",
+  "locale.pt": "Português",
+  "notFound.title": "Página não encontrada",
+  "notFound.back": "Voltar para os links",
+};
 
-export type StringKey = keyof typeof STRINGS;
+export const STRINGS: Record<Locale, Record<StringKey, string>> = { en: EN, pt: PT };
 
-/** Returns the string for `key` with every {slot} replaced. Throws on a missing slot. */
-export function t(key: StringKey, slots: Record<string, string> = {}): string {
-  return STRINGS[key].replace(/\{(\w+)\}/g, (_match, name: string) => {
+/** Returns the string for `key` in `locale` with every {slot} replaced. Throws on a missing slot. */
+export function t(locale: Locale, key: StringKey, slots: Record<string, string> = {}): string {
+  return STRINGS[locale][key].replace(/\{(\w+)\}/g, (_match, name: string) => {
     const value = slots[name];
     if (value === undefined) throw new Error(`Missing slot {${name}} for "${key}"`);
     return value;

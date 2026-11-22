@@ -2,7 +2,10 @@
   "profile": {
     "name": "Vinícius Albuquerque",
     "handle": "vinicius",
-    "bio": "Engenheiro full-stack sênior. Co-fundador técnico da Path Trader e, nas horas vagas, jogos de navegador. Vila Velha, Brasil.",
+    "bio": {
+      "en": "Senior full-stack engineer. Technical co-founder of Path Trader and, in my spare time, browser games. Vila Velha, Brazil.",
+      "pt": "Engenheiro full-stack sênior. Co-fundador técnico da Path Trader e, nas horas vagas, jogos de navegador. Vila Velha, Brasil."
+    },
     "avatar": "/avatar.svg",
     "siteUrl": "https://links.vinicius-albuquerque.com.br",
     "repoUrl": "https://github.com/allbdev/my-links"
@@ -24,20 +27,32 @@
   "blocks": [
     {
       "type": "link",
-      "title": "Portfólio",
-      "url": "https://www.vinicius-albuquerque.com.br/pt",
+      "title": {
+        "en": "Portfolio",
+        "pt": "Portfólio"
+      },
+      "url": {
+        "en": "https://www.vinicius-albuquerque.com.br/en",
+        "pt": "https://www.vinicius-albuquerque.com.br/pt"
+      },
       "icon": "globe",
       "highlight": true
     },
     {
       "type": "link",
-      "title": "Currículo (PDF)",
+      "title": {
+        "en": "Résumé (PDF)",
+        "pt": "Currículo (PDF)"
+      },
       "url": "https://www.vinicius-albuquerque.com.br/cv.pdf",
       "icon": "file-text"
     },
     {
       "type": "link",
-      "title": "GitHub · código aberto",
+      "title": {
+        "en": "GitHub · open source",
+        "pt": "GitHub · código aberto"
+      },
       "url": "https://github.com/allbdev",
       "icon": "github"
     },
@@ -49,47 +64,74 @@
     },
     {
       "type": "header",
-      "title": "Projetos"
+      "title": {
+        "en": "Projects",
+        "pt": "Projetos"
+      }
     },
     {
       "type": "featured",
       "title": "Path Trader",
-      "subtitle": "SaaS para traders · co-fundador técnico, cerca de 70 clientes",
+      "subtitle": {
+        "en": "SaaS for traders · technical co-founder, about 70 customers",
+        "pt": "SaaS para traders · co-fundador técnico, cerca de 70 clientes"
+      },
       "url": "https://www.path-trader.com.br/",
       "image": "/thumbs/path-trader.webp",
-      "badge": "No ar"
+      "badge": {
+        "en": "Live",
+        "pt": "No ar"
+      }
     },
     {
       "type": "link",
-      "title": "The Single Hole · todo mundo cava o mesmo buraco",
+      "title": {
+        "en": "The Single Hole · everyone digs the same hole",
+        "pt": "The Single Hole · todo mundo cava o mesmo buraco"
+      },
       "url": "https://the-single-hole.vinicius-albuquerque.com.br",
       "icon": "gamepad"
     },
     {
       "type": "link",
-      "title": "Cartório Simulator · jogo diário",
+      "title": {
+        "en": "Cartório Simulator · daily game",
+        "pt": "Cartório Simulator · jogo diário"
+      },
       "url": "https://allbdev.github.io/notary-office-simulator/",
       "icon": "gamepad"
     },
     {
       "type": "link",
-      "title": "Tavi · assistente pessoal com IA",
+      "title": {
+        "en": "Tavi · AI personal assistant",
+        "pt": "Tavi · assistente pessoal com IA"
+      },
       "url": "https://www.oitavi.com.br",
       "icon": "sparkles"
     },
     {
       "type": "link",
-      "title": "Vestra · finanças pessoais",
+      "title": {
+        "en": "Vestra · personal finance",
+        "pt": "Vestra · finanças pessoais"
+      },
       "url": "https://www.vestra-financas.com.br/",
       "icon": "wallet"
     },
     {
       "type": "header",
-      "title": "Contato"
+      "title": {
+        "en": "Contact",
+        "pt": "Contato"
+      }
     },
     {
       "type": "link",
-      "title": "Mandar um e-mail",
+      "title": {
+        "en": "Send an email",
+        "pt": "Mandar um e-mail"
+      },
       "url": "mailto:vini.alb13@gmail.com",
       "icon": "mail"
     }

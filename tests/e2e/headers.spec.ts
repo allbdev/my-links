@@ -24,7 +24,7 @@ test("nothing on the page breaks under the CSP", async ({ page }) => {
   page.on("pageerror", (error) => problems.push(error.message));
   await page.goto("/");
   await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Compartilhar esta página" }).click();
+  await page.getByRole("button", { name: "Share this page" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Escape");
   expect(problems).toEqual([]);

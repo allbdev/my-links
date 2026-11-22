@@ -1,6 +1,14 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join, resolve, sep } from "node:path";
-import { type Block, type Content, contentSchema, formatIssues } from "./schema";
+import { LOCALES, type Locale } from "./i18n";
+import {
+  type Block,
+  type Content,
+  contentSchema,
+  formatIssues,
+  type RawContent,
+  type Resolved,
+} from "./schema";
 
 export const CONTENT_FILE = "content/links.json";
 export const PUBLIC_DIR = "public";
@@ -19,7 +27,7 @@ export function publicFileExists(sitePath: string, publicDir = PUBLIC_DIR): bool
 }
 
 /** Every image path the content refers to, with where it's referenced. */
-function imageRefs(content: Content): { path: string; where: string }[] {
+function imageRefs(content: RawContent): { path: string; where: string }[] {
   const refs: { path: string; where: string }[] = [];
   if (content.profile.avatar) refs.push({ path: content.profile.avatar, where: "profile.avatar" });
   content.blocks.forEach((block, index) => {
@@ -38,7 +46,7 @@ export function parseContent(
   raw: string,
   fileExists: (sitePath: string) => boolean,
   source = CONTENT_FILE,
-): Content {
+): RawContent {
   let json: unknown;
   try {
     json = JSON.parse(raw);
@@ -75,14 +83,36 @@ export function visibleBlocks(blocks: readonly Block[]): Block[] {
   });
 }
 
-let cache: Content | undefined;
+/** True for `{ en: …, pt: … }`: exactly one key per language. */
+function isPerLocale(value: object): value is Record<Locale, unknown> {
+  const keys = Object.keys(value);
+  return keys.length === LOCALES.length && LOCALES.every((locale) => keys.includes(locale));
+}
 
-/** Reads, validates and returns links.json with only the visible blocks. Throws ContentError. */
-export function getContent(): Content {
-  if (!cache) {
-    const raw = readFileSync(CONTENT_FILE, "utf8");
-    const content = parseContent(raw, (path) => publicFileExists(path));
-    cache = { ...content, blocks: visibleBlocks(content.blocks) };
-  }
+/** `value` with every per-language value replaced by the one for `locale`. */
+export function localize<T>(value: T, locale: Locale): Resolved<T> {
+  return resolveValue(value, locale) as Resolved<T>;
+}
+
+function resolveValue(value: unknown, locale: Locale): unknown {
+  if (Array.isArray(value)) return value.map((item) => resolveValue(item, locale));
+  if (value === null || typeof value !== "object") return value;
+  if (isPerLocale(value)) return value[locale];
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => [key, resolveValue(item, locale)]),
+  );
+}
+
+let cache: RawContent | undefined;
+
+/** Reads and validates links.json once. Throws ContentError. */
+export function getRawContent(): RawContent {
+  cache ??= parseContent(readFileSync(CONTENT_FILE, "utf8"), (path) => publicFileExists(path));
   return cache;
+}
+
+/** links.json in one language, with only the visible blocks. Throws ContentError. */
+export function getContent(locale: Locale): Content {
+  const content = localize(getRawContent(), locale);
+  return { ...content, blocks: visibleBlocks(content.blocks) };
 }

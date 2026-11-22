@@ -18,13 +18,13 @@ const SOCIALS: Social[] = [
 
 describe("Profile", () => {
   it("shows the name as the only h1, and the bio", () => {
-    render(<Profile profile={PROFILE} socials={SOCIALS} />);
+    render(<Profile locale="pt" profile={PROFILE} socials={SOCIALS} />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Ana Teste");
     expect(screen.getByText("Faz coisas na web.")).toBeInTheDocument();
   });
 
   it("shows the photo with a description and fixed size", () => {
-    render(<Profile profile={PROFILE} socials={SOCIALS} />);
+    render(<Profile locale="pt" profile={PROFILE} socials={SOCIALS} />);
     const img = screen.getByRole("img", { name: "Foto de Ana Teste" });
     expect(img).toHaveAttribute("src", "/avatar.svg");
     expect(img).toHaveAttribute("width", "96");
@@ -32,12 +32,12 @@ describe("Profile", () => {
   });
 
   it("falls back to initials without an avatar", () => {
-    render(<Profile profile={{ ...PROFILE, avatar: undefined }} socials={SOCIALS} />);
+    render(<Profile locale="pt" profile={{ ...PROFILE, avatar: undefined }} socials={SOCIALS} />);
     expect(screen.getByRole("img", { name: "Foto de Ana Teste" })).toHaveTextContent("AT");
   });
 
   it("lists socials with labels; web ones open a new tab, e-mail doesn't", () => {
-    render(<Profile profile={PROFILE} socials={SOCIALS} />);
+    render(<Profile locale="pt" profile={PROFILE} socials={SOCIALS} />);
     const list = screen.getByRole("list", { name: "Redes" });
     const github = within(list).getByRole("link", { name: "GitHub (abre em nova aba)" });
     expect(github).toHaveAttribute("href", "https://github.com/ana");
@@ -49,7 +49,7 @@ describe("Profile", () => {
   });
 
   it("omits the list when there are no socials", () => {
-    render(<Profile profile={PROFILE} socials={[]} />);
+    render(<Profile locale="pt" profile={PROFILE} socials={[]} />);
     expect(screen.queryByRole("list")).toBeNull();
   });
 });

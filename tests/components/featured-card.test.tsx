@@ -16,14 +16,14 @@ const BLOCK: FeaturedBlock = {
 
 describe("FeaturedCard", () => {
   it("is one link named by its title, badge and subtitle", () => {
-    render(<FeaturedCard block={BLOCK} />);
+    render(<FeaturedCard locale="pt" block={BLOCK} />);
     const link = screen.getByRole("link");
     expect(link).toHaveAccessibleName("Path Trader SaaS para traders No ar (abre em nova aba)");
     expect(link).toHaveAttribute("target", "_blank");
   });
 
   it("shows a decorative image with fixed dimensions", () => {
-    const { container } = render(<FeaturedCard block={BLOCK} />);
+    const { container } = render(<FeaturedCard locale="pt" block={BLOCK} />);
     const img = container.querySelector("img")!;
     expect(img).toHaveAttribute("alt", "");
     expect(img).toHaveAttribute("src", "/thumbs/path-trader.svg");
@@ -33,15 +33,17 @@ describe("FeaturedCard", () => {
   });
 
   it("shows the badge and subtitle only when present", () => {
-    const { rerender } = render(<FeaturedCard block={BLOCK} />);
+    const { rerender } = render(<FeaturedCard locale="pt" block={BLOCK} />);
     expect(screen.getByText("No ar")).toBeInTheDocument();
-    rerender(<FeaturedCard block={{ ...BLOCK, badge: undefined, subtitle: undefined }} />);
+    rerender(
+      <FeaturedCard locale="pt" block={{ ...BLOCK, badge: undefined, subtitle: undefined }} />,
+    );
     expect(screen.queryByText("No ar")).toBeNull();
     expect(screen.queryByText("SaaS para traders")).toBeNull();
   });
 
   it("puts the share control outside the link", () => {
-    render(<FeaturedCard block={BLOCK} share={<button type="button">Share</button>} />);
+    render(<FeaturedCard locale="pt" block={BLOCK} share={<button type="button">Share</button>} />);
     expect(screen.getByRole("button", { name: "Share" }).closest("a")).toBeNull();
   });
 });

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { LOCALES, type Locale } from "./i18n";
 
 /** Social networks shown as round icon buttons under the bio. */
 export const SOCIAL_TYPES = [
@@ -39,6 +40,20 @@ export const LIMITS = { title: 80, subtitle: 120, badge: 20, bio: 160, name: 60 
 
 const text = (max: number) =>
   z.string().trim().min(1, "must not be empty").max(max, `must be at most ${max} characters`);
+
+const LOCALIZED_HINT = `must be a string, or an object with one string per language (${LOCALES.map((l) => `"${l}"`).join(", ")})`;
+
+/**
+ * A value that may differ per language: either one value used for every
+ * language, or `{ "en": …, "pt": … }` with all of them.
+ */
+function localized<T extends z.ZodType<string>>(schema: T) {
+  const perLocale = Object.fromEntries(LOCALES.map((locale) => [locale, schema])) as Record<
+    Locale,
+    T
+  >;
+  return z.union([schema, z.strictObject(perLocale)], { error: () => LOCALIZED_HINT });
+}
 
 /**
  * True for a path such as "/cv.pdf": starts with one slash, no "..", no
@@ -103,7 +118,7 @@ export const profileSchema = z.strictObject({
     .string()
     .trim()
     .regex(/^[a-z0-9._-]{1,30}$/i, "must be 1–30 letters, digits, dots, dashes or underscores"),
-  bio: text(LIMITS.bio),
+  bio: localized(text(LIMITS.bio)),
   avatar: imagePath.optional(),
   siteUrl: httpsUrl.refine(
     (v) => parseUrl(v)?.pathname === "/" && !v.endsWith("/"),
@@ -138,8 +153,8 @@ const flags = {
 export const linkBlockSchema = z
   .strictObject({
     type: z.literal("link"),
-    title: text(LIMITS.title),
-    url: linkUrl,
+    title: localized(text(LIMITS.title)),
+    url: localized(linkUrl),
     icon: iconName.optional(),
     image: imagePath.optional(),
     highlight: z.boolean().optional(),
@@ -152,17 +167,17 @@ export const linkBlockSchema = z
 
 export const headerBlockSchema = z.strictObject({
   type: z.literal("header"),
-  title: text(LIMITS.title),
+  title: localized(text(LIMITS.title)),
   ...flags,
 });
 
 export const featuredBlockSchema = z.strictObject({
   type: z.literal("featured"),
-  title: text(LIMITS.title),
-  subtitle: text(LIMITS.subtitle).optional(),
-  url: linkUrl,
+  title: localized(text(LIMITS.title)),
+  subtitle: localized(text(LIMITS.subtitle)).optional(),
+  url: localized(linkUrl),
   image: imagePath,
-  badge: text(LIMITS.badge).optional(),
+  badge: localized(text(LIMITS.badge)).optional(),
   ...flags,
 });
 
@@ -191,15 +206,33 @@ export const contentSchema = z
     }
   });
 
-export type Content = z.infer<typeof contentSchema>;
-export type Profile = z.infer<typeof profileSchema>;
-export type Social = z.infer<typeof socialSchema>;
+/** links.json as written: text may hold one value per language. */
+export type RawContent = z.infer<typeof contentSchema>;
+export type RawBlock = z.infer<typeof blockSchema>;
+
+/** A value written once for every language, or once per language. */
+export type Localized<T> = T | Record<Locale, T>;
+
+/** `T` with every localized value narrowed to one language. */
+export type Resolved<T> =
+  T extends Record<Locale, infer U>
+    ? U
+    : T extends readonly (infer E)[]
+      ? Resolved<E>[]
+      : T extends object
+        ? { [K in keyof T]: Resolved<T[K]> }
+        : T;
+
+/** links.json for one language: what the page renders. */
+export type Content = Resolved<RawContent>;
+export type Profile = Content["profile"];
+export type Social = Content["socials"][number];
 export type SocialType = (typeof SOCIAL_TYPES)[number];
 export type IconName = (typeof ICON_NAMES)[number];
-export type Block = z.infer<typeof blockSchema>;
-export type LinkBlock = z.infer<typeof linkBlockSchema>;
-export type HeaderBlock = z.infer<typeof headerBlockSchema>;
-export type FeaturedBlock = z.infer<typeof featuredBlockSchema>;
+export type Block = Content["blocks"][number];
+export type LinkBlock = Extract<Block, { type: "link" }>;
+export type HeaderBlock = Extract<Block, { type: "header" }>;
+export type FeaturedBlock = Extract<Block, { type: "featured" }>;
 
 /** Formats Zod issues as "blocks[3].url: must be …", one per line. */
 export function formatIssues(error: z.ZodError): string {

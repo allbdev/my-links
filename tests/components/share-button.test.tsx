@@ -6,7 +6,11 @@ import { ShareButton } from "@/components/share/share-button";
 import { ShareProvider } from "@/components/share/share-context";
 
 function renderWithProvider(ui: React.ReactNode) {
-  return render(<ShareProvider initials="AT">{ui}</ShareProvider>);
+  return render(
+    <ShareProvider locale="pt" initials="AT">
+      {ui}
+    </ShareProvider>,
+  );
 }
 
 describe("ShareButton", () => {

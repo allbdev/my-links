@@ -1,66 +1,134 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-test.beforeEach(async ({ page }) => {
-  const response = await page.goto("/");
-  expect(response?.status()).toBe(200);
-});
+const PAGES = [
+  { path: "/", lang: "en", photo: "Photo of Vinícius Albuquerque", section: "Projects" },
+  { path: "/pt/", lang: "pt-BR", photo: "Foto de Vinícius Albuquerque", section: "Projetos" },
+] as const;
 
-test("the page loads in Portuguese with the profile", async ({ page }) => {
-  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Vinícius Albuquerque");
-  await expect(page.getByRole("img", { name: "Foto de Vinícius Albuquerque" })).toBeVisible();
-});
+for (const { path, lang, photo, section } of PAGES) {
+  test.describe(`${path} (${lang})`, () => {
+    test.beforeEach(async ({ page }) => {
+      const response = await page.goto(path);
+      expect(response?.status()).toBe(200);
+    });
 
-test("every link has a safe href, and external ones open safely in a new tab", async ({ page }) => {
-  const links = await page.locator("a").evaluateAll((anchors) =>
-    anchors.map((a) => ({
-      href: a.getAttribute("href") ?? "",
-      target: a.getAttribute("target"),
-      rel: a.getAttribute("rel") ?? "",
-    })),
-  );
-  expect(links.length).toBeGreaterThan(5);
-  for (const link of links) {
-    expect(link.href).toMatch(/^(https:\/\/|mailto:|\/)/);
-    if (link.href.startsWith("https://")) {
-      expect(link.target).toBe("_blank");
-      expect(link.rel).toContain("noopener");
-      expect(link.rel).toContain("noreferrer");
-    } else {
-      expect(link.target).toBeNull();
-    }
-  }
-});
+    test("loads in its language with the profile", async ({ page }) => {
+      await expect(page.locator("html")).toHaveAttribute("lang", lang);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText("Vinícius Albuquerque");
+      await expect(page.getByRole("img", { name: photo })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 2, name: section })).toBeVisible();
+    });
+
+    test("every link has a safe href, and external ones open safely in a new tab", async ({
+      page,
+    }) => {
+      const links = await page.locator("a").evaluateAll((anchors) =>
+        anchors.map((a) => ({
+          href: a.getAttribute("href") ?? "",
+          target: a.getAttribute("target"),
+          rel: a.getAttribute("rel") ?? "",
+        })),
+      );
+      expect(links.length).toBeGreaterThan(5);
+      for (const link of links) {
+        expect(link.href).toMatch(/^(https:\/\/|mailto:|\/)/);
+        if (link.href.startsWith("https://")) {
+          expect(link.target).toBe("_blank");
+          expect(link.rel).toContain("noopener");
+          expect(link.rel).toContain("noreferrer");
+        } else {
+          expect(link.target).toBeNull();
+        }
+      }
+    });
+
+    test("touch targets are at least 44 px", async ({ page }) => {
+      const sizes = await page
+        .locator("main a, main button")
+        .evaluateAll((els) => els.map((el) => el.getBoundingClientRect()))
+        .then((rects) => rects.map((r) => ({ w: r.width, h: r.height })));
+      for (const size of sizes) {
+        expect(size.w).toBeGreaterThanOrEqual(44);
+        expect(size.h).toBeGreaterThanOrEqual(44);
+      }
+    });
+
+    test("axe finds no accessibility violations", async ({ page }) => {
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(results.violations).toEqual([]);
+    });
+  });
+}
 
 test("headings are one h1 and an h2 per section", async ({ page }) => {
+  await page.goto("/");
   await expect(page.locator("h1")).toHaveCount(1);
-  await expect(page.getByRole("heading", { level: 2, name: "Projetos" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Contato" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Projects" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Contact" })).toBeVisible();
 });
 
-test("touch targets are at least 44 px", async ({ page }) => {
-  const sizes = await page
-    .locator("main a, main button")
-    .evaluateAll((els) => els.map((el) => el.getBoundingClientRect()))
-    .then((rects) => rects.map((r) => ({ w: r.width, h: r.height })));
-  for (const size of sizes) {
-    expect(size.w).toBeGreaterThanOrEqual(44);
-    expect(size.h).toBeGreaterThanOrEqual(44);
-  }
+test("the language switch moves between the English and Portuguese pages", async ({ page }) => {
+  await page.goto("/");
+  const languages = page.getByRole("navigation", { name: "Language" });
+  await expect(languages.getByRole("link", { name: "EN (English)" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await languages.getByRole("link", { name: "PT (Português)" }).click();
+  await expect(page).toHaveURL(/\/pt\/$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+  await expect(page.getByText(/^Engenheiro full-stack/)).toBeVisible();
+
+  const idioma = page.getByRole("navigation", { name: "Idioma" });
+  await expect(idioma.getByRole("link", { name: "PT (Português)" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await idioma.getByRole("link", { name: "EN (English)" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByText(/^Senior full-stack engineer/)).toBeVisible();
+});
+
+test("links point at each language's version of the portfolio", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: /^Portfolio/ })).toHaveAttribute(
+    "href",
+    "https://www.vinicius-albuquerque.com.br/en",
+  );
+  await page.goto("/pt/");
+  await expect(page.getByRole("link", { name: /^Portfólio/ })).toHaveAttribute(
+    "href",
+    "https://www.vinicius-albuquerque.com.br/pt",
+  );
 });
 
 test("keyboard focus is visible and follows the page order", async ({ page }) => {
+  await page.goto("/");
   await page.keyboard.press("Tab");
   const focused = page.locator(":focus");
-  await expect(focused).toHaveAttribute("aria-label", "Compartilhar esta página");
+  await expect(focused).toHaveAccessibleName("EN (English)");
   const outline = await focused.evaluate((el) => getComputedStyle(el).outlineStyle);
   expect(outline).not.toBe("none");
+  await page.keyboard.press("Tab");
+  await expect(focused).toHaveAccessibleName("PT (Português)");
+  await page.keyboard.press("Tab");
+  await expect(focused).toHaveAttribute("aria-label", "Share this page");
   await page.keyboard.press("Tab");
   await expect(focused).toHaveAttribute("aria-label", /^GitHub/);
 });
 
-test("axe finds no accessibility violations", async ({ page }) => {
+test("unknown paths get the 404 page in both languages", async ({ page }) => {
+  const response = await page.goto("/nope/");
+  expect(response?.status()).toBe(404);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("heading", { level: 1, name: "Page not found" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Back to the links" })).toHaveAttribute("href", "/");
+  await expect(page.getByRole("link", { name: "Voltar para os links" })).toHaveAttribute(
+    "href",
+    "/pt/",
+  );
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
@@ -70,7 +138,9 @@ test("nothing loads from other origins", async ({ page }) => {
   page.on("request", (request) => {
     if (!request.url().startsWith("http://127.0.0.1")) external.push(request.url());
   });
-  await page.reload();
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page.goto("/pt/");
   await page.waitForLoadState("networkidle");
   expect(external).toEqual([]);
 });

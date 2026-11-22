@@ -33,6 +33,49 @@ describe("content schema", () => {
     expect(errorsOf(input)).toBe("");
   });
 
+  describe("per-language values", () => {
+    const LOCALIZED = JSON.parse(
+      readFileSync("tests/fixtures/localized-links.json", "utf8"),
+    ) as Fixture;
+
+    it("accepts one value per language, mixed with plain values", () => {
+      expect(errorsOf(LOCALIZED)).toBe("");
+    });
+
+    it("needs every language", () => {
+      const input = variant((c) => {
+        c.blocks[0]!.title = { en: "Portfolio" };
+      });
+      expect(errorsOf(input)).toBe(
+        'blocks[0].title: must be a string, or an object with one string per language ("en", "pt")',
+      );
+    });
+
+    it("rejects a language the site doesn't have", () => {
+      const input = variant((c) => {
+        c.profile.bio = { en: "Hi", pt: "Oi", es: "Hola" };
+      });
+      expect(errorsOf(input)).toMatch(/^profile\.bio: Unrecognized key: "es"/);
+    });
+
+    it("checks each language's value with the same rules", () => {
+      const input = variant((c) => {
+        c.blocks[0]!.url = { en: "https://example.com", pt: "javascript:alert(1)" };
+        c.blocks[2]!.title = { en: "x".repeat(81), pt: "Projetos" };
+      });
+      const errors = errorsOf(input);
+      expect(errors).toContain("blocks[0].url.pt: must be an https:// URL");
+      expect(errors).toContain("blocks[2].title.en: must be at most 80 characters");
+    });
+
+    it.each(["name", "handle", "siteUrl"])("keeps profile.%s a single value", (field) => {
+      const input = variant((c) => {
+        c.profile[field] = { en: "a", pt: "b" };
+      });
+      expect(errorsOf(input)).toMatch(new RegExp(`^profile\\.${field}: `));
+    });
+  });
+
   describe("URLs", () => {
     it.each([
       "javascript:alert(1)",

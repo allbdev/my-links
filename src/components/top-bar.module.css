@@ -12,3 +12,9 @@
   color: var(--muted);
   padding: 0 4px;
 }
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -3,6 +3,7 @@
 import { Check, Ellipsis, Link as LinkIcon, Mail, X } from "lucide-react";
 import { type MouseEvent, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { t } from "@/content/strings";
+import type { Locale } from "@/lib/i18n";
 import { shareLinks } from "@/lib/share";
 import { displayUrl } from "@/lib/url";
 import { LinkedinIcon, WhatsappIcon, XIcon } from "../icons/brand";
@@ -26,11 +27,13 @@ function useCanNativeShare(): boolean {
 }
 
 export function ShareDialog({
+  locale,
   target,
   onClose,
   avatar,
   initials,
 }: {
+  locale: Locale;
   target: OpenShare | null;
   onClose: () => void;
   avatar?: string;
@@ -58,7 +61,7 @@ export function ShareDialog({
     }
   }, [target]);
 
-  // "Copiado!" goes back to "Copiar link" after a moment.
+  // "Copied!" goes back to "Copy link" after a moment.
   useEffect(() => {
     if (copy !== "copied") return;
     const timer = setTimeout(() => setCopy("idle"), COPIED_MS);
@@ -101,7 +104,8 @@ export function ShareDialog({
   }
 
   const links = target ? shareLinks(target) : null;
-  const heading = target?.kind === "page" ? t("share.dialogPage") : t("share.dialogLink");
+  const heading =
+    target?.kind === "page" ? t(locale, "share.dialogPage") : t(locale, "share.dialogLink");
 
   return (
     <dialog
@@ -121,7 +125,7 @@ export function ShareDialog({
             <button
               type="button"
               className={styles.close}
-              aria-label={t("share.close")}
+              aria-label={t(locale, "share.close")}
               onClick={() => dialogRef.current?.close()}
             >
               <X size={20} aria-hidden="true" />
@@ -146,7 +150,7 @@ export function ShareDialog({
             <span className={styles.previewUrl}>{displayUrl(target.url)}</span>
           </div>
 
-          <ul className={styles.actions} aria-label={t("share.actions")} role="list">
+          <ul className={styles.actions} aria-label={t(locale, "share.actions")} role="list">
             <li>
               <button
                 ref={firstActionRef}
@@ -162,7 +166,7 @@ export function ShareDialog({
                   )}
                 </span>
                 <span className={copy === "copied" ? styles.copied : undefined}>
-                  {copy === "copied" ? t("share.copied") : t("share.copy")}
+                  {copy === "copied" ? t(locale, "share.copied") : t(locale, "share.copy")}
                 </span>
               </button>
             </li>
@@ -176,7 +180,7 @@ export function ShareDialog({
                 <span className={`${styles.circle} ${styles.whatsapp}`}>
                   <WhatsappIcon size={20} />
                 </span>
-                {t("share.whatsapp")}
+                {t(locale, "share.whatsapp")}
               </a>
             </li>
             <li>
@@ -189,7 +193,7 @@ export function ShareDialog({
                 <span className={`${styles.circle} ${styles.linkedin}`}>
                   <LinkedinIcon size={20} />
                 </span>
-                {t("share.linkedin")}
+                {t(locale, "share.linkedin")}
               </a>
             </li>
             <li>
@@ -197,7 +201,7 @@ export function ShareDialog({
                 <span className={`${styles.circle} ${styles.dark}`}>
                   <XIcon size={18} />
                 </span>
-                {t("share.x")}
+                {t(locale, "share.x")}
               </a>
             </li>
             <li>
@@ -205,7 +209,7 @@ export function ShareDialog({
                 <span className={styles.circle}>
                   <Mail size={20} aria-hidden="true" />
                 </span>
-                {t("share.email")}
+                {t(locale, "share.email")}
               </a>
             </li>
             {canNativeShare && (
@@ -214,19 +218,19 @@ export function ShareDialog({
                   <span className={styles.circle}>
                     <Ellipsis size={20} aria-hidden="true" />
                   </span>
-                  {t("share.more")}
+                  {t(locale, "share.more")}
                 </button>
               </li>
             )}
           </ul>
 
           <div role="status" className={copy === "failed" ? styles.fallback : "visually-hidden"}>
-            {copy === "copied" && t("share.copied")}
+            {copy === "copied" && t(locale, "share.copied")}
             {copy === "failed" && (
               <>
-                <span>{t("share.copyFailed")}</span>
+                <span>{t(locale, "share.copyFailed")}</span>
                 <label className="visually-hidden" htmlFor="share-copy-field">
-                  {t("share.copyField")}
+                  {t(locale, "share.copyField")}
                 </label>
                 <input
                   ref={copyFieldRef}

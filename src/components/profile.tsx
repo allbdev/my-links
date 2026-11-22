@@ -1,4 +1,5 @@
 import { t } from "@/content/strings";
+import type { Locale } from "@/lib/i18n";
 import type { Profile as ProfileData, Social } from "@/lib/schema";
 import { initials } from "@/lib/text";
 import { opensInNewTab } from "@/lib/url";
@@ -6,8 +7,16 @@ import { SOCIAL_ICONS } from "./icons/icon";
 import { StaticImage } from "./static-image";
 import styles from "./profile.module.css";
 
-export function Profile({ profile, socials }: { profile: ProfileData; socials: Social[] }) {
-  const photoLabel = t("profile.photo", { name: profile.name });
+export function Profile({
+  locale,
+  profile,
+  socials,
+}: {
+  locale: Locale;
+  profile: ProfileData;
+  socials: Social[];
+}) {
+  const photoLabel = t(locale, "profile.photo", { name: profile.name });
   return (
     <section className={styles.profile} aria-labelledby="profile-name">
       {profile.avatar ? (
@@ -29,17 +38,17 @@ export function Profile({ profile, socials }: { profile: ProfileData; socials: S
       </h1>
       <p className={styles.bio}>{profile.bio}</p>
       {socials.length > 0 && (
-        <ul className={styles.socials} aria-label={t("profile.socials")}>
+        <ul className={styles.socials} aria-label={t(locale, "profile.socials")}>
           {socials.map((social) => {
             const SocialIcon = SOCIAL_ICONS[social.type];
             const newTab = opensInNewTab(social.url);
-            const label = t(`social.${social.type}`);
+            const label = t(locale, `social.${social.type}`);
             return (
               <li key={`${social.type}-${social.url}`}>
                 <a
                   className={styles.social}
                   href={social.url}
-                  aria-label={newTab ? `${label} ${t("link.newTab")}` : label}
+                  aria-label={newTab ? `${label} ${t(locale, "link.newTab")}` : label}
                   {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 >
                   <SocialIcon size={22} />

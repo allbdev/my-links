@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { type CardBlock, groupSections } from "@/lib/sections";
+import type { Locale } from "@/lib/i18n";
 import type { Block } from "@/lib/schema";
 import styles from "./blocks.module.css";
 import { FeaturedCard } from "./featured-card";
@@ -8,9 +9,11 @@ import { SectionHeading } from "./section-heading";
 
 /** Renders the blocks in order, grouped into sections at each header. */
 export function Blocks({
+  locale,
   blocks,
   share,
 }: {
+  locale: Locale;
   blocks: readonly Block[];
   /** The share control for one card, if any. */
   share?: (block: CardBlock) => ReactNode;
@@ -26,9 +29,9 @@ export function Blocks({
         {section.items.map((block, index) => (
           <li key={`${index}-${block.url}`}>
             {block.type === "featured" ? (
-              <FeaturedCard block={block} share={share?.(block)} />
+              <FeaturedCard locale={locale} block={block} share={share?.(block)} />
             ) : (
-              <LinkCard block={block} share={share?.(block)} />
+              <LinkCard locale={locale} block={block} share={share?.(block)} />
             )}
           </li>
         ))}

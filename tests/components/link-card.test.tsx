@@ -8,7 +8,7 @@ const base: LinkBlock = { type: "link", title: "GitHub", url: "https://github.co
 
 describe("LinkCard", () => {
   it("is one link to the URL, opening external sites in a new tab", () => {
-    render(<LinkCard block={base} />);
+    render(<LinkCard locale="pt" block={base} />);
     const link = screen.getByRole("link", { name: "GitHub (abre em nova aba)" });
     expect(link).toHaveAttribute("href", "https://github.com/ana");
     expect(link).toHaveAttribute("target", "_blank");
@@ -16,7 +16,7 @@ describe("LinkCard", () => {
   });
 
   it.each(["mailto:ana@example.com", "/cv.pdf"])("opens %s in the same tab", (url) => {
-    render(<LinkCard block={{ ...base, title: "Doc", url }} />);
+    render(<LinkCard locale="pt" block={{ ...base, title: "Doc", url }} />);
     const link = screen.getByRole("link", { name: "Doc" });
     expect(link).toHaveAttribute("href", url);
     expect(link).not.toHaveAttribute("target");
@@ -24,14 +24,16 @@ describe("LinkCard", () => {
   });
 
   it("shows an icon tile, hidden from screen readers", () => {
-    const { container } = render(<LinkCard block={{ ...base, icon: "github" }} />);
+    const { container } = render(<LinkCard locale="pt" block={{ ...base, icon: "github" }} />);
     expect(container.querySelector(".tile")).toHaveAttribute("aria-hidden", "true");
     expect(container.querySelector(".tile svg")).not.toBeNull();
     expect(container.querySelector(".plain")).toBeNull();
   });
 
   it("shows a decorative thumbnail with a fixed size", () => {
-    const { container } = render(<LinkCard block={{ ...base, image: "/thumbs/a.webp" }} />);
+    const { container } = render(
+      <LinkCard locale="pt" block={{ ...base, image: "/thumbs/a.webp" }} />,
+    );
     const img = container.querySelector("img")!;
     expect(img).toHaveAttribute("alt", "");
     expect(img).toHaveAttribute("width", "48");
@@ -39,17 +41,19 @@ describe("LinkCard", () => {
   });
 
   it("centres the title when there's no icon or image", () => {
-    const { container } = render(<LinkCard block={base} />);
+    const { container } = render(<LinkCard locale="pt" block={base} />);
     expect(container.querySelector("a")).toHaveClass("plain");
   });
 
   it("marks highlighted cards", () => {
-    const { container } = render(<LinkCard block={{ ...base, highlight: true }} />);
+    const { container } = render(<LinkCard locale="pt" block={{ ...base, highlight: true }} />);
     expect(container.firstChild).toHaveClass("highlight");
   });
 
   it("puts the share control next to the link, not inside it", () => {
-    render(<LinkCard block={base} share={<button type="button">Share GitHub</button>} />);
+    render(
+      <LinkCard locale="pt" block={base} share={<button type="button">Share GitHub</button>} />,
+    );
     const button = screen.getByRole("button", { name: "Share GitHub" });
     expect(button.closest("a")).toBeNull();
   });

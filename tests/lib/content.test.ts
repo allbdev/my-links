@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   ContentError,
   getContent,
+  localize,
   parseContent,
   publicFileExists,
   visibleBlocks,
@@ -89,10 +90,52 @@ describe("publicFileExists", () => {
   });
 });
 
+describe("localize", () => {
+  const raw = parseContent(
+    readFileSync("tests/fixtures/localized-links.json", "utf8"),
+    allFilesExist,
+  );
+
+  it("picks each language's value and shares plain ones", () => {
+    const en = localize(raw, "en");
+    const pt = localize(raw, "pt");
+    expect(en.profile.bio).toBe("Builds things for the web.");
+    expect(pt.profile.bio).toBe("Faz coisas na web.");
+    expect(en.blocks.map((b) => b.title)).toEqual(["Portfolio", "GitHub", "Projects", "Projeto"]);
+    expect(pt.blocks.map((b) => b.title)).toEqual(["Portfólio", "GitHub", "Projetos", "Projeto"]);
+    expect(en.blocks[0]).toMatchObject({ url: "https://example.com/en", icon: "globe" });
+    expect(pt.blocks[0]).toMatchObject({ url: "https://example.com/pt", icon: "globe" });
+    expect(pt.blocks[3]).toMatchObject({ subtitle: "Um projeto", badge: "Novo" });
+  });
+
+  it("leaves content without per-language values as it is", () => {
+    const plain = parseContent(RAW, allFilesExist);
+    expect(localize(plain, "en")).toEqual(plain);
+  });
+
+  it("doesn't change its input", () => {
+    const before = structuredClone(raw);
+    localize(raw, "pt");
+    expect(raw).toEqual(before);
+  });
+});
+
 describe("content/links.json", () => {
-  it("is valid and every image exists", () => {
-    const content = getContent();
+  it.each(["en", "pt"] as const)("is valid in %s and every image exists", (locale) => {
+    const content = getContent(locale);
     expect(content.blocks.length).toBeGreaterThan(0);
     expect(content.profile.siteUrl).toBe("https://links.vinicius-albuquerque.com.br");
+  });
+
+  it("resolves to plain text in every language", () => {
+    for (const locale of ["en", "pt"] as const) {
+      const { profile, blocks } = getContent(locale);
+      const texts = [profile.bio, ...blocks.flatMap((b) => Object.values(b))];
+      for (const value of texts) expect(typeof value, locale).not.toBe("object");
+    }
+  });
+
+  it("differs between languages", () => {
+    expect(getContent("en").profile.bio).not.toBe(getContent("pt").profile.bio);
   });
 });

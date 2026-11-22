@@ -202,3 +202,18 @@ test("with reduced motion the page only fades in, and cards don't move", async (
   const transform = await card.evaluate((el) => getComputedStyle(el.closest("div")!).transform);
   expect(transform).toBe("none");
 });
+
+test("the social row links to GitHub, LinkedIn, X and e-mail, in that order", async ({ page }) => {
+  for (const [path, list] of [
+    ["/", "Social links"],
+    ["/pt/", "Redes"],
+  ] as const) {
+    await page.goto(path);
+    const links = page.getByRole("list", { name: list }).getByRole("link");
+    await expect(links).toHaveCount(4);
+    const x = links.nth(2);
+    await expect(x).toHaveAttribute("href", "https://x.com/ViniAlb13");
+    await expect(x).toHaveAccessibleName(/^X \(/);
+    await expect(x).toHaveAttribute("target", "_blank");
+  }
+});

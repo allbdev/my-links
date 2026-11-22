@@ -11,4 +11,4 @@ GitHub, LinkedIn, X, WhatsApp, Instagram and YouTube are trademarks of their own
 
 ## Project icons
 
-`public/thumbs/single-hole.png`, `cartorio.png`, `tavi.png` and `vestra.png` are the favicons of the author's own projects (The Single Hole, Cartório Simulator, Tavi, Vestra), copied from each site on 22 Nov 2026 and converted to 144 × 144 PNG so the page loads nothing from other origins. Not covered by this repo's MIT licence. If a project's icon changes, replace the file.
+`public/thumbs/park-the-cart.png`, `single-hole.png`, `cartorio.png`, `tavi.png` and `vestra.png` are the favicons of the author's own projects (Park the Cart, The Single Hole, Cartório Simulator, Tavi, Vestra), copied from each site on 22 Nov 2026 (Park the Cart's and Cartório's from their inline SVG) and converted to 144 × 144 PNG so the page loads nothing from other origins. Not covered by this repo's MIT licence. If a project's icon changes, replace the file.

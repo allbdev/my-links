@@ -221,6 +221,7 @@ test("the social row links to GitHub, LinkedIn, X and e-mail, in that order", as
 test("project links show their own favicons, served from this site", async ({ page, request }) => {
   await page.goto("/");
   const expected = {
+    "Park the Cart": "/thumbs/park-the-cart.png",
     "The Single Hole": "/thumbs/single-hole.png",
     "Cartório Simulator": "/thumbs/cartorio.png",
     Tavi: "/thumbs/tavi.png",

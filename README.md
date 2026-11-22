@@ -1,6 +1,6 @@
 # Links
 
-> *One link in every bio.* My own Linktree: one static page with my photo, a short bio and my links, driven by a single JSON file that the build validates.
+> *One link in every bio.* A self-hosted link-in-bio page: one static page with my photo, a short bio and my links, driven by a single JSON file that the build validates.
 
 **Live:** https://links.vinicius-albuquerque.com.br (once the Vercel project and DNS are connected; see [`docs/DEPLOY.md`](docs/DEPLOY.md))
 

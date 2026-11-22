@@ -1,11 +1,11 @@
 # Links — Plan
 
-> *One link in every bio.* A personal Linktree I own, host for free and change by editing one file.
+> *One link in every bio.* A personal link-in-bio page I own, host for free and change by editing one file.
 > Free, open-source, no accounts. A portfolio piece: the code is part of the product.
 
 **Author:** Vinícius Albuquerque Barros · **Written:** 20 Nov 2026 · **Updated:** 22 Nov 2026 · **Status:** built and tested in English and PT-BR, with real content and motion; waiting on the Vercel project and DNS
 
-The original pitch is `LINKS.md`. Mockups live on the design canvas "Links — Vinícius (clone do Linktree)" (https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3); its source files are in `design/`. The canvas and this file are kept in sync both ways (see `CLAUDE.md`). Copy and link lists are placeholders until `content/links.json` holds the real ones. Effort figures are estimates, not measurements.
+The original pitch is `LINKS.md`. Mockups live on the design canvas "Links — Vinícius" (https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3); its source files are in `design/`. The canvas and this file are kept in sync both ways (see `CLAUDE.md`). Copy and link lists are placeholders until `content/links.json` holds the real ones. Effort figures are estimates, not measurements.
 
 ---
 
@@ -17,7 +17,7 @@ One static page with my photo, a short bio and the links I want to show. Edit on
 
 | # | Decision | Choice | Why |
 |---|---|---|---|
-| D1 | Concept | A single-user Linktree clone: profile, links, sections, a featured card, a share modal | One link for every bio, owned by me |
+| D1 | Concept | A single-user link-in-bio page (the kind Linktree popularised): profile, links, sections, a featured card, a share modal | One link for every bio, owned by me |
 | D2 | Platform | Static site, mobile first; on desktop the same column is centred | It is opened from a bio on a phone |
 | D3 | Stack | TypeScript strict, Next.js App Router with `output: "export"`, Zod, Vitest + fast-check, Playwright, GitHub Actions | See §9 |
 | D4 | Content | One file, `content/links.json`, validated with Zod at build time | A typo fails the build, not the live page |

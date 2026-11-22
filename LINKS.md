@@ -1,8 +1,8 @@
-# Links (a personal Linktree)
+# Links (a personal link-in-bio page)
 
 **Author:** Vinícius Albuquerque Barros · **Written:** 20 Nov 2026 · **Status:** plan only, nothing built
 
-A single-user clone of Linktree: one static page with my photo, a short bio and the links I want to show. Free, open-source, no accounts. A portfolio piece: the code is part of the product. Effort figures are estimates, not measurements.
+A self-hosted link-in-bio page, in the spirit of Linktree but my own: one static page with my photo, a short bio and the links I want to show. Free, open-source, no accounts. A portfolio piece: the code is part of the product. Effort figures are estimates, not measurements.
 
 **Pitch:** one link in every bio that I own, host for free and change by editing one file.
 
@@ -86,7 +86,7 @@ One file, validated at build time with Zod. A broken file fails the build instea
 
 ## Look
 
-Mockups are in the design canvas "Links — Vinícius (clone do Linktree)": the mobile page (interactive: the share buttons open the modal) and the modal open. Cool grey background, white link cards with 16 px corners, near-black type, one blue accent. Space Grotesk for name and headings, Inter for text, JetBrains Mono for the handle and URLs. The photo, URLs and link list are placeholders until the JSON exists.
+Mockups are in the design canvas "Links — Vinícius": the mobile page (interactive: the share buttons open the modal) and the modal open. Cool grey background, white link cards with 16 px corners, near-black type, one blue accent. Space Grotesk for name and headings, Inter for text, JetBrains Mono for the handle and URLs. The photo, URLs and link list are placeholders until the JSON exists.
 
 ## Stack and conventions
 

@@ -1,6 +1,6 @@
 # Design
 
-Source files of the design canvas **"Links — Vinícius (clone do Linktree)"**: https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3. Reference only, not used in the site. The canvas serves these files under `project/`.
+Source files of the design canvas **"Links — Vinícius"**: https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3. Reference only, not used in the site. The canvas serves these files under `project/`.
 
 The canvas, these files, `PLAN.md` and the site are kept in sync both ways (see `CLAUDE.md`).
 

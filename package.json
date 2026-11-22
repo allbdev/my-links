@@ -2,7 +2,7 @@
   "name": "my-links",
   "private": true,
   "version": "0.1.0",
-  "description": "My own Linktree: one static page driven by one validated JSON file.",
+  "description": "A self-hosted link-in-bio page: one static page driven by one validated JSON file.",
   "license": "MIT",
   "type": "module",
   "engines": {

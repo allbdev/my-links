@@ -1,6 +1,6 @@
 # CLAUDE.md — Links
 
-A personal Linktree in **TypeScript (strict) + Next.js App Router, fully static** (`output: "export"`). One page, driven by `content/links.json`. Sibling of `../cartorio-simulator` (same habits: content is data, logic separate from views, tests for everything, design canvas in sync). Design: `PLAN.md` (original pitch: `LINKS.md`). Ordered task list: `ROADMAP.md`. Things only the developer can do: `TODO_FOR_YOU.md`. Mockups: the design canvas and `design/`.
+A personal link-in-bio page in **TypeScript (strict) + Next.js App Router, fully static** (`output: "export"`). One page, driven by `content/links.json`. Sibling of `../cartorio-simulator` (same habits: content is data, logic separate from views, tests for everything, design canvas in sync). Design: `PLAN.md` (original pitch: `LINKS.md`). Ordered task list: `ROADMAP.md`. Things only the developer can do: `TODO_FOR_YOU.md`. Mockups: the design canvas and `design/`.
 
 Repo: https://github.com/allbdev/my-links (remote `origin`, branch `main`). Hosted on **Vercel** (Git integration deploys `main`; pull requests get preview URLs) at **https://links.vinicius-albuquerque.com.br** (DNS on Cloudflare; setup in `docs/DEPLOY.md`).
 
@@ -12,7 +12,7 @@ Repo: https://github.com/allbdev/my-links (remote `origin`, branch `main`). Host
 
 ## Design canvas (two-way sync, strict)
 
-The mockups live on the claude.ai design canvas **"Links — Vinícius (clone do Linktree)"**: https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3 (page "Site real": captures of the built site; page "Mockups desenhados": the original drawn boards "Perfil · mobile (interativo)" and "Modal de compartilhar aberto"). Its source files are in `design/` (the canvas serves them under `project/`); `design/README.md` maps each board.
+The mockups live on the claude.ai design canvas **"Links — Vinícius"**: https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3 (page "Site real": captures of the built site; page "Mockups desenhados": the original drawn boards "Perfil · mobile (interativo)" and "Modal de compartilhar aberto"). Its source files are in `design/` (the canvas serves them under `project/`); `design/README.md` maps each board.
 
 The site, the docs and the canvas must always agree:
 

@@ -14,7 +14,7 @@
 - [x] **CV in English?** Both languages link the same `cv.pdf`. If you have an English CV, give its URL and I'll make the link per language (like Portfolio, which goes to `/en` or `/pt`).
 - [x] ~~**Photo.**~~ Your profile picture, cropped square around your face and resized to 480 × 480 (`public/avatar.jpg`, 24 KB). It also shows in the link-preview images (22 Nov 2026).
 - [x] ~~**Featured image.**~~ Path Trader's card now shows your GIF, converted to an animated WebP (`public/thumbs/path-trader.webp`, 63 KB instead of 657 KB, same frames) (22 Nov 2026).
-- [ ] **Link list.** Filled from your site's `llms.txt`: Portfólio (highlighted) · Currículo · GitHub · LinkedIn · Projetos (Path Trader featured, The Single Hole, Cartório Simulator, Tavi, Vestra) · Contato (e-mail). Change titles, order or sections in `content/links.json`; the build tells you if anything is wrong.
+- [ ] **Link list.** Filled from your site's `llms.txt`: Portfólio (highlighted) · Currículo · GitHub · LinkedIn · Projetos (Path Trader featured, Park the Cart, The Single Hole, Cartório Simulator, Tavi, Vestra) · Contato (e-mail). Change titles, order or sections in `content/links.json`; the build tells you if anything is wrong.
 - [x] **Bio.** Written from your site: "Engenheiro full-stack sênior. Co-fundador técnico da Path Trader e, nas horas vagas, jogos de navegador. Vila Velha, Brasil." Change it in `content/links.json` (at most 160 characters).
 
 ## Decisions (quick)
@@ -27,6 +27,7 @@
 
 ## Design canvas
 
+- [ ] **Refresh the "Site real" captures on the canvas** (22 Nov 2026). Park the Cart was added to the link list, so the board "Perfil · mobile (site real)" is stale (it's now 1636 px tall instead of 1558). The new captures are already in `design/01-Page.jpg` and `design/02-Share.jpg`; Claude couldn't upload them to the canvas. Upload both as canvas assets, point the `<img>` in `SitePage.dc.html` and `SiteShare.dc.html` at the new `/_blob/` ids, and set the SitePage board and its `<img>`/`$preview` height to 1636 (steps in `design/README.md`).
 - [x] **Look at the canvas** (https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3). It now opens on a "Site real" page with captures of the built site; your drawn mockups are on "Mockups desenhados". Small differences from the drawings: after copying, "Copiado!" and its icon turn green (`#1A7A43`); the highlighted card (Portfólio) is dark with a blue icon tile; e-mail links have no ⋮ button.
 
 ## After launch (needs you)

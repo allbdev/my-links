@@ -139,7 +139,7 @@ npm run check        # lint, types, unit tests, build, size budget
 npm run build && npm run preview     # the real static build on http://127.0.0.1:4180
 ```
 
-**Heads-up about the tests:** a few tests check the original owner's content, not just the format. `tests/lib/content.test.ts` checks `siteUrl`, and the end-to-end tests in `tests/e2e/` check the name, page title, section names, share URLs and some link targets. After you replace the content, update the expected values in those files (search them for the old name and domain), or delete the assertions you don't need.
+The tests read their expected values (name, title, sections, links, share URLs) from your `content/links.json`, so they pass with your content without changes. Tests that need something your page doesn't have, such as socials, thumbnails or an e-mail link, are skipped.
 
 Then follow [`DEPLOY.md`](DEPLOY.md) to put it online. After that, editing `content/links.json` on GitHub and committing is enough: CI validates it and Vercel redeploys.
 

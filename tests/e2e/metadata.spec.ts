@@ -1,21 +1,26 @@
 import { expect, test } from "@playwright/test";
+import { content, LOCALE_INFO, LOCALES, pageTitle, SITE } from "./content";
 
-const SITE = "https://links.vinicius-albuquerque.com.br";
+const PAGES = LOCALES.map((locale) => {
+  const other = LOCALES.find((l) => l !== locale)!;
+  return {
+    path: LOCALE_INFO[locale].path,
+    ogLocale: LOCALE_INFO[locale].ogLocale,
+    alternate: LOCALE_INFO[other].ogLocale,
+    title: pageTitle(content(locale)),
+    description: content(locale).profile.bio,
+  };
+});
 
-const PAGES = [
-  { path: "/", ogLocale: "en_US", alternate: "pt_BR", description: /^Senior full-stack/ },
-  { path: "/pt/", ogLocale: "pt_BR", alternate: "en_US", description: /^Engenheiro full-stack/ },
-] as const;
-
-for (const { path, ogLocale, alternate, description } of PAGES) {
+for (const { path, ogLocale, alternate, title, description } of PAGES) {
   test(`${path} has its title, description, canonical URL and preview tags`, async ({ page }) => {
     await page.goto(path);
-    await expect(page).toHaveTitle("Vinícius Albuquerque · Links");
+    await expect(page).toHaveTitle(title);
     const meta = (selector: string) => page.locator(selector).getAttribute("content");
-    expect(await meta('meta[name="description"]')).toMatch(description);
+    expect(await meta('meta[name="description"]')).toBe(description);
     expect(await page.locator('link[rel="canonical"]').getAttribute("href")).toBe(`${SITE}${path}`);
     expect(await meta('meta[property="og:url"]')).toBe(`${SITE}${path}`);
-    expect(await meta('meta[property="og:title"]')).toBe("Vinícius Albuquerque · Links");
+    expect(await meta('meta[property="og:title"]')).toBe(title);
     expect(await meta('meta[property="og:locale"]')).toBe(ogLocale);
     expect(await meta('meta[property="og:locale:alternate"]')).toBe(alternate);
     expect(await meta('meta[property="og:image"]')).toMatch(

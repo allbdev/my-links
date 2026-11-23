@@ -33,7 +33,7 @@ export function Home({ locale }: { locale: Locale }) {
         </TopBar>
         <Profile locale={locale} profile={profile} socials={socials} />
         <Blocks locale={locale} blocks={blocks} share={shareFor} />
-        <Footer locale={locale} repoUrl={profile.repoUrl} />
+        <Footer locale={locale} author={profile.author} repoUrl={profile.repoUrl} />
       </main>
       <Reveal />
     </ShareProvider>

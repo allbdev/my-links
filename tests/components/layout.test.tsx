@@ -18,17 +18,38 @@ describe("TopBar", () => {
 });
 
 describe("Footer", () => {
-  it("links to the code in a new tab", () => {
-    render(<Footer locale="pt" repoUrl="https://github.com/a/b" />);
-    const link = screen.getByRole("link", { name: "ver o código (abre em nova aba)" });
-    expect(link).toHaveAttribute("href", "https://github.com/a/b");
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  const AUTHOR = { name: "allbdev", url: "https://github.com/allbdev" };
+
+  it("credits the author and links to the code, both in a new tab", () => {
+    render(<Footer locale="en" author={AUTHOR} repoUrl="https://github.com/a/b" />);
+    expect(screen.getByRole("contentinfo")).toHaveTextContent(
+      /^Built by allbdev\s*\(opens in a new tab\)\s*· see the code/,
+    );
+    const author = screen.getByRole("link", { name: "allbdev (opens in a new tab)" });
+    expect(author).toHaveAttribute("href", "https://github.com/allbdev");
+    const code = screen.getByRole("link", { name: "see the code (opens in a new tab)" });
+    expect(code).toHaveAttribute("href", "https://github.com/a/b");
+    for (const link of [author, code]) {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    }
   });
 
-  it("drops the code link without a repo", () => {
-    render(<Footer locale="pt" />);
-    expect(screen.getByText("Feito com Next.js")).toBeInTheDocument();
-    expect(screen.queryByRole("link")).toBeNull();
+  it("says it in Portuguese on /pt/", () => {
+    render(<Footer locale="pt" author={AUTHOR} />);
+    expect(screen.getByRole("contentinfo")).toHaveTextContent(/^Feito por allbdev/);
+    expect(screen.getByRole("link", { name: "allbdev (abre em nova aba)" })).toBeInTheDocument();
+  });
+
+  it("shows only the code link without an author", () => {
+    render(<Footer locale="pt" repoUrl="https://github.com/a/b" />);
+    expect(screen.queryByText(/Feito por/)).toBeNull();
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+    expect(screen.getByRole("contentinfo")).not.toHaveTextContent("·");
+  });
+
+  it("renders nothing with neither", () => {
+    const { container } = render(<Footer locale="pt" />);
+    expect(container).toBeEmptyDOMElement();
   });
 });

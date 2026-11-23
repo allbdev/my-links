@@ -5,7 +5,8 @@
     "bio": "Engenheira de software. Faz coisas na web.",
     "avatar": "/avatar.svg",
     "siteUrl": "https://links.example.com",
-    "repoUrl": "https://github.com/example/links"
+    "repoUrl": "https://github.com/example/links",
+    "author": { "name": "example", "url": "https://github.com/example" }
   },
   "socials": [
     { "type": "github", "url": "https://github.com/example" },

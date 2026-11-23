@@ -27,3 +27,6 @@ blob-report/
 
 # Design board captures (tools/designs/capture.ts)
 design-captures/
+
+# Local state of the impeccable design-check hook (machine-specific paths)
+.impeccable/

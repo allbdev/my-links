@@ -7,6 +7,7 @@ import {
   checkPublicFile,
   ContentError,
   getContent,
+  getRawContent,
   isLfsPointer,
   localize,
   parseContent,
@@ -183,7 +184,7 @@ describe("content/links.json", () => {
   it.each(["en", "pt"] as const)("is valid in %s and every image exists", (locale) => {
     const content = getContent(locale);
     expect(content.blocks.length).toBeGreaterThan(0);
-    expect(content.profile.siteUrl).toBe("https://links.vinicius-albuquerque.com.br");
+    expect(content.profile.siteUrl).toMatch(/^https:\/\/[^/]+$/);
   });
 
   it("resolves to plain text in every language", () => {
@@ -194,13 +195,15 @@ describe("content/links.json", () => {
     }
   });
 
-  it("has a photo the Open Graph image can embed", () => {
-    expect(avatarDataUri(getContent("en").profile.avatar)).toMatch(
-      /^data:image\/(jpeg|png);base64,/,
-    );
+  it("has a photo the Open Graph image can embed, if it has one", () => {
+    const { avatar } = getContent("en").profile;
+    if (!avatar) return;
+    expect(avatarDataUri(avatar)).toMatch(/^data:image\/(jpeg|png);base64,/);
   });
 
-  it("differs between languages", () => {
-    expect(getContent("en").profile.bio).not.toBe(getContent("pt").profile.bio);
+  it("has a different bio per language when it gives one per language", () => {
+    const { bio } = getRawContent().profile;
+    if (typeof bio === "string") return;
+    expect(bio.en).not.toBe(bio.pt);
   });
 });

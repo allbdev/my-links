@@ -127,7 +127,7 @@
 
 ## Later (not in the first version)
 
-- Click counts without cookies (Plausible or Umami)
+- Click counts without cookies (page views done with Vercel Web Analytics; per-link clicks would need custom events)
 - Dark theme that follows the system
 - QR code in the share modal
 - Markdown as an alternative to JSON

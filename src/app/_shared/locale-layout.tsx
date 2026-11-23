@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { getContent } from "@/lib/content";
@@ -23,7 +24,12 @@ export function localeMetadata(locale: Locale): Metadata {
 export function LocaleLayout({ locale, children }: { locale: Locale; children: ReactNode }) {
   return (
     <html lang={LOCALE_INFO[locale].htmlLang} className={FONT_VARIABLES}>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Vercel Web Analytics: cookieless page views, served from this origin
+            (/_vercel/insights/*), so the CSP needs no new sources. */}
+        <Analytics />
+      </body>
     </html>
   );
 }

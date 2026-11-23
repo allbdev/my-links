@@ -125,6 +125,8 @@ export const profileSchema = z.strictObject({
     'must be the site\'s origin, without a path or trailing slash (e.g. "https://example.com")',
   ),
   repoUrl: httpsUrl.optional(),
+  /** Credited in the footer: "Built by <name>", linking to url. */
+  author: z.strictObject({ name: text(LIMITS.name), url: httpsUrl }).optional(),
 });
 
 export const socialSchema = z

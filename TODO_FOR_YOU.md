@@ -5,6 +5,7 @@
 
 ## To do now
 
+- [ ] **Turn on Web Analytics in Vercel** (23 Nov 2026). The site now loads Vercel's `<Analytics />`, but it only records once you enable it: Vercel → project `my-links` → Analytics → Enable. Until then `/_vercel/insights/script.js` 404s, which is harmless.
 - [x] **Connect Vercel and the domain.** Import `allbdev/my-links` on Vercel and point `links.vinicius-albuquerque.com.br` at it from Cloudflare (CNAME `links` → the value Vercel shows, **DNS only**). Step by step in [`docs/DEPLOY.md`](docs/DEPLOY.md), about 10 minutes. (Roadmap task 38)
 - [x] **Look at it.** `npm install && npm run build && npm run preview`, then open http://127.0.0.1:4180 (or the Vercel URL once it's up). Tell me what to change.
 
@@ -27,7 +28,7 @@
 
 ## Design canvas
 
-- [ ] **Refresh the "Site real" captures on the canvas** (22 Nov 2026). Park the Cart was added to the link list, so the board "Perfil · mobile (site real)" is stale (it's now 1636 px tall instead of 1558). The new captures are already in `design/01-Page.jpg` and `design/02-Share.jpg`; Claude couldn't upload them to the canvas. Upload both as canvas assets, point the `<img>` in `SitePage.dc.html` and `SiteShare.dc.html` at the new `/_blob/` ids, and set the SitePage board and its `<img>`/`$preview` height to 1636 (steps in `design/README.md`).
+- [x] ~~**Refresh the "Site real" captures on the canvas.**~~ Done by Claude with the footer change (23 Nov 2026): new captures uploaded, both boards repointed, the page board is 1636 px tall.
 - [x] **Look at the canvas** (https://claude.ai/artifact/TvGyvKmYvhYzxHkrz5qgR3). It now opens on a "Site real" page with captures of the built site; your drawn mockups are on "Mockups desenhados". Small differences from the drawings: after copying, "Copiado!" and its icon turn green (`#1A7A43`); the highlighted card (Portfólio) is dark with a blue icon tile; e-mail links have no ⋮ button.
 
 ## After launch (needs you)

@@ -22,7 +22,7 @@ One static page with my photo, a short bio and the links I want to show. Edit on
 | D3 | Stack | TypeScript strict, Next.js App Router with `output: "export"`, Zod, Vitest + fast-check, Playwright, GitHub Actions | See §9 |
 | D4 | Content | One file, `content/links.json`, validated with Zod at build time | A typo fails the build, not the live page |
 | D5 | Text | Page in **English** at `/` (default) and **PT-BR** at `/pt/`, with an EN/PT switch; README and code in English | Recruiters abroad read English; Brazilians get PT (decided 22 Nov 2026) |
-| D6 | Money and data | None. No ads, no cookies, no accounts, no personal data stored | Nothing to comply with |
+| D6 | Money and data | None. No ads, no cookies, no accounts, no personal data stored. Page views counted with Vercel Web Analytics (cookieless, same origin; added 23 Nov 2026) | Nothing to comply with |
 | D7 | Look | Cool grey, white cards, near-black type, one blue accent (see §7) | Same structure as Linktree, my own look |
 | D8 | Repo | Public, MIT | The README is what a recruiter reads |
 
@@ -37,7 +37,7 @@ Canvas board "Perfil · mobile (interativo)" (`design/Main.dc.html`).
 3. **Links:** full-width white cards. Each card is a link (opens in a new tab) plus a ⋮ button that opens the share modal for that link. Optional icon or thumbnail on the left.
 4. **Section headings:** optional ("Projetos", "Contato").
 5. **Featured link:** a card with a large image, title, subtitle and an optional badge ("EM BREVE").
-6. **Footer:** "Feito com Next.js · ver o código" linking to the repo.
+6. **Footer:** "Built by allbdev · see the code" ("Feito por allbdev · ver o código" on `/pt/`): the name links to `profile.author.url`, "see the code" to `profile.repoUrl`; each part shows only when set.
 
 Placeholder order in the mockup: Portfólio · GitHub · LinkedIn · Currículo (PDF) · **Projetos:** Estacione o Carrinho (featured, coming soon) · Path Trader · Dig to Japan · **Contato:** Agendar uma conversa.
 
@@ -71,7 +71,7 @@ Canvas board "Modal de compartilhar aberto" (`design/Share.dc.html`).
 - Mobile first; the same column centred on desktop (max 480 px).
 
 **Later**
-- Click counts without cookies (Plausible or Umami).
+- Click counts without cookies (page views are already counted by Vercel Web Analytics; per-link clicks would need custom events).
 - A dark theme that follows the system.
 - A QR code in the share modal.
 - Markdown as an alternative to JSON.
@@ -88,7 +88,8 @@ One file, `content/links.json`, validated at build time with Zod (`src/lib/schem
     "bio": "Full-stack product engineer. Construo SaaS do zero e, nas horas vagas, jogos de navegador. Brasil.",
     "avatar": "/avatar.jpg",
     "siteUrl": "https://links.vinicius-albuquerque.com.br",
-    "repoUrl": "https://github.com/allbdev/my-links"
+    "repoUrl": "https://github.com/allbdev/my-links",
+    "author": { "name": "allbdev", "url": "https://github.com/allbdev" }
   },
   "socials": [
     { "type": "github", "url": "https://github.com/allbdev" },
@@ -113,6 +114,7 @@ Rules the schema enforces:
 - `hidden` and `highlight` are optional booleans. At most one `featured` block.
 - `socials[].type` is one of `github`, `linkedin`, `email`, `x`, `instagram`, `youtube`, `whatsapp`.
 - Titles are non-empty, trimmed, at most 80 characters; the bio at most 160.
+- `profile.author` (optional) is `{ name, url }`: the footer credit; `url` must be `https:`.
 - Unknown keys are an error (strict objects), so a misspelt key never silently disappears.
 - **Languages.** `profile.bio` and every block's `title`, `subtitle`, `badge` and `url` may be one string (used for both languages) or `{ "en": "…", "pt": "…" }`. Both keys are required, other keys are an error, and each value follows the field's own rules (`blocks[0].url.pt: must be an https:// URL`). Name, handle, socials and images are the same in both languages.
 
@@ -174,7 +176,7 @@ All three are OFL and self-hosted through `next/font` (no runtime calls to Googl
 - **Fully static.** `next.config.ts` sets `output: "export"`; `next build` writes plain HTML, CSS and JS to `out/`. No API routes, no server, no database.
 - **Content at build time.** `src/lib/content.ts` reads `content/links.json`, parses it with the Zod schema and returns typed data. It throws on invalid content, which fails the build.
 - **Server Components by default.** The page, profile, cards and footer render on the server at build time and ship no JS.
-- **Two client islands.** `ShareProvider` + `ShareDialog` (`"use client"`) own the modal state; the share buttons are tiny client components that call `open({ title, url })`. `Reveal` (renders nothing) holds back the entrance of elements below the fold until they scroll into view.
+- **Two client islands.** `ShareProvider` + `ShareDialog` (`"use client"`) own the modal state; the share buttons are tiny client components that call `open({ title, url })`. `Reveal` (renders nothing) holds back the entrance of elements below the fold until they scroll into view. Vercel's `<Analytics />` (`@vercel/analytics`, in the shared locale layout) loads `/_vercel/insights/script.js` from our own origin and reports page views; no cookies, no third-party requests.
 - **Pure helpers.** `src/lib/share.ts` builds the share URLs; `src/lib/url.ts` resolves relative links against `siteUrl`. No DOM, tested on their own.
 - **Images.** A plain `<img>` (`StaticImage`) with required `width`/`height` so nothing shifts, lazy below the fold, files pre-sized as WebP. Not `next/image`: a static export can't optimise images, so it would only add about 14 KB of client JS.
 - **Languages.** One root layout per language through route groups: `app/(en)/` renders `/` with `<html lang="en">`, `app/(pt)/pt/` renders `/pt/` with `<html lang="pt-BR">`. Both are thin wrappers over `app/_shared/`. `app/global-not-found.tsx` (experimental `globalNotFound` flag) is the 404 in both languages, since there's no single root layout.
@@ -201,7 +203,7 @@ content/links.json ──► lib/content.ts (Zod, getContent(locale)) ──► 
 | CI | GitHub Actions: lint, typecheck, test, build, size, e2e on every push and PR; Vercel deploys `main` | Editing the JSON on GitHub redeploys the page |
 | Hosting | Vercel (Git integration) at `links.vinicius-albuquerque.com.br`, DNS on Cloudflare (`docs/DEPLOY.md`) | Free, static, preview URLs per PR, headers via `vercel.json` |
 | Repo | Public, MIT, README with a screenshot, the JSON format and Lighthouse numbers | The README is what a recruiter reads |
-| Data | No cookies, no personal data stored | D6 |
+| Data | No cookies, no personal data stored; cookieless page views via Vercel Web Analytics | D6 |
 
 ## 10. What it shows
 

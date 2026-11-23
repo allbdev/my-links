@@ -28,6 +28,7 @@ describe("content schema", () => {
     const input = variant((c) => {
       delete c.profile.avatar;
       delete c.profile.repoUrl;
+      delete c.profile.author;
       c.socials = [];
     });
     expect(errorsOf(input)).toBe("");
@@ -129,6 +130,18 @@ describe("content schema", () => {
       expect(errorsOf(variant((c) => (c.socials[0]!.url = "mailto:a@b.co")))).toBe(
         "socials[0].url: must be an https:// URL",
       );
+    });
+
+    it("requires the footer author to have a name and an https url", () => {
+      expect(
+        errorsOf(variant((c) => (c.profile.author = { name: "me", url: "javascript:alert(1)" }))),
+      ).toBe("profile.author.url: must be an https:// URL");
+      expect(errorsOf(variant((c) => (c.profile.author = { url: "https://a.co" })))).toContain(
+        "profile.author.name",
+      );
+      expect(
+        errorsOf(variant((c) => (c.profile.author = { name: "me", url: "https://a.co", x: 1 }))),
+      ).toContain("profile.author");
     });
   });
 

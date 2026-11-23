@@ -1,6 +1,12 @@
-# Deploy: Vercel + Cloudflare DNS
+# Deploy: Vercel + your domain
 
-How `https://links.vinicius-albuquerque.com.br` is served: **Vercel** builds and hosts the static site from GitHub; **Cloudflare** only holds the DNS record that points the subdomain at Vercel. Vercel issues the HTTPS certificate.
+How to put your page online: **Vercel** builds and hosts the static site from your GitHub repo, and your **DNS provider** holds one record that points your (sub)domain at Vercel. Vercel issues the HTTPS certificate. The examples use `links.example.com` and Cloudflare for DNS; replace them with your own domain and provider (the steps are the same anywhere you can add a CNAME record).
+
+Before you start, set `siteUrl` in `content/links.json` to the address you're about to use (see [`CONFIGURE.md`](CONFIGURE.md)).
+
+**No custom domain?** Stop after step 1: the free `*.vercel.app` address works. Set `siteUrl` to it.
+
+**Not on Vercel?** `npm run build` writes a plain static site to `out/`; upload it to any static host (Netlify, Cloudflare Pages, GitHub Pages at a domain root, a bucket). You lose the security headers in `vercel.json` (copy them into your host's config) and Vercel Web Analytics.
 
 ```
 visitor ──► Cloudflare DNS (CNAME links → Vercel, DNS only) ──► Vercel edge ──► out/ (static files)
@@ -15,7 +21,7 @@ Time: about 10 minutes, plus DNS propagation (usually under 5 minutes on Cloudfl
 ## 1. Create the Vercel project
 
 1. Go to https://vercel.com/new and sign in with GitHub.
-2. **Import Git Repository** → pick `allbdev/my-links`. If it isn't listed, click **Adjust GitHub App Permissions** and give Vercel access to the repo.
+2. **Import Git Repository** → pick your repository. If it isn't listed, click **Adjust GitHub App Permissions** and give Vercel access to the repo.
 3. Settings on the import screen:
    - **Framework Preset:** Next.js (detected).
    - **Root Directory:** `./`
@@ -29,7 +35,7 @@ From now on every push to `main` deploys to production and every pull request ge
 ## 2. Add the domain on Vercel
 
 1. Project → **Settings** → **Domains** → **Add Domain**.
-2. Type `links.vinicius-albuquerque.com.br` and confirm. Choose **Connect to an environment: Production**. Don't add the redirect from `www` (it doesn't apply to a subdomain).
+2. Type your domain (e.g. `links.example.com`) and confirm. Choose **Connect to an environment: Production**. Don't add the redirect from `www` (it doesn't apply to a subdomain).
 3. Vercel shows **Invalid Configuration** and the record it wants, something like:
 
    | Type | Name | Value |
@@ -39,9 +45,9 @@ From now on every push to `main` deploys to production and every pull request ge
    **Copy the exact value Vercel shows**; newer projects get a project-specific target.
 4. If Vercel also asks for a **TXT** record named `_vercel` (it does when the domain was used in another Vercel account), copy that too.
 
-## 3. Add the record on Cloudflare
+## 3. Add the record at your DNS provider (Cloudflare shown)
 
-1. https://dash.cloudflare.com → the `vinicius-albuquerque.com.br` zone → **DNS** → **Records** → **Add record**.
+1. https://dash.cloudflare.com → your domain's zone (e.g. `example.com`) → **DNS** → **Records** → **Add record**.
 2. Fill in:
 
    | Field | Value |
@@ -78,8 +84,8 @@ If there are no CAA records at all, skip this; any authority may issue.
 Back on Vercel → Settings → Domains, the domain turns to **Valid Configuration** and the certificate is issued within a minute or two. From a terminal:
 
 ```sh
-dig +short links.vinicius-albuquerque.com.br CNAME   # → the Vercel target
-curl -sI https://links.vinicius-albuquerque.com.br | head -n 20   # → HTTP/2 200, server: Vercel, plus the headers from vercel.json
+dig +short links.example.com CNAME   # → the Vercel target
+curl -sI https://links.example.com | head -n 20   # → HTTP/2 200, server: Vercel, plus the headers from vercel.json
 ```
 
 Then:
@@ -89,8 +95,9 @@ Then:
 
 ## 5. Afterwards
 
-- **`siteUrl`** in `content/links.json` must be `https://links.vinicius-albuquerque.com.br`. It's used for canonical URLs, share links and the Open Graph image, so preview deployments still share the production URL (on purpose).
+- **`siteUrl`** in `content/links.json` must be your production address (e.g. `https://links.example.com`). It's used for canonical URLs, share links and the Open Graph image, so preview deployments still share the production URL (on purpose).
 - **Headers** (CSP, HSTS, `Referrer-Policy`, `X-Content-Type-Options`, `Permissions-Policy`, `X-Frame-Options`, `Cross-Origin-Opener-Policy`) are in `vercel.json`. Next's `headers()` doesn't apply to a static export. `npm run preview` applies the same file, and the e2e tests load the page under that CSP, so a header change that breaks the page fails CI. `script-src` allows `'unsafe-inline'` because the static export inlines Next's bootstrap scripts; nothing on the page comes from visitors.
+- **Analytics:** to count page views, open the project → **Analytics** → **Enable** (cookieless; see [`CONFIGURE.md`](CONFIGURE.md#6-analytics-optional)).
 - **Production branch** is `main` (Settings → Git). Leave **Vercel Authentication** on for previews if you don't want preview URLs public (Settings → Deployment Protection); production stays public.
 
 ## Troubleshooting

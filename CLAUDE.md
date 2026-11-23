@@ -38,6 +38,10 @@ The site, the docs and the canvas must always agree:
 - Every new visitor-facing string gets both languages in the same change. Components take a `locale` prop (the share island reads it from its context).
 - `<html lang>` is `en` on `/` and `pt-BR` on `/pt/` (one root layout per language: `src/app/(en)` and `src/app/(pt)/pt`).
 
+## Public docs are for whoever forks it
+
+The project is open source and meant to be reused. `README.md`, `docs/CONFIGURE.md` and `docs/DEPLOY.md` are written for someone setting up **their own** page: second person, placeholder values (`links.example.com`, "Ada Lovelace"), no owner-specific steps. The owner's page is only the "live example". Any change to `links.json` fields, the schema, images, languages, tokens, analytics or deploy updates `docs/CONFIGURE.md` (and `DEPLOY.md` if relevant) in the same change. `PLAN.md`, `ROADMAP.md`, `TODO_FOR_YOU.md` and this file stay the maintainer's working notes.
+
 ## Testing rules
 
 - **Every feature ships with tests.** A roadmap task isn't done until its tests are written and passing.
@@ -65,9 +69,9 @@ The site, the docs and the canvas must always agree:
 - TypeScript `strict: true`, no `any` (use `unknown` and narrow). ESLint (Next config + `typescript-eslint` strict) + Prettier, enforced in CI.
 - `camelCase` for variables and functions, `PascalCase` for components and types, `CONSTANT_CASE` for module constants, `kebab-case` for file names (`share-dialog.tsx`).
 - **Content is data.** Links, sections, socials and profile live in `content/links.json`. Adding a link never touches code.
-- **Server Components by default.** `"use client"` only for the share island and `Reveal` (the scroll-triggered entrance, added at the developer's request). Don't add client state, effects or context anywhere else without asking.
+- **Server Components by default.** `"use client"` only for the share island and `Reveal` (the scroll-triggered entrance, added at the developer's request); Vercel's `<Analytics />` is a client component from the package. Don't add client state, effects or context anywhere else without asking.
 - Styling: CSS Modules per component + tokens from `src/app/tokens.css`. No hard-coded colours, radii or font names in components; use the tokens.
-- No runtime dependencies beyond `next`, `react`, `react-dom`, `zod` and `lucide-react` without asking. Dev dependencies are fine when they serve the stack above.
+- No runtime dependencies beyond `next`, `react`, `react-dom`, `zod`, `lucide-react` and `@vercel/analytics` without asking. Dev dependencies are fine when they serve the stack above.
 - `src/lib` is pure: no DOM, no `window`, no React. Components call it; tests call it directly.
 
 ## Architecture notes
@@ -79,7 +83,7 @@ The site, the docs and the canvas must always agree:
 - **Safe links.** The schema rejects anything but `https:`, `mailto:` and root-relative URLs. External links get `target="_blank" rel="noopener noreferrer"`. Never use `dangerouslySetInnerHTML` for content.
 - **Share.** `ShareProvider` (client) holds `{ open, title, url }`; `ShareButton` calls it; `ShareDialog` is a native `<dialog>` opened with `showModal()`. URLs come from `src/lib/share.ts`. Clipboard and `navigator.share` are feature-detected; both have a fallback.
 - **Accessibility.** Keyboard and screen-reader usable; real `<a>` and `<button>`; every icon-only button has an aria label from `strings.ts`; visible focus ring (`--accent`); text contrast 4.5:1; 44 px targets; motion (entrance, press, dialog, view transition; `PLAN.md` §7) uses the tokens in `tokens.css`, and `prefers-reduced-motion` removes all movement, leaving short fades. `tests/app/motion.test.ts` checks the CSS for this.
-- **Privacy.** No cookies, no analytics, no `localStorage`, no third-party requests at runtime (fonts are self-hosted).
+- **Privacy.** No cookies, no `localStorage`, no third-party requests at runtime (fonts are self-hosted). The only analytics is Vercel Web Analytics (`<Analytics />` in `src/app/_shared/locale-layout.tsx`): cookieless, served from `/_vercel/insights/` on our own origin. Don't add any other tracking without asking.
 - **Performance budget.** First load under 150 KB gzipped JS and 20 KB CSS (the Next 16 + React 19 runtime alone is about 135 KB; `noModule` polyfills excluded; measured by `npm run size` on `out/`), no layout shift, Lighthouse 100 in all four categories on mobile as the target. First guesses; adjust after the first build.
 
 ## Workflow

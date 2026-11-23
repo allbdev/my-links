@@ -1,35 +1,53 @@
 # Links
 
-> *One link in every bio.* A self-hosted link-in-bio page: one static page with my photo, a short bio and my links, driven by a single JSON file that the build validates.
+> *One link in every bio.* An open-source, self-hosted link-in-bio page: one static page with your photo, a short bio and your links, driven by a single JSON file that the build validates.
 
-**Live:** https://links.vinicius-albuquerque.com.br (once the Vercel project and DNS are connected; see [`docs/DEPLOY.md`](docs/DEPLOY.md))
+**Live example:** https://links.vinicius-albuquerque.com.br
 
 <img src="design/01-Page.jpg" alt="The page on a phone: profile, links, a featured project card and a contact section" width="300" align="right">
 
-The page is in English at `/` and Brazilian Portuguese at `/pt/`, with a switch in the top bar. Code, comments and docs are in English.
-
-| Doc | What's in it |
-|---|---|
-| [`PLAN.md`](PLAN.md) | Design, data format, look and tokens, architecture, risks |
-| [`ROADMAP.md`](ROADMAP.md) | Ordered task list and current progress |
-| [`CLAUDE.md`](CLAUDE.md) | Project rules (language, testing, git workflow, design sync, architecture) |
-| [`TODO_FOR_YOU.md`](TODO_FOR_YOU.md) | Open decisions and things only the developer can do |
-| [`docs/DEPLOY.md`](docs/DEPLOY.md) | Vercel project and Cloudflare DNS for `links.vinicius-albuquerque.com.br` |
-| [`LINKS.md`](LINKS.md) | The original one-page pitch |
-| [`design/`](design) | The design canvas: captures of the real site and the original drawn mockups |
-| [`NOTICE.md`](NOTICE.md) | Third-party icon and font licences |
-
-## What it does
+## What you get
 
 - Profile (photo, name, bio, social icons), links as cards, section headings and one featured card with an image.
 - A share dialog for the whole page and for each link: copy, WhatsApp, LinkedIn, X, e-mail and the phone's own share sheet.
-- Two languages: English at `/` and Portuguese at `/pt/`, each a static page with its own `<html lang>`, metadata, `hreflang` links and preview image.
+- Two languages: English at `/` and Brazilian Portuguese at `/pt/`, each a static page with its own `<html lang>`, metadata, `hreflang` links and preview image.
 - Link previews: an Open Graph image and tags generated from the same file.
-- No cookies, no analytics, no server, no requests to other origins.
+- No cookies, no server, no requests to other origins. Optional, cookieless page-view counts with Vercel Web Analytics.
+- Free to host: a static site on Vercel's free plan (or anywhere that serves files).
 
 <br clear="right">
 
-## The interesting part
+## Make it yours
+
+1. **Fork** this repo (or clone it and push it to your own).
+2. **Edit `content/links.json`**: your name, bio, socials and links. Put your photo and thumbnails in `public/`.
+3. **Run it:** `npm install && npm run dev`, then open http://localhost:3000.
+4. **Deploy** on Vercel and point your domain at it.
+
+The full walkthrough is in **[`docs/CONFIGURE.md`](docs/CONFIGURE.md)**: every field, images, languages, colours, analytics, and the few tests you'll need to update. Deploying (Vercel plus DNS for a custom domain) is in **[`docs/DEPLOY.md`](docs/DEPLOY.md)**.
+
+A taste of the content file:
+
+```json
+{
+  "profile": {
+    "name": "Ada Lovelace",
+    "handle": "ada",
+    "bio": { "en": "Mathematician and writer.", "pt": "Matemática e escritora." },
+    "avatar": "/avatar.jpg",
+    "siteUrl": "https://links.example.com"
+  },
+  "socials": [{ "type": "github", "url": "https://github.com/ada" }],
+  "blocks": [
+    { "type": "link", "title": "Portfolio", "url": "https://example.com", "icon": "globe", "highlight": true },
+    { "type": "header", "title": { "en": "Projects", "pt": "Projetos" } },
+    { "type": "featured", "title": "My big project", "url": "https://example.com/p", "image": "/thumbs/p.webp", "badge": "New" },
+    { "type": "link", "title": "Email me", "url": "mailto:ada@example.com", "icon": "mail" }
+  ]
+}
+```
+
+## How it works
 
 ### The build is the validator
 
@@ -45,7 +63,7 @@ So a typo made while editing the file on GitHub fails CI and never reaches the l
 
 ### Static, with two small islands
 
-Next.js App Router with `output: "export"`: the profile, cards and footer are Server Components rendered to HTML at build time. The share dialog and `Reveal` (which plays the entrance of cards below the fold as they scroll into view) are the only client components; without JS the page still renders and animates fully. Images are plain `<img>` elements with fixed sizes: a static export can't optimise images, so `next/image` would only have added client JS.
+Next.js App Router with `output: "export"`: the profile, cards and footer are Server Components rendered to HTML at build time. The share dialog and `Reveal` (which plays the entrance of cards below the fold as they scroll into view) are the only client components of its own (plus Vercel's `<Analytics />` loader); without JS the page still renders and animates fully. Images are plain `<img>` elements with fixed sizes: a static export can't optimise images, so `next/image` would only have added client JS.
 
 ### Accessible by default
 
@@ -53,88 +71,35 @@ Real links and buttons; motion that drops all movement under `prefers-reduced-mo
 
 ### The numbers
 
-Lighthouse (mobile, local production build served with gzip):
+Lighthouse for the live example (mobile, local production build served with gzip):
 
 | Performance | Accessibility | Best practices | SEO |
 |---|---|---|---|
 | 95 | 100 | 100 | 100 |
 
-First contentful paint 0.9 s, largest contentful paint 2.9 s, total blocking time 0–10 ms, layout shift 0. The page entrance costs nothing measurable here (95 with or without it); the featured card's animated WebP (63 KB) is what moved the score from 97–98. First-load JS is 145 KB gzipped, almost all of it the Next.js and React runtime; `npm run size` fails CI above 150 KB.
+First contentful paint 0.9 s, largest contentful paint 2.9 s, total blocking time 0–10 ms, layout shift 0. The page entrance costs nothing measurable here (95 with or without it); the featured card's animated WebP (63 KB) is what moved the score from 97–98. First-load JS is about 147 KB gzipped, almost all of it the Next.js and React runtime; `npm run size` fails CI above 150 KB.
 
 ### Security headers
 
 `vercel.json` sets a Content Security Policy (this site's own scripts, styles, fonts and images only), HSTS, `nosniff`, frame denial, and referrer, permissions and opener policies. The local preview server applies the same file, so the end-to-end tests load the page under the real CSP and fail on any console error.
 
-## Editing the links
+## Development
 
-Edit `content/links.json` (on GitHub is fine) and push. CI validates it; Vercel builds and deploys.
-
-```json
-{
-  "profile": {
-    "name": "Vinícius Albuquerque",
-    "handle": "vinicius",
-    "bio": { "en": "Senior full-stack engineer. …", "pt": "Engenheiro full-stack sênior. …" },
-    "avatar": "/avatar.jpg",
-    "siteUrl": "https://links.vinicius-albuquerque.com.br",
-    "repoUrl": "https://github.com/allbdev/my-links"
-  },
-  "socials": [{ "type": "github", "url": "https://github.com/allbdev" }],
-  "blocks": [
-    {
-      "type": "link",
-      "title": { "en": "Portfolio", "pt": "Portfólio" },
-      "url": { "en": "https://…/en", "pt": "https://…/pt" },
-      "icon": "globe",
-      "highlight": true
-    },
-    { "type": "header", "title": "Projetos" },
-    { "type": "featured", "title": "Path Trader", "subtitle": "…", "url": "https://…", "image": "/thumbs/path-trader.webp", "badge": "No ar" },
-    { "type": "link", "title": "Mandar um e-mail", "url": "mailto:…", "icon": "mail" }
-  ]
-}
-```
-
-- `blocks` keeps the page order. A `header` starts a new section.
-- A `link` can have an `icon` (one of the names in `ICON_NAMES` in `src/lib/schema.ts`) or an `image` (a file in `public/`), not both. `highlight: true` makes it a dark card.
-- Any `bio`, `title`, `subtitle`, `badge` or `url` can be one string (both languages) or `{ "en": "…", "pt": "…" }` (both required).
-- `hidden: true` keeps a block in the file but off the page (a heading whose section ends up empty is hidden too).
-- One `featured` block at most; it needs an `image` (about 800 × 400).
-- The full rules are in `PLAN.md` §6.
-
-## Requirements
-
-- **Node.js 22 LTS** and npm
-- **Git LFS** (only the design captures in `design/` are stored in LFS; `public/` holds plain files because Vercel clones without LFS)
-
-```sh
-brew install node git-lfs && git lfs install
-git clone https://github.com/allbdev/my-links.git && cd my-links
-git lfs pull
-npm install
-```
-
-## Running
+Requires **Node.js 22** and npm. Git LFS is only needed for the design captures in `design/`.
 
 ```sh
 npm run dev          # local dev server
 npm run build        # static build in out/
 npm run preview      # serve out/ on http://127.0.0.1:4180 with the vercel.json headers
-```
-
-## Tests and tools
-
-```sh
-npm run check        # lint + typecheck + unit tests + build + size budget (run before every commit)
+npm run check        # lint + typecheck + unit tests + build + size budget
 npm test             # Vitest: schema, loader, share URLs (property tests), components, tokens
 npm run e2e          # Playwright on desktop and phone: page, share dialog, axe, headers, metadata
 npm run size         # first-load JS and CSS against the budget
-npm run designs      # capture the design-canvas boards from the built site
 ```
 
-GitHub Actions runs `check` and the e2e tests on every push and pull request. Vercel deploys `main` and gives every pull request a preview URL.
+GitHub Actions runs `check` and the e2e tests on every push and pull request.
 
-## Project layout
+### Project layout
 
 ```
 content/
@@ -144,21 +109,29 @@ src/
   components/    Profile, link card, featured card, sections, footer, icons, share/ and reveal.tsx (the client islands).
   lib/           Pure logic: schema, content loader, sections, share URLs, URL and text helpers.
   content/       strings.ts: interface text (English and PT-BR).
-public/          Avatar, thumbnails.
+public/          Avatar, thumbnails and any file you link to (e.g. a CV).
 tests/           Vitest tests mirroring src/, fixtures/, and e2e/ (Playwright).
 tools/           Preview server, vercel.json header emulation, size check, design-board capture.
-design/          Design canvas files and captures (reference only, not used in the site).
-docs/            Deploy guide.
+docs/            Setup and deploy guides.
 ```
 
-## Contributing workflow
+### How the original page was built
 
-1. Pick the next task in `ROADMAP.md`.
-2. Write the feature together with its tests, keeping logic in `src/lib/`.
-3. If it changes something a design board shows, update the board (see `CLAUDE.md`).
-4. Run `npm run check` and make sure it passes.
-5. Commit. Before every push, run the `security-audit` skill on the changes (see `CLAUDE.md`).
+These are the maintainer's working notes, kept as a record of the process. You don't need them to use the project.
+
+| Doc | What's in it |
+|---|---|
+| [`PLAN.md`](PLAN.md) | Design, data format, look and tokens, architecture, risks |
+| [`ROADMAP.md`](ROADMAP.md) | Ordered task list and progress |
+| [`CLAUDE.md`](CLAUDE.md) | Project rules for the AI assistant (language, testing, git workflow, design sync) |
+| [`TODO_FOR_YOU.md`](TODO_FOR_YOU.md) | The maintainer's open to-dos |
+| [`LINKS.md`](LINKS.md) | The original one-page pitch |
+| [`design/`](design) | The design canvas: captures of the live page and the original drawn mockups |
+
+## Contributing
+
+Issues and pull requests are welcome. Keep logic in `src/lib/` with tests next to it in `tests/`, run `npm run check` before committing, and keep every visitor-facing string in both languages (`src/content/strings.ts`).
 
 ## License
 
-MIT. Icon and font notices in `NOTICE.md`.
+MIT. Icon and font notices in [`NOTICE.md`](NOTICE.md).

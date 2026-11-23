@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { createGzip } from "node:zlib";
 import { extname, join, normalize, resolve, sep } from "node:path";
 import { headersFor, loadHeaderRules } from "./vercel-headers";
+import { vercelInsights } from "./vercel-insights";
 
 const ROOT = resolve("out");
 const PORT = Number(process.env.PORT ?? 4180);
@@ -49,6 +50,12 @@ export function resolveFile(urlPath: string): string | null {
 }
 
 createServer((req, res) => {
+  const insights = vercelInsights(req.url ?? "/");
+  if (insights) {
+    res.writeHead(insights.status, insights.type ? { "content-type": insights.type } : {});
+    res.end(insights.body);
+    return;
+  }
   const file = resolveFile(req.url ?? "/");
   const status = file ? 200 : 404;
   const body = file ?? join(ROOT, "404.html");

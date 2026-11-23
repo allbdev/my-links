@@ -24,7 +24,7 @@
 3. **Run it:** `npm install && npm run dev`, then open http://localhost:3000.
 4. **Deploy** on Vercel and point your domain at it.
 
-The full walkthrough is in **[`docs/CONFIGURE.md`](docs/CONFIGURE.md)**: every field, images, languages, colours, analytics, and the few tests you'll need to update. Deploying (Vercel plus DNS for a custom domain) is in **[`docs/DEPLOY.md`](docs/DEPLOY.md)**.
+The full walkthrough is in **[`docs/CONFIGURE.md`](docs/CONFIGURE.md)**: every field, images, languages, colours, and analytics. Deploying (Vercel plus DNS for a custom domain) is in **[`docs/DEPLOY.md`](docs/DEPLOY.md)**.
 
 A taste of the content file:
 

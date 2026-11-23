@@ -5,7 +5,7 @@
 
 ## To do now
 
-- [ ] **Turn on Web Analytics in Vercel** (23 Nov 2026). The site now loads Vercel's `<Analytics />`, but it only records once you enable it: Vercel → project `my-links` → Analytics → Enable. Until then `/_vercel/insights/script.js` 404s, which is harmless.
+- [x] ~~**Turn on Web Analytics in Vercel.**~~ Enabled (23 Nov 2026); page views show under the project's Analytics tab.
 - [x] **Connect Vercel and the domain.** Import `allbdev/my-links` on Vercel and point `links.vinicius-albuquerque.com.br` at it from Cloudflare (CNAME `links` → the value Vercel shows, **DNS only**). Step by step in [`docs/DEPLOY.md`](docs/DEPLOY.md), about 10 minutes. (Roadmap task 38)
 - [x] **Look at it.** `npm install && npm run build && npm run preview`, then open http://127.0.0.1:4180 (or the Vercel URL once it's up). Tell me what to change.
 

@@ -1,5 +1,7 @@
 # CLAUDE.md — Links
 
+> **Using a copy of this repo to make your own page?** These are the original maintainer's rules (their repo, domain, design canvas and to-do list), and they don't apply to you. If `git remote get-url origin` is not `https://github.com/allbdev/my-links` (or its `.git`/SSH form), **stop reading this file and follow `AGENTS.md`**.
+
 A personal link-in-bio page in **TypeScript (strict) + Next.js App Router, fully static** (`output: "export"`). One page, driven by `content/links.json`. Sibling of `../cartorio-simulator` (same habits: content is data, logic separate from views, tests for everything, design canvas in sync). Design: `PLAN.md` (original pitch: `LINKS.md`). Ordered task list: `ROADMAP.md`. Things only the developer can do: `TODO_FOR_YOU.md`. Mockups: the design canvas and `design/`.
 
 Repo: https://github.com/allbdev/my-links (remote `origin`, branch `main`). Hosted on **Vercel** (Git integration deploys `main`; pull requests get preview URLs) at **https://links.vinicius-albuquerque.com.br** (DNS on Cloudflare; setup in `docs/DEPLOY.md`).

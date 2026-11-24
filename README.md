@@ -19,8 +19,23 @@
 
 ## Make it yours
 
+> **Heads-up: the person on this page is real.** The face in `public/avatar.jpg`, the bio, the projects and the e-mail in `content/links.json` all belong to Vinícius, the original author. Lovely as that is, your visitors came to see *you*, and nobody wants a link page that sends recruiters to someone else's CV. So step zero is a polite eviction: delete the photo and thumbnails in `public/` and replace the content with yours.
+
+### Never written code? Ask your AI assistant
+
+You don't need to know how to code. Open this folder in an AI coding assistant (Claude Code, Cursor, Codex, …) and say:
+
+```
+I want my own link-in-bio page from this repo. I've never coded. Follow AGENTS.md:
+ask me for my details, remove the previous owner's content, and help me put it online.
+```
+
+[`AGENTS.md`](AGENTS.md) tells it what to ask you for and in what order. A few steps are yours alone, because they need your accounts: installing Node.js if it's missing, signing up for GitHub and Vercel (both free), and, if you have your own domain, adding one DNS record. The assistant will tell you when it's your turn and what to click.
+
+### Doing it yourself
+
 1. **Fork** this repo (or clone it and push it to your own).
-2. **Edit `content/links.json`**: your name, bio, socials and links. Put your photo and thumbnails in `public/`.
+2. **Edit `content/links.json`**: your name, bio, socials and links. Put your photo and thumbnails in `public/` (and delete the previous owner's; see above).
 3. **Run it:** `npm install && npm run dev`, then open http://localhost:3000.
 4. **Deploy** on Vercel and point your domain at it.
 

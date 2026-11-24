@@ -1,5 +1,12 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -106,12 +113,26 @@ describe("public/", () => {
     );
   }
 
-  it("has no file tracked by Git LFS", () => {
-    const paths = files("public");
+  function lfsTracked(dir: string): string[] {
+    const paths = existsSync(dir) ? files(dir) : [];
+    if (paths.length === 0) return [];
     const attrs = execFileSync("git", ["check-attr", "filter", "--", ...paths], {
       encoding: "utf8",
     });
-    expect(attrs.split("\n").filter((line) => line.endsWith(": lfs"))).toEqual([]);
+    return attrs.split("\n").filter((line) => line.endsWith(": lfs"));
+  }
+
+  it("has no file tracked by Git LFS", () => {
+    expect(lfsTracked("public")).toEqual([]);
+  });
+
+  // A fork with no photo and no thumbnails has an empty public/, or none at
+  // all after a fresh clone (Git doesn't keep empty folders).
+  it("passes the LFS check when public/ is empty or missing", () => {
+    const root = mkdtempSync(join(tmpdir(), "links-public-"));
+    mkdirSync(join(root, "empty"));
+    expect(lfsTracked(join(root, "empty"))).toEqual([]);
+    expect(lfsTracked(join(root, "missing"))).toEqual([]);
   });
 });
 

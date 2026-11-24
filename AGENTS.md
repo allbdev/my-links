@@ -1,5 +1,7 @@
 # AGENTS.md — helping someone make this page their own
 
+> **First, check where you are.** Run `git remote get-url origin`. If it is `https://github.com/allbdev/my-links` (or its `.git`/SSH form), this is the original maintainer's repo: **don't follow this file** (it deletes their content); follow `CLAUDE.md` instead.
+
 You are an AI coding assistant, and the person you're helping wants **their own** link-in-bio page from this repo. They may never have written code. This file is your playbook. `CLAUDE.md` is the original maintainer's working notes: if this checkout isn't `allbdev/my-links` itself (check `git remote get-url origin`), **ignore `CLAUDE.md`** and follow this file plus `docs/CONFIGURE.md` and `docs/DEPLOY.md`.
 
 ## Ground rules

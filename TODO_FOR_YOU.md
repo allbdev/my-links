@@ -15,7 +15,7 @@
 - [x] **CV in English?** Both languages link the same `cv.pdf`. If you have an English CV, give its URL and I'll make the link per language (like Portfolio, which goes to `/en` or `/pt`).
 - [x] ~~**Photo.**~~ Your profile picture, cropped square around your face and resized to 480 × 480 (`public/avatar.jpg`, 24 KB). It also shows in the link-preview images (22 Nov 2026).
 - [x] ~~**Featured image.**~~ Path Trader's card now shows your GIF, converted to an animated WebP (`public/thumbs/path-trader.webp`, 63 KB instead of 657 KB, same frames) (22 Nov 2026).
-- [ ] **Link list.** Filled from your site's `llms.txt`: Portfólio (highlighted) · Currículo · GitHub · LinkedIn · Projetos (Path Trader featured, Park the Cart, The Single Hole, Cartório Simulator, Tavi, Vestra) · Contato (e-mail). Change titles, order or sections in `content/links.json`; the build tells you if anything is wrong.
+- [ ] **Link list.** Filled from your site's `llms.txt`: Portfólio (highlighted) · Currículo · GitHub · LinkedIn · Projetos (Path Trader featured, Tavi, Cofre, Park the Cart, Force Push, then a "See all projects" link to your site's lab page) · Contato (e-mail). Change titles, order or sections in `content/links.json`; the build tells you if anything is wrong.
 - [x] **Bio.** Written from your site: "Engenheiro full-stack sênior. Co-fundador técnico da Path Trader e, nas horas vagas, jogos de navegador. Vila Velha, Brasil." Change it in `content/links.json` (at most 160 characters).
 
 ## Decisions (quick)

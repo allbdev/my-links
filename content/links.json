@@ -9,7 +9,10 @@
     "avatar": "/avatar.jpg",
     "siteUrl": "https://links.vinicius-albuquerque.com.br",
     "repoUrl": "https://github.com/allbdev/my-links",
-    "author": { "name": "allbdev", "url": "https://github.com/allbdev" }
+    "author": {
+      "name": "allbdev",
+      "url": "https://github.com/allbdev"
+    }
   },
   "socials": [
     {
@@ -91,33 +94,6 @@
     {
       "type": "link",
       "title": {
-        "en": "Park the Cart · 3D browser game",
-        "pt": "Estacione o Carrinho · jogo 3D no navegador"
-      },
-      "url": "https://park-the-cart.vinicius-albuquerque.com.br/",
-      "image": "/thumbs/park-the-cart.png"
-    },
-    {
-      "type": "link",
-      "title": {
-        "en": "The Single Hole · everyone digs the same hole",
-        "pt": "The Single Hole · todo mundo cava o mesmo buraco"
-      },
-      "url": "https://the-single-hole.vinicius-albuquerque.com.br",
-      "image": "/thumbs/single-hole.png"
-    },
-    {
-      "type": "link",
-      "title": {
-        "en": "Cartório Simulator · daily game",
-        "pt": "Cartório Simulator · jogo diário"
-      },
-      "url": "https://allbdev.github.io/notary-office-simulator/",
-      "image": "/thumbs/cartorio.png"
-    },
-    {
-      "type": "link",
-      "title": {
         "en": "Tavi · AI personal assistant",
         "pt": "Tavi · assistente pessoal com IA"
       },
@@ -127,11 +103,41 @@
     {
       "type": "link",
       "title": {
-        "en": "Vestra · personal finance",
-        "pt": "Vestra · finanças pessoais"
+        "en": "Cofre · macOS vault for dev secrets",
+        "pt": "Cofre · cofre de segredos de dev para macOS"
       },
-      "url": "https://www.vestra-financas.com.br/",
-      "image": "/thumbs/vestra.png"
+      "url": "https://github.com/allbdev/cofre",
+      "image": "/thumbs/cofre.png"
+    },
+    {
+      "type": "link",
+      "title": {
+        "en": "Park the Cart · 3D browser game",
+        "pt": "Estacione o Carrinho · jogo 3D no navegador"
+      },
+      "url": "https://park-the-cart.vinicius-albuquerque.com.br/",
+      "image": "/thumbs/park-the-cart.png"
+    },
+    {
+      "type": "link",
+      "title": {
+        "en": "Force Push · multiplayer 3D browser game",
+        "pt": "Force Push · jogo 3D multiplayer no navegador"
+      },
+      "url": "https://force-push.vinicius-albuquerque.com.br",
+      "image": "/thumbs/force-push.svg"
+    },
+    {
+      "type": "link",
+      "title": {
+        "en": "See all projects",
+        "pt": "Ver todos os projetos"
+      },
+      "url": {
+        "en": "https://www.vinicius-albuquerque.com.br/en/lab",
+        "pt": "https://www.vinicius-albuquerque.com.br/pt/lab"
+      },
+      "icon": "link"
     },
     {
       "type": "header",
